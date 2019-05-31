@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>
+    <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+
+</head>
+<body>
+
+<script type="x-template" id="demo4">
+    <h1 style="color:red">我是script标签模板4</h1>
+</script>
+
+<div id="app">
+
+    <h1>Hello App!</h1>
+    <p>
+        <!-- 使用 router-link 组件来导航. -->
+        <!-- 通过传入 `to` 属性指定链接. -->
+        <!-- <router-link> 默认会被渲染成一个 `<a>` 标签 -->
+        <router-link to="/foo/123">Go to Foo</router-link>
+        <router-link to="/bar/456">Go to Bar</router-link>
+    </p>
+    <!-- 路由出口 -->
+    <!-- 路由匹配到的组件将渲染在这里 -->
+    <router-view></router-view>
+    <router-view name="a"></router-view>
+    <router-view name="b"></router-view>
+</div>
+
+<script>
+    // 0. 如果使用模块化机制编程，导入Vue和VueRouter，要调用 Vue.use(VueRouter)
+    // 1. 定义 (路由) 组件。
+    // 可以从其他文件 import 进来
+    const Foo = {
+        template: '<div>foo{{ $route.params.id }}<router-view></router-view></div>',
+        // watch: {
+        //     '$route' (to, from){
+        //         console.log(to);
+        //         console.log(from);
+        //     }
+        // },
+        beforeRouteUpdate (to, from, next) {
+            console.log(to);
+            console.log(from);
+            console.log(next);
+        }
+
+    }
+    const Bar = {
+        template: '<div>bar</div>'
+
+    }
+    const UserProfile = {
+        template: '<div>child</div>'
+    }
+    const a = {
+        template: '<div>i am a<router-view></router-view></div>>'
+    }
+    const b = {
+        template: '<div>i am b</div>>'
+    }
+
+    // 2. 定义路由
+    // 每个路由应该映射一个组件。 其中"component" 可以是
+    // 通过 Vue.extend() 创建的组件构造器，
+    // 或者，只是一个组件配置对象。
+    // 我们晚点再讨论嵌套路由。
+    const routes = [
+        { path: '/foo/:id',
+            components: {
+                default: Foo,
+                a: a,
+                b: b,
+            },
+            children: [
+                {
+                    // 当 /user/:id/profile 匹配成功，
+                    // UserProfile 会被渲染在 User 的 <router-view> 中
+                    path: '',
+                    component: UserProfile
+                },
+            ]
+        },
+        { path: '/bar/:id', component: Bar }
+    ];
+    const router = new VueRouter({
+        routes // (缩写) 相当于 routes: routes
+    });
+    // 4. 创建和挂载根实例。
+    // 记得要通过 router 配置参数注入路由，
+    // 从而让整个应用都有路由功能
+    const app = new Vue({
+        el: '#app',
+        router,
+        // template: '#demo4'
+    })
+</script>
+
+
+
+<!--局部注册-->
+<div id="m1">
+    <!--<aaa></aaa>-->
+    <!--<bbb></bbb>-->
+</div>
+
+<script>
+    var compontentB = {
+        template: `
+            <div>i am B</div>
+        `
+    };
+    var compontentA = {
+        data () {
+            return {
+                count: 123
+            }
+        },
+        components: {
+            'jjj': compontentB,
+        },
+        template: `
+            <div>i am A {{count}}</div>
+            <jjj></jjj>
+        `
+    };
+
+    var m1 = new Vue({
+        el: '#m1',
+        components: {
+            'aaa' : compontentA,
+            'bbb' : compontentB,
+        },
+    });
+</script>
+
+
+<div id="inher">
+    <inher-test type="file" style="background: #00a0e9">
+
+    </inher-test>
+</div>
+
+<!--禁用特性继承-->
+<script>
+    Vue.component('inher-test', {
+        inheritAttrs: false,
+        data: function () {
+            return {
+
+            }
+        },
+        props: [],
+        template: `
+            <div>
+            {{$attrs}}
+                <input  v-bind="$attrs" style="background: yellowgreen;">
+            </div>
+        `
+    });
+
+    new Vue({
+        el: '#inher',
+        data: {
+
+        },
+        methods: {
+
+        }
+    });
+</script>
+
+
+<!--组件向父级标签传递数据    修改子组件prop值（对象 数组会改变父组件值）   .sync第一种用法-->
+<div id="blog-posts-events-demo">
+    <div :style="{ fontSize: postFontSize + 'em' }">
+        {{t}}
+        <blog-post v-on:enlarge-text="postFontSize += $event"
+                v-for="post in posts"
+                v-bind:key="post.id"
+                v-bind:id="post.id"
+                v-bind:t="t"
+                 :post="post"
+                   v-bind.sync="doc"
+        ></blog-post>
+    </div>
+</div>
+<script>
+    Vue.component('blog-post', {
+        data: function(){
+            return {
+                name: 888,
+            }
+        },
+        props: ['post','id','title', 'content', 'doc', 't'],
+        computed: {
+            ttt(){
+                return this.t;
+            }
+        },
+        methods: {
+            m(){
+                this.ttt.name = 456;
+            }
+        },
+        template: `
+    <div class="blog-post">
+      <h3>{{ post.title }}{{ name }}{{ttt}}</h3>
+      <h3>{{doc}}-{{ title  }}-{{content}}</h3>
+      <button v-on:click="$emit('enlarge-text', 0.1)">
+        Enlarge text
+      </button>
+      <button @click="m">改变props</button>
+    </div>
+  `
+    })
+
+    vm = new Vue({
+        el: '#blog-posts-events-demo',
+        data: {
+            posts: [
+                { id: 1, title: 'My journey with Vue' },
+                { id: 2, title: 'Blogging with Vue' },
+                { id: 3, title: 'Why Vue is so fun' }
+            ],
+            postFontSize: 1,
+            doc: {
+                title: 'title',
+                content: 'content'
+            },
+            t:{
+                name: 123,
+            }
+        },
+        created (){
+
+        },
+        methods: {
+
+        },
+    })
+
+</script>
+
+
+
+<!--组件数据双向绑定-->
+<div id="m">
+    <custom-input
+            v-bind:mm="searchText"
+            v-on:lalal="searchText = $event"
+    ></custom-input>
+    <!--<custom-input v-model="searchText"></custom-input>-->
+    <!--<button @click="mm">click</button>-->
+
+    <!--下面两种写法相同-->
+    <!--<input type="text" :value="te" v-on:input="te = $event.target.value">-->
+    <!--<input type="text" v-model="te">-->
+</div>
+
+<script>
+    Vue.component('custom-input', {
+        props: ['mm'],
+        // model:{
+        //     prop: 'value',
+        //     event: 'lalal'
+        // },
+        template: `
+        <label>
+        <span>{{mm}}</span>
+        <!--<span>fjoejw</span>-->
+        <input
+          v-bind:value="mm"
+              v-on:input="$emit('lalal', $event.target.value)"
+        >
+        </label>
+        `
+    });
+    new Vue({
+        el: '#m',
+        data: {
+            searchText: '00',
+            te: 'ok',
+        },
+        watch:{
+            searchText(newd, oldd){
+                console.log(newd,oldd);
+            },
+            te(n,o){
+                console.log(n);
+            }
+        },
+        methods: {
+            mm: function () {
+                this.searchText = 111;
+            },
+        }
+    });
+
+</script>
+
+
+<!--.sync 修饰符 第二种用法-->
+    <div id="details">
+        <button @click="changeValue">toggle</button>
+        <my-component :show.sync='valueChild' style="padding: 30px 20px 30px 5px;border:1px solid #ddd;margin-bottom: 10px;"></my-component>
+
+        <!--<my-component :show='valueChild' v-on:mmm="valueChild = $event" style="padding: 30px 20px 30px 5px;border:1px solid #ddd;margin-bottom: 10px;"></my-component>-->
+    </div>
+    <script>
+        Vue.component('my-component', {
+            template: `<div v-if="show">
+                        <p>默认初始值是{{show}}，所以是显示的</p>
+                        <button @click.stop="closeDiv">关闭</button>
+                     </div>`,
+            props:['show'],
+            methods: {
+                closeDiv() {
+                    this.$emit('update:show', false); //触发 input 事件，并传入新值
+
+                    // this.$emit('mmm', false);
+                }
+            }
+        })
+        new Vue({
+            el: '#details',
+            data:{
+                valueChild:true,
+            },
+            methods:{
+                changeValue(){
+                    this.valueChild = !this.valueChild
+                }
+            }
+        })
+    </script>
+
+<style>
+    .demo-alert-box {
+        color: darkred;
+    }
+</style>
+
+
+
+<!--原生事件-->
+<div id="n">
+    {{vo}}
+    <base-input v-on:click="onFocus" :label="label" :value="vo" v-on:mm="vo = $event" type="number">
+
+    </base-input>
+</div>
+<script>
+    Vue.component('base-input', {
+        inheritAttrs: false,
+        props: ['label', 'value'],
+        computed: {
+            inputListeners: function () {
+                var vm = this
+                // `Object.assign` 将所有的对象合并为一个新对象
+                return Object.assign({},
+                    // 我们从父级添加所有的监听器
+                    this.$listeners,
+                    // 然后我们添加自定义监听器，
+                    // 或覆写一些监听器的行为
+                    {
+                        // 这里确保组件配合 `v-model` 的工作
+                        input: function (event) {
+                            vm.$emit('mm', event.target.value)
+                        }
+                    }
+                )
+            }
+        },
+        template: `
+    <label>
+      {{ label }}
+      <button>132</button>
+      <input
+        v-bind="$attrs"
+        v-bind:value="value"
+
+        v-on="inputListeners"
+      >
+    </label>
+  `
+    })
+    new Vue({
+        el: '#n',
+        data:{
+            label: 111,
+            vo: 222,
+        },
+        methods: {
+            onFocus(){
+                console.log(1);
+            }
+        }
+    });
+</script>
+
+
+
+<!--边界情况-->
+<script>
+    // Vue 根实例
+    new Vue({
+        data: {
+            foo: 1
+        },
+        computed: {
+            bar: function () { /* ... */ }
+        },
+        methods: {
+            baz: function () { /* ... */ }
+        }
+    })
+    // 获取根组件的数据
+    this.$root.foo
+
+    // 写入根组件的数据
+    this.$root.foo = 2
+
+    // 访问根组件的计算属性
+    this.$root.bar
+
+    // 调用根组件的方法
+    this.$root.baz()
+</script>
+
+
+</body>
+</html>

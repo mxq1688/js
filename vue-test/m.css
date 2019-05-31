@@ -1,0 +1,15 @@
+    .tablem {
+        border: 1px solid red;
+        border-collapse: collapse;
+    }
+
+ .tablem>thead>tr>th,
+ .tablem>tbody>tr>th,
+ .tablem>tfoot>tr>th,
+ .tablem>thead>tr>td,
+ .tablem>tbody>tr>td,
+ .tablem>tfoot>tr>td {
+    border: 1px solid red;
+    text-align: center;
+    padding: 0;
+}
