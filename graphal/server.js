@@ -1,3 +1,7 @@
+
+// 使用nodemon运行
+// nodemon --exec babel-node --presets=es2015 server.js
+
 import express from 'express'
 import Schema from './src/schema'
 import graphqlHTTP from 'express-graphql'

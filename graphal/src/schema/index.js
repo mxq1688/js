@@ -8,9 +8,6 @@ import {
 // 我们要用的模拟数据
 const data = require('../../data.json')
 
-
-console.log(data);
-
 const User = new GraphQLObjectType({
     name: 'User',
     description: 'User对象',
