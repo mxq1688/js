@@ -4406,7 +4406,7 @@ jQuery.extend( {
 		}
 	},
 
-	// Not public - generate a queueHooks object, or return the current one
+	// Not dist - generate a queueHooks object, or return the current one
 	_queueHooks: function( elem, type ) {
 		var key = type + "queueHooks";
 		return dataPriv.get( elem, key ) || dataPriv.access( elem, key, {
@@ -4964,7 +4964,7 @@ function on( elem, types, selector, data, fn, one ) {
 }
 
 /*
- * Helper functions for managing events -- not part of the public interface.
+ * Helper functions for managing events -- not part of the dist interface.
  * Props to Dean Edwards' addEvent library for many of the ideas.
  */
 jQuery.event = {
@@ -8783,7 +8783,7 @@ jQuery.extend( {
 		global: true,
 		processData: true,
 		async: true,
-		contentType: "app/x-www-form-urlencoded; charset=UTF-8",
+		contentType: "src/x-www-form-urlencoded; charset=UTF-8",
 
 		/*
 		timeout: 0,
@@ -8801,8 +8801,8 @@ jQuery.extend( {
 			"*": allTypes,
 			text: "text/plain",
 			html: "text/html",
-			xml: "app/xml, text/xml",
-			json: "app/json, text/javascript"
+			xml: "src/xml, text/xml",
+			json: "src/json, text/javascript"
 		},
 
 		contents: {
@@ -9093,7 +9093,7 @@ jQuery.extend( {
 
 		// Change '%20' to '+' if this is encoded form body content (gh-2658)
 		} else if ( s.data && s.processData &&
-			( s.contentType || "" ).indexOf( "app/x-www-form-urlencoded" ) === 0 ) {
+			( s.contentType || "" ).indexOf( "src/x-www-form-urlencoded" ) === 0 ) {
 			s.data = s.data.replace( r20, "+" );
 		}
 
@@ -9595,8 +9595,8 @@ jQuery.ajaxPrefilter( function( s ) {
 // Install script dataType
 jQuery.ajaxSetup( {
 	accepts: {
-		script: "text/javascript, app/javascript, " +
-			"app/ecmascript, app/x-ecmascript"
+		script: "text/javascript, src/javascript, " +
+			"src/ecmascript, src/x-ecmascript"
 	},
 	contents: {
 		script: /\b(?:java|ecma)script\b/
@@ -9677,7 +9677,7 @@ jQuery.ajaxPrefilter( "json jsonp", function( s, originalSettings, jqXHR ) {
 			"url" :
 			typeof s.data === "string" &&
 				( s.contentType || "" )
-					.indexOf( "app/x-www-form-urlencoded" ) === 0 &&
+					.indexOf( "src/x-www-form-urlencoded" ) === 0 &&
 				rjsonp.test( s.data ) && "data"
 		);
 

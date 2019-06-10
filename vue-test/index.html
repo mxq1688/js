@@ -186,7 +186,7 @@
                 v-bind:id="post.id"
                 v-bind:t="t"
                  :post="post"
-                   v-bind.sync="doc"
+                v-bind.sync="doc"
         ></blog-post>
     </div>
 </div>
@@ -314,16 +314,31 @@
     </div>
     <script>
         Vue.component('my-component', {
-            template: `<div v-if="show">
-                        <p>默认初始值是{{show}}，所以是显示的</p>
+            data: function(){
+                return {
+                    // is_dis: this.show
+                }
+            },
+            template: `<div v-if="is_dis">
+                        <p>默认初始值是{{is_dis}}，所以是显示的</p>
                         <button @click.stop="closeDiv">关闭</button>
                      </div>`,
             props:['show'],
+            computed:{
+                is_dis(){
+                    return this.show
+                }
+            },
             methods: {
                 closeDiv() {
                     this.$emit('update:show', false); //触发 input 事件，并传入新值
 
                     // this.$emit('mmm', false);
+                }
+            },
+            watch:{
+                show(){
+                    // this.is_dis = this.show
                 }
             }
         })
@@ -334,6 +349,7 @@
             },
             methods:{
                 changeValue(){
+                    console.log(this.$data);
                     this.valueChild = !this.valueChild
                 }
             }
