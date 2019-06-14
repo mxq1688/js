@@ -22,7 +22,7 @@
         <!-- 使用 router-link 组件来导航. -->
         <!-- 通过传入 `to` 属性指定链接. -->
         <!-- <router-link> 默认会被渲染成一个 `<a>` 标签 -->
-        <router-link to="/foo/123">Go to Foo</router-link>
+        <router-link to="/foo/123/">Go to Foo</router-link>
         <router-link to="/bar/456">Go to Bar</router-link>
     </p>
     <!-- 路由出口 -->
@@ -37,17 +37,19 @@
     // 1. 定义 (路由) 组件。
     // 可以从其他文件 import 进来
     const Foo = {
-        template: '<div>foo{{ $route.params.id }}<router-view></router-view></div>',
-        // watch: {
-        //     '$route' (to, from){
-        //         console.log(to);
-        //         console.log(from);
-        //     }
-        // },
+        props: ['id'],
+        template: `<div>foo
+                        <div>$route:{{ $route.params.id }}</div>
+                        <div>props:{{id}}{{newsletterPopup}}</div>
+                        <router-view></router-view>
+                    </div>`,
+        watch: {
+            '$route' (to, from){
+                // console.log(111);
+            }
+        },
         beforeRouteUpdate (to, from, next) {
-            console.log(to);
-            console.log(from);
-            console.log(next);
+            console.log(222);
         }
 
     }
@@ -55,11 +57,14 @@
         template: '<div>bar</div>'
 
     }
-    const UserProfile = {
-        template: '<div>child</div>'
+    const child1 = {
+        template: '<div>child1</div>'
+    }
+    const child2 = {
+        template: '<div>child2</div>'
     }
     const a = {
-        template: '<div>i am a<router-view></router-view></div>>'
+        template: '<div>i am a</div>>'
     }
     const b = {
         template: '<div>i am b</div>>'
@@ -69,7 +74,6 @@
     // 每个路由应该映射一个组件。 其中"component" 可以是
     // 通过 Vue.extend() 创建的组件构造器，
     // 或者，只是一个组件配置对象。
-    // 我们晚点再讨论嵌套路由。
     const routes = [
         { path: '/foo/:id',
             components: {
@@ -77,13 +81,22 @@
                 a: a,
                 b: b,
             },
+            props: {default: (route) => ({ id: route.params.id })},//函数模式
+            props: {default: true},//bool模式
+            props: {default: {id: false}},//bool模式
             children: [
                 {
                     // 当 /user/:id/profile 匹配成功，
                     // UserProfile 会被渲染在 User 的 <router-view> 中
                     path: '',
-                    component: UserProfile
+                    component: child1
                 },
+                {
+                    // 当 /user/:id/posts 匹配成功
+                    // UserPosts 会被渲染在 User 的 <router-view> 中
+                    path: 'posts',
+                    component: child2
+                }
             ]
         },
         { path: '/bar/:id', component: Bar }
