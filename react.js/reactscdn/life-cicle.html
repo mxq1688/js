@@ -30,7 +30,8 @@
             );
         }
     }
-
+    // 周期函数执行顺序
+    // componentWillMount-> render-> componentDidMount->
 
     class Content extends React.Component {
         componentWillMount() {
@@ -51,6 +52,7 @@
             return true;
         }
         componentWillUpdate(nextProps, nextState) {
+            // shouldComponentUpdate返回false,componentWillUpdate不会执行
             //在组件接收到新的props或者state但还没有render时被调用。在初始化时不会被调用。
             console.log('Component WILL UPDATE!');
         }
