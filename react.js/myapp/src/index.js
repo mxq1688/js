@@ -4,7 +4,9 @@ import './index.css';
 // import App from './App';
 // import TodoList from './component/TodoList';
 // import Transition from './component/Transition'
-import TodoList from './antd/TodoList'
+// import TodoList from './antd/TodoList'
+
+import TodoList from './mobx'
 
 import * as serviceWorker from './serviceWorker';
 

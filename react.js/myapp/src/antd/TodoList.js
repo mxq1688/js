@@ -1,6 +1,9 @@
 import React, { Component, Fragment } from 'react';
 import 'antd/dist/antd.css'
-import { Input, Button, List, Typography} from 'antd'
+import  store  from '../store/index'
+import {getInputChangeAction, getListChangeAction} from "../store/actionCreator";
+import TodoListUi from '../tpl/TodoListUi'
+
 const data = [
     'Racing car sprays burning fuel into crowd.',
     'Japanese princess to wed commoner.',
@@ -9,26 +12,43 @@ const data = [
     'Los Angeles battles huge wildfires.',
 ];
 class TodoList extends Component{
+    constructor(props){
+        super(props)
+        this.state = store.getState();
+        store.subscribe(this.handStoreChange.bind(this));//监听到store变化然后修改state
+        this.handInputChange = this.handInputChange.bind(this)
+        this.addList = this.addList.bind(this)
+        this.deleteList = this.deleteList.bind(this)
+    }
+    handStoreChange(){
+        this.setState(store.getState())
+    }
+    handInputChange(e){
+        const value = e.target.value
+        const action = getInputChangeAction(value);
+        store.dispatch(action)
+    }
+    addList(){
+        const action = getListChangeAction([...this.state.list, this.state.inputValue])
+        store.dispatch(action);
+    }
+    deleteList(index){
+        console.log(index);
+        var list = this.state.list;
+        list.splice(index, 1)
+        const action = getListChangeAction(list)
 
+        store.dispatch(action)
+    }
     render() {
-        return (
-            <Fragment>
-                <div>
-                    <Input placeholder='请输入' style={{width: '300px'}}/> <Button type='primary'>submit</Button>
-                </div>
-                <List style={{width: '500px'}}
-                    header={<div>Header</div>}
-                    footer={<div>Footer</div>}
-                    bordered
-                    dataSource={data}
-                    renderItem={item => (
-                        <List.Item>
-                            <Typography.Text mark>[ITEM]</Typography.Text> {item}
-                        </List.Item>
-                    )}
-                />
-            </Fragment>
-        )
+        return <TodoListUi
+            inputValue={this.state.inputValue}
+            list={this.state.list}
+            handInputChange={this.handInputChange}
+            addList={this.addList}
+            deleteList={this.deleteList}
+        />
+
     }
 }
 
