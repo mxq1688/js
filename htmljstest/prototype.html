@@ -51,10 +51,16 @@
     function Student() {
     }
 
+    //原型链继承
     // Object.create()生成一个空对象，此空对象的__proto__属性指向参数
-    Student.prototype = Object.create(Person.prototype);
+    Student.prototype = Object.create(Person.prototype, {
+        constructor: {
+            value: Student,
+            enumerable: false
+        }
+    });
     s = new Student();
-    console.log(s);
+    console.log(Student.prototype.constructor);
     s.sayHello()
 </script>
 </body>

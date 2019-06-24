@@ -12,7 +12,29 @@
         let y = 2;
 
         [x, y] = [y, x];
-        console.log(x);
+        // console.log(x);
+
+
+
+        var numbers = [65, 44, 12, 4];
+
+        function getSum(total, num) {
+            // console.log(total, num);
+            return total + num;
+        }
+        numbers.reduce(getSum).log;
+
+
+
+        var obj = new Object();
+        Object.defineProperty(obj, 'name', {
+            configurable: false,
+            writable: true,
+            enumerable: true,
+            value: '张三'
+        })
+
+        console.log(obj.name)  //张三
     </script>
 </body>
 </html>
