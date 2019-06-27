@@ -8,6 +8,126 @@
 
 <script>
 
+    // function Foo() { /* .. */ }
+    // Foo.prototype.bar = function(){};
+    // var a1 = new Foo();
+    // // a1.constructor === Foo; // true!
+    // console.log(Foo, a1, a1.constructor);//a1.constructor === Foo
+
+    // 改变了Foo.prototype的定义，那么a1.constructor的指向就改变了
+    function Foo() { /* .. */ }
+    Foo.prototype = { /* .. */ }; // 创建一个新原型对象
+    var a1 = new Foo();
+    a1.constructor === Foo; // false!
+    a1.constructor === Object; // true!
+    // 总结
+    // 1. constructor属性会在函数声明时默认生成。在利用new创建对象实例时，对象实例本身并没有constructor属性，但对象实例的__proto__属性和Foo.prototype属性关联，形成原型链，因此会通过原型链找到Foo.prototype.constructor属性，并以此为值。
+    // 2. prototype属性可能会被重写，重写后，原来的constructor会发生改变。如果显示为constructor赋值，可以纠正。
+    // 3. 因为constructor的属性很随意，所以慎用。
+
+    class Point{
+        mm = 123;
+        constructor(x, y){
+            this.x = x;
+            this.y = y;
+        }
+        toString(){
+            return this.x+this.y+this.mm
+        }
+    }
+    // console.log(Point, typeof Point, Point.prototype.constructor, Point === Point.prototype.constructor );
+
+    class B {}
+    let b = new B();
+    console.log(b);
+    // prototype对象的constructor属性，直接指向“类”的本身
+    // console.log(b.constructor === B.prototype.constructor, B.prototype.constructor === B); // true  true
+/*//类的内部方法都是不可枚举的
+    class Point1 {
+        constructor(x, y) {
+            // ...
+        }
+
+        toString() {
+            // ...
+        }
+    }
+
+    console.log(Object.keys(Point1.prototype));
+    // []
+    console.log(Object.getOwnPropertyNames(Point1.prototype));
+
+*/
+/*  //构造函数的方法是可枚举的
+    var Point2 = function (x, y) {
+        // ...
+    };
+    Point2.prototype.toString = function() {
+        // ...
+    };
+    console.log(Object.keys(Point2.prototype));
+    // ["toString"]
+    console.log(Object.getOwnPropertyNames(Point2.prototype));
+*/
+
+/*get set
+    class MyClass {
+        constructor() {
+            // ...
+        }
+        m = 1;
+        get prop() {
+            return this.m;
+        }
+        set prop(value) {
+
+            this.m = value;
+        }
+    }
+    let inst = new MyClass();
+
+    inst.prop = 123;
+    // setter: 123
+    console.log(inst.prop);
+    // 'getter'
+*/
+
+/*
+    class Test{
+        m(){
+            console.log(1111);
+        }
+    }
+
+    class Example {
+        // 默认返回实例对象 this
+        constructor(){
+            // 指定返回对象
+            return new Test();
+        }
+        n(){
+            console.log(2222);
+        }
+    }
+    // console.log(new Example() instanceof Example); // false
+*/
+
+    class Father {
+        test(){
+            return 'test';
+        }
+        static test1(){
+            return 'static test';
+        }
+    }
+    class Child extends Father {
+        constructor(){
+            super();
+            console.log(Father.test1());
+        }
+    }
+    new Child();
+
 </script>
 </body>
 </html>

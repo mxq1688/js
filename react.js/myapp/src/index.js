@@ -6,8 +6,6 @@ import './index.css';
 // import Transition from './component/Transition'
 // import TodoList from './antd/TodoList'
 
-
-
 import TodoList from './mobx/TodoList'
 
 import * as serviceWorker from './serviceWorker';

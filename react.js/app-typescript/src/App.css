@@ -26,3 +26,6 @@
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
+
+/*@代表src目录， ~符号代表根目录*/
+@import '~antd/dist/antd.css';
