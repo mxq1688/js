@@ -9,113 +9,6 @@
 </head>
 <body>
 
-
-
-<script type="x-template" id="demo4">
-    <h1 style="color:red">我是script标签模板4</h1>
-</script>
-
-<div id="app">
-
-    <h1>Hello App!</h1>
-    <p>
-        <!-- 使用 router-link 组件来导航. -->
-        <!-- 通过传入 `to` 属性指定链接. -->
-        <!-- <router-link> 默认会被渲染成一个 `<a>` 标签 -->
-        <router-link to="/foo/123/">Go to Foo</router-link>
-        <router-link to="/bar/456">Go to Bar</router-link>
-    </p>
-    <!-- 路由出口 -->
-    <!-- 路由匹配到的组件将渲染在这里 -->
-    <router-view></router-view>
-    <router-view name="a"></router-view>
-    <router-view name="b"></router-view>
-</div>
-
-<script>
-    // 0. 如果使用模块化机制编程，导入Vue和VueRouter，要调用 Vue.use(VueRouter)
-    // 1. 定义 (路由) 组件。
-    // 可以从其他文件 import 进来
-    const Foo = {
-        props: ['id'],
-        template: `<div>foo
-                        <div>$route:{{ $route.params.id }}</div>
-                        <div>props:{{id}}{{newsletterPopup}}</div>
-                        <router-view></router-view>
-                    </div>`,
-        watch: {
-            '$route' (to, from){
-                // console.log(111);
-            }
-        },
-        beforeRouteUpdate (to, from, next) {
-            console.log(222);
-        }
-
-    }
-    const Bar = {
-        template: '<div>bar</div>'
-
-    }
-    const child1 = {
-        template: '<div>child1</div>'
-    }
-    const child2 = {
-        template: '<div>child2</div>'
-    }
-    const a = {
-        template: '<div>i am a</div>>'
-    }
-    const b = {
-        template: '<div>i am b</div>>'
-    }
-
-    // 2. 定义路由
-    // 每个路由应该映射一个组件。 其中"component" 可以是
-    // 通过 Vue.extend() 创建的组件构造器，
-    // 或者，只是一个组件配置对象。
-    const routes = [
-        { path: '/foo/:id',
-            components: {
-                default: Foo,
-                a: a,
-                b: b,
-            },
-            props: {default: (route) => ({ id: route.params.id })},//函数模式
-            props: {default: true},//bool模式
-            props: {default: {id: false}},//bool模式
-            children: [
-                {
-                    // 当 /user/:id/profile 匹配成功，
-                    // UserProfile 会被渲染在 User 的 <router-view> 中
-                    path: '',
-                    component: child1
-                },
-                {
-                    // 当 /user/:id/posts 匹配成功
-                    // UserPosts 会被渲染在 User 的 <router-view> 中
-                    path: 'posts',
-                    component: child2
-                }
-            ]
-        },
-        { path: '/bar/:id', component: Bar }
-    ];
-    const router = new VueRouter({
-        routes // (缩写) 相当于 routes: routes
-    });
-    // 4. 创建和挂载根实例。
-    // 记得要通过 router 配置参数注入路由，
-    // 从而让整个应用都有路由功能
-    const app = new Vue({
-        el: '#app',
-        router,
-        // template: '#demo4'
-    })
-</script>
-
-
-
 <!--局部注册-->
 <div id="m1">
     <!--<aaa></aaa>-->
@@ -192,11 +85,10 @@
 <!--组件向父级标签传递数据    修改子组件prop值（对象 数组会改变父组件值）   .sync第一种用法-->
 <div id="blog-posts-events-demo">
     <div :style="{ fontSize: postFontSize + 'em' }">
-        {{t}}
+        {{t}}-{{doc}}
         <blog-post v-on:enlarge-text="postFontSize += $event"
                 v-for="post in posts"
                 v-bind:key="post.id"
-                v-bind:id="post.id"
                 v-bind:t="t"
                  :post="post"
                 v-bind.sync="doc"
@@ -210,7 +102,7 @@
                 name: 888,
             }
         },
-        props: ['post','id','title', 'content', 'doc', 't'],
+        props: ['post', 'title', 'content', 't'],
         computed: {
             ttt(){
                 return this.t;
@@ -219,16 +111,22 @@
         methods: {
             m(){
                 this.ttt.name = 456;
+            },
+            m1(){
+                this.$emit('update:title', 1111);
             }
         },
         template: `
     <div class="blog-post">
-      <h3>{{ post.title }}{{ name }}{{ttt}}</h3>
-      <h3>{{doc}}-{{ title  }}-{{content}}</h3>
+      <h3>{{ post.title }}</h3>
+      <div>传递对象（在子组件修改）{{ttt}}</div>
+      <h3>{{title}}-{{content}}</h3>
       <button v-on:click="$emit('enlarge-text', 0.1)">
         Enlarge text
       </button>
+      <input type="text" v-model="t.name">修改子组件prop值（对象 数组会改变父组件值）
       <button @click="m">改变props</button>
+      <button @click="m1">改变props2</button>
     </div>
   `
     })
@@ -238,8 +136,8 @@
         data: {
             posts: [
                 { id: 1, title: 'My journey with Vue' },
-                { id: 2, title: 'Blogging with Vue' },
-                { id: 3, title: 'Why Vue is so fun' }
+                // { id: 2, title: 'Blogging with Vue' },
+                // { id: 3, title: 'Why Vue is so fun' }
             ],
             postFontSize: 1,
             doc: {
@@ -443,23 +341,29 @@
             foo: 1
         },
         computed: {
-            bar: function () { /* ... */ }
+            bar: function () {
+                return this.foo;
+            }
+        },
+        created(){
+            // 获取根组件的数据
+            this.$root.foo
+            // 写入根组件的数据
+            this.$root.foo = 2
+            console.log(this.$root.foo);
+            // 访问根组件的计算属性
+            console.log(this.$root.bar);
+
+            // 调用根组件的方法
+            console.log(this.$root.baz());
         },
         methods: {
-            baz: function () { /* ... */ }
+            baz: function () {
+                return '111'
+            }
         }
     })
-    // 获取根组件的数据
-    this.$root.foo
 
-    // 写入根组件的数据
-    this.$root.foo = 2
-
-    // 访问根组件的计算属性
-    this.$root.bar
-
-    // 调用根组件的方法
-    this.$root.baz()
 </script>
 
 
