@@ -10,13 +10,13 @@ class TodoShow extends Component{
     }
     render() {
         const { content } = this.props;
-        //JSX->createElement->虚拟Dom(js对象)->真是dom
-        // return (
-        //     <div>
-        //         {content}
-        //     </div>
-        // )
-        return React.createElement('div', {}, content)
+        //JSX->createElement->虚拟Dom(js对象)->真实dom
+        return (
+            <div>
+                {content}
+            </div>
+        )
+        // return React.createElement('div', {}, content)
     }
 }
 export default TodoShow;

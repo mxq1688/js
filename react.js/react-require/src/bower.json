@@ -1,0 +1,20 @@
+{
+  "name": "src",
+  "main": "index.js",
+  "homepage": "https://github.com/mxq1688/js",
+  "authors": [
+    "meng <xianqiangmeng.a2@gmail.com>"
+  ],
+  "description": "",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "^3.4.1"
+  }
+}

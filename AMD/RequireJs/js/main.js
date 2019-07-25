@@ -35,3 +35,9 @@ requirejs(['index', 'm', 'old'], function (index, m, old) {
     index.init();
     m.change();
 });
+
+
+//另一种定义方法
+// define((require)=>{
+//     const $ = require('jquery');
+// });

@@ -1,12 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-// import App from './App';
 // import TodoList from './component/TodoList';
 // import Transition from './component/Transition'
 // import TodoList from './antd/TodoList'
 
-import TodoList from './mobx/TodoList'
+import TodoList from './mobx/index'
 
 import * as serviceWorker from './serviceWorker';
 

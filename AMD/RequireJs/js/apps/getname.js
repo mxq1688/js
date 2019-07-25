@@ -8,3 +8,13 @@ define(function () {
         userInfo
     }
 })
+
+
+// 或者直接定义
+// define({
+//     userInfo: {
+//         name: 'mm',
+//         sex: 1,
+//     }
+// })
+

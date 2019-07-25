@@ -61,7 +61,8 @@ new Numberic().add(1,2,'fjj');
 // const arr = observable([1,2,3,4]);
 // const obj = observable({name: 'mxq', title: 'fjeowj'});
 // const map = observable(new Map());
-//
+
+//number string bool必须用 observable.box
 // const num = observable.box(20);
 // const str = observable.box('jfaweio');
 // const bool = observable.box(true);
@@ -87,37 +88,49 @@ class Test{
 }
 
 const te = new Test();
+//computed
 // 方法一：
-// var foo = computed(()=> te.str+'/'+te.num)//拼接被观察的两个数据
-// foo.observe((change)=>{
-//      数据改变时调用此方法
-//      console.log( change);
-// });
-// te.str = 'word';
-// console.log(foo.get());
+var foo = computed(()=> te.str+'/'+te.num)//拼接被观察的两个数据
+foo.observe((change)=>{
+     // 数据改变时调用此方法
+     console.log( change);
+});
+te.str = 'word';
+console.log(foo.get());
+console.log(te.mixed);//方法2的打印
 
+
+//autorun
 // 初始化会自动运行，修改autorun中任意可观察数据可触发aoturun
 autorun(()=>{
-    // console.log(te.mixed);
+    console.log(te.mixed);
 });
 
+
+//when
 // when 接收两个函数，第一个为布尔值，当只有第一个为true的时候，才会执行第二个函数，并且保证最多只被执行一次。
 // TUDU: 第一个参数为布尔值，必须是一个可观察数据，不能根据普通变量
 // TUDO: 如果一开始就返回真，那么第二个函数会同步立即执行
 when(() => te.bol, () => console.log("it's true"));
 te.bol = true; // "it's true"
+
+
+//reaction
 // 当引入的可观察数据发生变化时，触发第二个函数
-reaction(()=>[te.str, te.num, te.bol], (arr)=>{
-    console.log(arr);
-})
+// reaction(()=>[te.str, te.num, te.bol], (arr)=>{
+//     console.log(arr);
+// })
+
+//runInAction
 // 使用runInAction方法，同样只会触发一次
-runInAction(() => {
-    te.str = 'm';
-    te.num = 168;
-})
+// runInAction(() => {
+//     te.str = 'm';
+//     te.num = 168;
+// })
 // te.str = 'word';
 // te.num = 50;
 // te.bar()
+
 */
 
 class Store {

@@ -31,7 +31,6 @@ class TodoList extends Component{
         // })
         //方法3
         this.setState((m)=>{
-            // console.log(m);
             // m.list.push(m.inputValue)
             m.list = [...m.list, m.inputValue]
             m.inputValue = '';
