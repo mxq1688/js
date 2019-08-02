@@ -12,18 +12,23 @@
     // Foo.prototype.bar = function(){};
     // var a1 = new Foo();
     // // a1.constructor === Foo; // true!
-    // console.log(Foo, a1, a1.constructor);//a1.constructor === Foo
+    // console.log(Foo);//a1.constructor === Foo
+    // console.log(a1);
+    // console.log(a1.constructor);
+    // console.log(Foo.prototype.constructor);
 
     // 改变了Foo.prototype的定义，那么a1.constructor的指向就改变了
-    function Foo() { /* .. */ }
-    Foo.prototype = { /* .. */ }; // 创建一个新原型对象
-    var a1 = new Foo();
-    a1.constructor === Foo; // false!
-    a1.constructor === Object; // true!
+    // function Foo() { /* .. */ }
+    // Foo.prototype = { /* .. */ }; // 创建一个新原型对象
+    // var a1 = new Foo();
+    // a1.constructor === Foo; // false!
+    // a1.constructor === Object; // true!
     // 总结
     // 1. constructor属性会在函数声明时默认生成。在利用new创建对象实例时，对象实例本身并没有constructor属性，但对象实例的__proto__属性和Foo.prototype属性关联，形成原型链，因此会通过原型链找到Foo.prototype.constructor属性，并以此为值。
     // 2. prototype属性可能会被重写，重写后，原来的constructor会发生改变。如果显示为constructor赋值，可以纠正。
     // 3. 因为constructor的属性很随意，所以慎用。
+
+
 
     class Point{
         mm = 123;
@@ -37,9 +42,6 @@
     }
     // console.log(Point, typeof Point, Point.prototype.constructor, Point === Point.prototype.constructor );
 
-    class B {}
-    let b = new B();
-    console.log(b);
     // prototype对象的constructor属性，直接指向“类”的本身
     // console.log(b.constructor === B.prototype.constructor, B.prototype.constructor === B); // true  true
 /*//类的内部方法都是不可枚举的
@@ -70,7 +72,8 @@
     console.log(Object.getOwnPropertyNames(Point2.prototype));
 */
 
-/*get set
+/*
+// get set
     class MyClass {
         constructor() {
             // ...
@@ -80,7 +83,7 @@
             return this.m;
         }
         set prop(value) {
-
+            console.log('set',value);
             this.m = value;
         }
     }

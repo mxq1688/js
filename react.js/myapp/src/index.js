@@ -5,12 +5,14 @@ import './index.css';
 // import Transition from './component/Transition'
 // import TodoList from './antd/TodoList'
 
-import TodoList from './mobx/index'
+// import TodoList from './mobx/TodoList'
+
+import Index from './router/Index'
 
 import * as serviceWorker from './serviceWorker';
 
 
-ReactDOM.render(<TodoList />, document.getElementById('root'));
+ReactDOM.render(<Index />, document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.

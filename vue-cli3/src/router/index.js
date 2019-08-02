@@ -85,7 +85,9 @@ const routers = {
         },
         {
             path: '*',
-            component: Error
+            // component: Error,
+            // 或者跳转到主页
+            redirect: '/'
         },
 
         {

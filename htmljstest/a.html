@@ -20,36 +20,6 @@
             $('#con').load('b.html');
         // });
 
-
-
-        class meng{
-            constructor(name, title){
-                this.name = name;
-                this.title = title;
-            }
-            C(){
-                console.log(this.name);
-            }
-        }
-
-        var m =  new meng();
-
-
-        function Animal(){
-            // this.species = "动物";
-        }
-        function Cat(name,color){
-            this.name = name;
-            this.color = color;
-        }
-
-        var F = function(){};
-
-        F.prototype = Animal.prototype;
-
-        Cat.prototype = new F();
-
-        Cat.prototype.constructor = Cat;
     </script>
 </body>
 </html>

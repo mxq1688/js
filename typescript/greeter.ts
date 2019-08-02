@@ -77,6 +77,9 @@ var list2: Array<any> = [2, 'faejfo', false];
     for(j in n) {
         // console.log(n[j])
     }
+    for(j of n) {
+        // console.log(j)
+    }
 //函数重载
     function att(name:string):string;
     function att(age:string):string;
@@ -111,9 +114,36 @@ var list2: Array<any> = [2, 'faejfo', false];
         }
     }
     // console.log(new Student('安庆', 'mm', 11).tell());
+//类 多态:父类定义一个方法不去实现，让继承它的子类去实现，每一个子类有不同的表现
+// 多态属于继承
+    class Animal{
+        name:string;
+        constructor(name:string){
+            this.name = name;
+        }
+        eat(){
+            console.log('吃的方法');//具体吃什么不知道，继承它的子类去实现，每个子类表现的不一样
+            // console.log(`${this.name}`);
+        }
+    }
+    class Dog extends Animal{
+
+        constructor(name:string){
+            super(name);
+        }
+        eat(){
+            console.log(`${this.name}`+ '吃粮食');
+        }
+
+    }
+    // new Dog('dog').eat();
+// 抽象类 不能实例化 子类中必须实现抽象方法
+    abstract class Aa{
+        abstract eat():void;
+    }
 
 
-// https://www.bilibili.com/video/av43860736/?p=25
+
 //接口 interfaecs
     function printLabel(labelObj:{label:string}) {
         console.log(labelObj.label);
@@ -160,7 +190,7 @@ var list2: Array<any> = [2, 'faejfo', false];
     marr = ['fe']
     // console.log(marr);
 
-    //接口-class类型
+    //接口-class类型  (和抽象类相似)
     interface ColockInterface {
         currentTime:Date;
         setTime(d:Date)
@@ -178,6 +208,7 @@ var list2: Array<any> = [2, 'faejfo', false];
     o.setTime(new Date());
     // console.log(o.currentTime);
 
+/*
     //接口继承
     interface A {
         color:string
@@ -190,7 +221,37 @@ var list2: Array<any> = [2, 'faejfo', false];
     }
     var s = <C>{};// 使用接口
     s.color = 'red';
-    // console.log(s.color);
+    console.log(s.color);
+    */
+    interface A{
+        eat():void;
+    }
+    interface B extends A{
+        work():void;
+    }
+    class Programer{
+        name:string;
+        constructor(name:string){
+            this.name = name;
+        }
+        coding(code:string){
+            console.log(this.name + code);
+        }
+    }
+    class Web extends Programer implements B{
+        constructor(name:string){
+            super(name)
+        }
+        eat():void{
+            console.log(this.name + '喜欢吃馒头');
+        }
+        work():void{
+            console.log(this.name + '喜欢写代码');
+        }
+    }
+    // new Web('小王八').coding('喜欢打游戏')
+
+
     //接口-混合类型
     interface Counter {
         interval:number;
@@ -201,7 +262,8 @@ var list2: Array<any> = [2, 'faejfo', false];
     // console.log(c);
     // console.log(<Counter>{});
 
-
+//泛型，可以支持不特定的数据类型，要求传入的参数和返回的参数类型一致
+//T 表示泛型，具体用什么类型是调用这个方法的时候决定的
 // 泛型 泛型函数
     function Hell<T>(arg:T):T {
         return arg;
@@ -218,14 +280,13 @@ var list2: Array<any> = [2, 'faejfo', false];
     function Hell2<T>(arg:T):T {
         return arg
     }
-
     var bb:<K>(arg:K)=>K = Hell2 //lambda表达式
     // 或者
     // var bb:{<K>(arg:K):K} = Hell2;
     // console.log(bb, Hell2);
     // console.log(bb('111'));
 
-    // 接口-泛型1
+    // 泛型-接口 1
     interface Intel {
         <T>(arg:T):T;
     }
@@ -235,7 +296,7 @@ var list2: Array<any> = [2, 'faejfo', false];
     var cc:Intel = Hell3;
     // console.log(cc, cc<string>('fae'));
 
-    // 接口-泛型2
+    // 泛型-接口 2
     interface Intel1<T> {
         (arg:T):T;
     }
@@ -258,16 +319,161 @@ var list2: Array<any> = [2, 'faejfo', false];
     };
 // console.log(h.Ten, h.add, h.add('111'));
 
+    //泛型接口 类
+    interface Inte<T>{
+        name:T;
+        eat(par:T):T
+    }
+    class m<T> implements Inte<T>{
+        name: T;
+        eat(par:T):T{
+            return par;
+        }
+    }
 
-//modules
+// console.log(new m().eat('123'));;
+
+
+/*把类当做参数类型的泛型类
+    // 把类当做参数类型的类
+    // class Article{
+    //     title: string| undefined;
+    //     desc: string| undefined;
+    // }
+    // //操作数据库的类
+    // class MysqlDb{
+    //     add(info: Article): boolean{
+    //         console.log(info);
+    //         return true;
+    //     }
+    // }
+    // var a = new Article();
+    // a.title = 'haha';
+    // a.desc = 'hello world';
+    // var mm = new MysqlDb();
+    // mm.add(a);
 
 
 
+    // class Article{
+    //     title: string| undefined;
+    //     desc: string| undefined;
+    // }
+    // //操作数据库的泛型类
+    // class MysqlDb<T>{
+    //     add(info: T): boolean{
+    //         console.log(info);
+    //         return true;
+    //     }
+    // }
+    // var a = new Article();
+    // a.title = 'haha';
+    // a.desc = 'hello world';
+    // var mm = new MysqlDb<Article>();
+    // mm.add(a);
 
 
+    // interface Db<T>{
+    //     add(info:T):boolean;
+    //     update(info:T,id:number):boolean;
+    //     delete(id:number):boolean;
+    //     get(id:number):any[];
+    // }
+    // // 定义一个操作mysql数据库的类，注意要实现泛型接口，这个类也应该是一个泛型类
+    // class MysqlDb<T> implements Db<T>{
+    //     add(info:T):boolean{
+    //         console.log(info);
+    //         return true;
+    //     };
+    //     update(info:T,id:number){
+    //         return true;
+    //     };
+    //     delete(id:number){
+    //         return true;
+    //     };
+    //     get(id:number){
+    //         return [];
+    //     };
+    // }
+    // class user {
+    //     username: string| undefined;
+    //     password: string| undefined;
+    // }
+    // var u = new user();
+    // u.username = 'mxq';
+    // u.password = '123456';
+    // var db = new MysqlDb<user>();
+    // db.add(u)
+*/
+
+/*//模块化 module
+    import {getData} from './modules/db'
+    // getData();
+
+    import {user, userModel} from './modules/user'
+    user.username = 'mxq';
+    user.password = '123456';
+    // userModel.add(user)
+    import {article, articleModel} from './modules/article'
+    article.title = 'title';
+    article.content = 'content';
+    // articleModel.add(article)
+*/
+
+/*//命名空间
+namespace A{
+    //命名空间
+    interface Animal {
+        name: string;
+        eat():void;
+    }
+    export class Chicken implements Animal{
+        name:string;
+        eat():void {
+            console.log(`${this.name} 吃粮食`);
+        }
+        constructor(name:string){
+            this.name = name;
+        }
+    }
+    export class Duck implements Animal{
+        name:string;
+        eat():void {
+            console.log(`${this.name} 吃粮食`);
+        }
+        constructor(name:string){
+            this.name = name
+        }
+    }
+}
+new A.Chicken('🐔').eat();
+new A.Duck('鸭').eat();
+
+import {B} from './modules/namespaceB'
+new B.Chicken('🐔').eat();
+new B.Duck('鸭').eat();
+*/
 
 
+//泛型接口当做泛型类型
+class Mem<T,K>{
+     prop:T;
+     getData(arg:K):K{
+        return arg;
+     };
+}
+interface RouteComponentProps<T> {
+    history: T;
+    hash: T;
+}
+interface RouteComponentFun<T> {
+    name:T;
+    age:T
+}
 
-
-
-
+var mem = new Mem<RouteComponentProps<number>, RouteComponentFun<string>>();
+mem.prop = {
+    history: 123,
+    hash: 456
+}
+console.log(mem.getData({name: 'afoew', age: 'fajeio'}));
