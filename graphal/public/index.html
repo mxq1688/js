@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Graphql</title>
+</head>
+<body>
+<script>
+    function getInfo() {
+        // const query = `
+        //     query GetInfo($username: String, $city: String){
+        //         getInfo(username: $username){
+        //             name
+        //             work
+        //             salary(city:$city)
+        //         }
+        //     }
+        // `
+        // const variables = {
+        //     username: "李四",
+        //     city: "北京"
+        // }
+
+    //     const query = `
+    //     mutation CreateAccount($input: Accountinput){
+    //         createAccount(input: $input){
+    //             name
+    //             age
+    //             sex
+    //             department
+    //         }
+    //     }
+    // `
+    //     const variables = {
+    //         input: {
+    //             name: "faewojo",
+    //             age: 28,
+    //             sex: "boy",
+    //             department: "fajeofjo",
+    //         }
+    //     }
+
+        fetch('/graphql', {
+            method: "POST",
+            headers: {
+                'Content-Type':'application/json',
+                'Accecpet': "application/json",
+            },
+            body: JSON.stringify({
+                query: query,
+                variables: variables
+            })})
+            .then(res=>res.json)
+            .then(json=>{
+                console.log(json);
+            })
+    }
+
+    getInfo();
+
+</script>
+</body>
+</html>
