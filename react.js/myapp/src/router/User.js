@@ -11,7 +11,7 @@ var Hello = (props)=>{
         </div>
     )
 }
-var Hello = withRouter(Hello);
+// var Hello = withRouter(Hello);
 
 class User extends Component{
     constructor(props){

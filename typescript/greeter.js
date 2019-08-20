@@ -381,3 +381,4 @@ mem.prop = {
     hash: 456
 };
 console.log(mem.getData({ name: 'afoew', age: 'fajeio' }));
+console.log(RouteComponentProps());

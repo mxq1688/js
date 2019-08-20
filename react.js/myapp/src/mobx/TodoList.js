@@ -1,12 +1,14 @@
 import React, { Component, Fragment } from 'react';
 import 'antd/dist/antd.css'
 import TodoListUi from '../tpl/TodoListUi'
-import {observable, action, computed, ObservableMap} from 'mobx'
+import {trace, toJS, spy, observable, action, reaction, computed, ObservableMap, observe} from 'mobx'
 import PropTypes from 'prop-types'
 import {observer, PropTypes as observablePropTypes} from 'mobx-react'
 
 class Todo{
     id = Math.random();
+    disposers = [];
+
     @observable title = '';
     @observable finished = false;
     constructor(title){
@@ -16,7 +18,30 @@ class Todo{
         this.finished = !this.finished;
     }
 }
+// 强力监听
+// spy(event=>{
+//     console.log(event);
+// });
 class Store{
+    disposers = [];
+    constructor(){
+        // observe返回的是一个disposer函数，disposer函数执行后就停止监视
+        observe(this.list, change => {
+            this.disposers.forEach(disposer=> disposer())//解除监控
+            this.disposers = [];
+            for(let todo of change.object){
+                var disposer = observe(todo, change1 => {
+                    // console.log(change1);
+                    this.save()
+                })
+                this.disposers.push(disposer);
+            }
+            this.save()
+        })
+    }
+    save(){
+        localStorage.setItem('list', JSON.stringify(toJS(this.list)))
+    }
     @observable list = [];
     @action.bound createItem(title){
         this.list.unshift(new Todo(title))
@@ -28,6 +53,13 @@ class Store{
     }
 }
 const store = new Store();
+reaction(()=> {
+    return [
+        this.list
+    ]
+}, change=>{
+    console.log(change);
+});
 
 @observer
 class TodoList2 extends Component{

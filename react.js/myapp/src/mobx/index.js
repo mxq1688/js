@@ -1,6 +1,6 @@
 import React, {Component, Fragment} from "react";
 import PropTypes from 'prop-types'
-import { observable, action, isArrayLike, computed, autorun, when, reaction, runInAction} from 'mobx'
+import { spy, observe, observable, action, isArrayLike, computed, autorun, when, reaction, runInAction} from 'mobx'
 
 import {observer, PropTypes as observablePropTypes} from 'mobx-react'
 
@@ -134,6 +134,7 @@ te.bol = true; // "it's true"
 */
 
 class Store {
+
     @observable cache = {queue: []}
     @action.bound refresh(){
         this.cache.queue.push(1)
