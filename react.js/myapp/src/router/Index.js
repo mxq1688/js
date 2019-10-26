@@ -22,6 +22,7 @@ var MenuLink = ({children, exact, to})=>{
 
     return (
         <Route children={({match})=>{
+            console.log('match',match);
             return (
                 <NavLink  exact={exact} activeStyle={match ? {
                     fontWeight: "bold",

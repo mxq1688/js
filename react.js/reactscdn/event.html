@@ -43,6 +43,29 @@
                 </button>
             );
         }
+
+        /*
+        // 传参的3中写法：
+        // 方法一:
+        <Button onClick={this.delFolder.bind(this,"abc")}></Button>
+        定义delFolder方法
+        delFolder = (name,e)=>{     delFolder方法也可以  delFolder(){}
+            alert(name)
+        }
+        // 方法二:
+        <Button onClick={this.delFolder("abc")}></Button>
+        定义delFolder方法
+        delFolder = (name)=>{
+        return (e)=>{
+            console.log(e);
+            console.log(key);
+        }
+        }
+        // 方法三:
+        <Button onClick={（e）=>this.delFolder("abc",e)}></Button>
+        delFolder = (name,e)=>{  delFolder方法也可以  delFolder(){}
+        }
+        */
     }
 
     ReactDOM.render(
