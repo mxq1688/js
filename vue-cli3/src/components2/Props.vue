@@ -5,6 +5,7 @@
         <button>propC: {{propC}}</button>
         <button>propD: {{propD}}</button>
         <button>propE: {{propE}}</button>
+        <button @click="childMethod">子组件调用父子间方法</button>
     </div>
 </template>
 
@@ -49,7 +50,13 @@
 
         },
         methods:{
-
+            handleParentClick(param) {
+                console.log('父组件调用子组件方法');
+            },
+            childMethod() {
+                console.log('请求父组件方法');
+                this.$emit('parentMethod');  //使用$emit()引入父组件中的方法
+            }
         }
 
     }

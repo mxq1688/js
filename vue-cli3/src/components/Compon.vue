@@ -3,10 +3,10 @@
         <div>{{msg}}</div>
         <inherit placeholder="Enter your username"></inherit>
 
-        <pro propA="123" propB="hello" propE="success"></pro>
+        <prop @parentMethod="macSelect" ref="child" propA="123" propB="hello" propE="success"></prop>
 
         v-model: {{inv}}
-        <vmodel v-model="inv"></vmodel><!--这里的 inv 的值将会传入这个名为 inv 的 prop-->
+        <vmodel v-model="inv"></vmodel><!--这里的 inv 的值将会传入这个名为 inv 的 prop   默认value-->
 
         <!--
             在一个组件的根元素上直接监听一个原生事件
@@ -24,22 +24,21 @@
             <!--第二种用法-->
         <sync v-bind:user_name.sync="user_name"></sync>
 
-
-
+        <button @click="clickParent">父组件调用子组件</button>
     </div>
 </template>
 
 <script>
     import Vue from 'vue'
     import Inherit from '../components2/Inherit'
-    import Pro from '../components2/Props'
+    import Prop from '../components2/Props'
     import Vmodel from '../components2/Vmodel'
     import Native from '../components2/Native'
     import Sync from '../components2/Sync'
 
     // Vue.component(Vmodel)
     export default {
-        components: { Vmodel, Inherit, Pro, Native, Sync},
+        components: { Vmodel, Inherit, Prop, Native, Sync},
         name: 'compon',
         data(){
             return {
@@ -58,8 +57,16 @@
         },
         methods:{
             onFocus(){
-                console.log(111);
+                // console.log(111);
             },
+            clickParent(){
+                // this.$refs.child.$emit('click-child', "high");
+                this.$refs.child.handleParentClick("ssss");
+            },
+            macSelect(){
+                //方法体
+                console.log('子组件调用父子间方法');
+            }
         }
 
     }
