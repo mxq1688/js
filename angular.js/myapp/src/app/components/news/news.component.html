@@ -1,0 +1,59 @@
+<app-header #header></app-header>
+
+
+<p>{{title}}-{{username}}-{{userinfo.name}}</p>
+
+<div [title]="binddata">
+    {{binddata}}
+</div>
+<div [innerHTML]="htmldata"></div>
+<div>
+    <ol>
+        <li *ngFor="let vo of arr;let key=index">{{key}}--{{vo}}</li>
+    </ol>
+
+    <ol>
+        <!--<li *ngFor="let vo of objectarr">{{vo.name}}</li>-->
+    </ol>
+</div>
+
+<div *ngIf="flag">
+    true
+</div>
+<div *ngIf="!flag">
+    false
+</div>
+
+
+<div [ngSwitch]="switch">
+    <span *ngSwitchCase="1">111</span>
+    <span *ngSwitchCase="2">222</span>
+    <span *ngSwitchCase="3">333</span>
+</div>
+
+<div [ngClass]="{'red':flag,'blue':!flag}">
+    class
+</div>
+<div [ngStyle]="{color: !flag?'red':'blue'}">
+    class
+</div>
+
+<div>
+    {{date | date: 'yyyy-MM-dd HH:mm:ss'}}
+</div>
+<div >
+    <button (click)="init()">事件</button>
+</div>
+<div>
+    <input type="text" (keydown)="keydown($event)">
+</div>
+<div>
+    <button (click)="target($event)">target</button>
+</div>
+<div>
+    双向绑定：<input type="text" [(ngModel)]="keywords">{{keywords}}
+</div>
+<hr>
+<div id="box">dom节点</div>
+<div #myBox >dom节点</div>
+<button (click)="getChildRun()">获取子组件方法</button>
