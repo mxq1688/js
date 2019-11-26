@@ -6,7 +6,7 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
   styleUrls: ['./news.component.less']
 })
 export class NewsComponent implements OnInit {
-  title='我是新闻组件';
+  title='新闻组件头部';
   username:string = '张三';
   userinfo:object = {
       name: '麻子',
@@ -25,8 +25,7 @@ export class NewsComponent implements OnInit {
   date:any = new Date();
   keywords:string = '这是默认值';
 
-  @ViewChild('myBox') myBox:ElementRef
-  @ViewChild('header') header:any
+  @ViewChild('myBox', {static: false}) myBox:ElementRef
   constructor() {
     this.username = '这是修改属性'
   }
@@ -38,11 +37,8 @@ export class NewsComponent implements OnInit {
       var box:any = document.getElementById('box');
       console.log(box);
       console.log(this.myBox.nativeElement);
-      console.log(this.header);
   }
-  getChildRun(){
-      this.header.run()
-  }
+
 
 
   init(){

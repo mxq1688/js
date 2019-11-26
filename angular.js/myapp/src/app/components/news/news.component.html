@@ -1,7 +1,7 @@
 <app-header #header></app-header>
 
 
-<p>{{title}}-{{username}}-{{userinfo.name}}</p>
+<p>{{username}}-{{userinfo.name}}</p>
 
 <div [title]="binddata">
     {{binddata}}
@@ -54,6 +54,3 @@
     双向绑定：<input type="text" [(ngModel)]="keywords">{{keywords}}
 </div>
 <hr>
-<div id="box">dom节点</div>
-<div #myBox >dom节点</div>
-<button (click)="getChildRun()">获取子组件方法</button>

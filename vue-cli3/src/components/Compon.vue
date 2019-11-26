@@ -3,7 +3,7 @@
         <div>{{msg}}</div>
         <inherit placeholder="Enter your username"></inherit>
 
-        <prop @parentMethod="macSelect" ref="child" propA="123" propB="hello" propE="success"></prop>
+        <prop :fun="macSelect" @parentMethod="macSelect($event)" ref="child" propA="123" propB="hello" propE="success"></prop>
 
         v-model: {{inv}}
         <vmodel v-model="inv"></vmodel><!--这里的 inv 的值将会传入这个名为 inv 的 prop   默认value-->
@@ -60,12 +60,14 @@
                 // console.log(111);
             },
             clickParent(){
-                // this.$refs.child.$emit('click-child', "high");
                 this.$refs.child.handleParentClick("ssss");
             },
-            macSelect(){
-                //方法体
-                console.log('子组件调用父子间方法');
+            macSelect(id){
+                // 方法一：
+                //     :fun="macSelect"
+                // 方法二：
+                //     @parentMethod="macSelect($event)"
+                console.log('我是父组件方法', id);
             }
         }
 

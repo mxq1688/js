@@ -1,1 +1,6 @@
+<app-header #header [title]="title" [fun]="run" [home]="this"></app-header>
 <p>我是主页组件</p>
+
+<div id="box">dom节点</div>
+<div #myBox >dom节点</div>
+<button (click)="getChildRun()">调用子组件方法</button>

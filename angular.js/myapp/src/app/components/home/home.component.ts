@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 
 @Component({
   selector: 'app-home',
@@ -7,9 +7,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomeComponent implements OnInit {
 
-  constructor() { }
+    constructor() { }
+    title:any = '主页组件头部'
+    ngOnInit() {
+    }
+    @ViewChild('header', {static: false}) header:any
 
-  ngOnInit() {
-  }
+    getChildRun(){
+        this.header.run()
+    }
+    run(id){
+      alert('这是父组件方法'+id)
+    }
 
 }

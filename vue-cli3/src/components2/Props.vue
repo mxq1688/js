@@ -38,7 +38,8 @@
                 validator: value=>{
                     return ['success', 'warning', 'danger'].indexOf(value) !== -1
                 }
-            }
+            },
+            fun:''
         },
         name: 'props',
         data(){
@@ -51,11 +52,13 @@
         },
         methods:{
             handleParentClick(param) {
-                console.log('父组件调用子组件方法');
+                console.log('我是子组件方法');
             },
             childMethod() {
-                console.log('请求父组件方法');
-                this.$emit('parentMethod');  //使用$emit()引入父组件中的方法
+                // 子组件调用父组件方法一：
+                //     this.fun(123);
+                // 子组件调用父组件方法二：
+                    this.$emit('parentMethod', 168);  //使用$emit()引入父组件中的方法
             }
         }
 

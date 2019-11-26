@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input} from '@angular/core';
 
 @Component({
   selector: 'app-header',
@@ -8,12 +8,29 @@ import { Component, OnInit } from '@angular/core';
 export class HeaderComponent implements OnInit {
 
   constructor() { }
-
+  @Input() title:any;
+  @Input() fun:any;
+  @Input() home:any;
   ngOnInit() {
   }
+    getParentData(){
+      // 获取父组件数据
+        alert(this.title)
+    }
+    getParentFun(){
+      // 调用父组件方法
+        if(typeof this.fun == 'function'){
+            this.fun(168);
+            //父组件整体传过来
+            // this.home.fun(123);
+        }else{
+          alert('父组件方法不存在')
+        }
+    }
 
   run(){
-      console.log('我是头部组件');
+      // 父组件调用子组件方法
+      console.log('我是子组件方法');
   }
 
 }

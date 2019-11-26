@@ -10,18 +10,17 @@ import { AppComponent } from './app.component';
 import { NewsComponent } from './components/news/news.component';
 import { HomeComponent } from './components/home/home.component';
 import { HeaderComponent } from './components/header/header.component';
-import { FormComponent } from './components/form/form.component';
 import { TodoListComponent } from './components/todo-list/todo-list.component';
 
 
 import { StorageService } from './services/storage.service';
-import { SearchComponent } from './components/search/search.component'
+import { TranstionComponent } from './components/transtion/transtion.component'
 
 
 // @NgModule装饰器，接收一个元数据对象，高速angular如何编译和启动y应用
 @NgModule({
   declarations: [ /*配置当前项目运行的组件*/
-    AppComponent, NewsComponent, HomeComponent, HeaderComponent, FormComponent, TodoListComponent, SearchComponent
+    AppComponent, NewsComponent, HomeComponent, HeaderComponent, TodoListComponent, TranstionComponent
   ],
   imports: [  /*配置当前模块运行依赖的其他模块*/
     BrowserModule,
