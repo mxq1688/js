@@ -1,6 +1,14 @@
-<app-header #header [title]="title" [fun]="run" [home]="this"></app-header>
+<app-header #header [title]="title" [fun]="run" [home]="this" (outer)="run($event)"></app-header>
+<hr/>
 <p>我是主页组件</p>
 
 <div id="box">dom节点</div>
 <div #myBox >dom节点</div>
 <button (click)="getChildRun()">调用子组件方法</button>
+<hr/>
+
+<button (click)="this.msg = 'hehe'">修改msg，测试ngOnChanges</button>
+<!--<app-lifecycle [title]="msg"></app-lifecycle>-->
+<hr/>
+<button (click)="routerGo()">js跳转路由</button>
+<button (click)="routerGoParams()">js跳转路由（带get传值）</button>

@@ -3,12 +3,21 @@
   <h1>
     Welcome to {{ title }}!
   </h1>
+  <div>
+    <a routerLink="home" routerLinkActive="active">home</a>
+    <!--<a [routerLink]="['/home']">home</a>-->
+    <a routerLink="news" routerLinkActive="active">news</a>
+    <!--<a [routerLink]="['/news']">news</a>-->
+    <a routerLink="transtion" routerLinkActive="active">transtion</a>
+    <!--<a [routerLink]="['/transtion']">transtion</a>-->
 
-  <app-home></app-home>
+    <!--<a [routerLink]="['/routerparams/111']" [queryParams]="{id:123}">routerparams</a>-->
+    <a [routerLink]="['routerparams', 111]" [queryParams]="{id:123}" routerLinkActive="active">routerparams</a>
 
-  <!--<app-news></app-news>-->
-
-  <!--<app-transtion></app-transtion>-->
+    <a [routerLink]="['routerchild']" routerLinkActive="active">routerchild</a>
+      <!--<a [routerLink]="['/routerchild/child1']">child1</a>-->
+      <!--<a [routerLink]="['/routerchild/child2']">child2</a>-->
+  </div>
 </div>
 
 <router-outlet></router-outlet>

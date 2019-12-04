@@ -36,7 +36,7 @@ export class NewsComponent implements OnInit {
       // 试图加载完成后触发的方法，dom加载完成
       var box:any = document.getElementById('box');
       console.log(box);
-      console.log(this.myBox.nativeElement);
+      console.log(this.myBox);
   }
 
 
