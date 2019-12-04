@@ -31,7 +31,12 @@ const routes: Routes = [
             },
             {
                 path: 'child2',component: Child2Component
-            }
+            },
+            {
+                path:'**',
+                // component: Child1Component,
+                redirectTo: 'child1'
+            },
         ]
     },
     {

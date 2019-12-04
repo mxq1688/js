@@ -1,0 +1,21 @@
+<!--The content below is only a placeholder and can be replaced.-->
+<div style="text-align:center">
+  <h1>
+    Welcome to {{ title }}!
+  </h1>
+
+  <div class="header">
+    <a [routerLink]="['/user']" routerLinkActive="active">user模块</a>
+      <a [routerLink]="['/user/info']" routerLinkActive="active">user模块info组件</a>
+
+    <a [routerLink]="['/product']" routerLinkActive="active">product模块</a>
+    <a [routerLink]="['/article']" routerLinkActive="active">article模块</a>
+
+  </div>
+</div>
+
+<!--使用自定义模块内的组件-->
+  <!--<app-user></app-user>-->
+  <!--<app-info></app-info>-->
+
+<router-outlet></router-outlet>
