@@ -15,7 +15,7 @@
         -->
         <!--<native v-on:click.native="onFocus"></native>-->
         v-model: {{inv1}}
-        <native v-on:focus="onFocus" v-model="inv1"></native>
+        <native @click="mm" v-on:focus="onFocus" v-model="inv1"></native>
 
         <!--.sync 实现数据双向绑定-->
             <!--第一种用法-->
@@ -29,7 +29,6 @@
 </template>
 
 <script>
-    import Vue from 'vue'
     import Inherit from '../components2/Inherit'
     import Prop from '../components2/Props'
     import Vmodel from '../components2/Vmodel'
@@ -56,6 +55,9 @@
 
         },
         methods:{
+            mm(){
+                alert(111);
+            },
             onFocus(){
                 // console.log(111);
             },
@@ -67,7 +69,7 @@
                 //     :fun="macSelect"
                 // 方法二：
                 //     @parentMethod="macSelect($event)"
-                console.log('我是父组件方法', id);
+                alert('我是父组件方法', id);
             }
         }
 

@@ -39,7 +39,9 @@
                     return ['success', 'warning', 'danger'].indexOf(value) !== -1
                 }
             },
-            fun:''
+            fun: function () {
+
+            }
         },
         name: 'props',
         data(){
@@ -52,7 +54,8 @@
         },
         methods:{
             handleParentClick(param) {
-                console.log('我是子组件方法');
+                alert(param);
+                // console.log('我是子组件方法');
             },
             childMethod() {
                 // 子组件调用父组件方法一：
