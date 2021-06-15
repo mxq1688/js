@@ -19,7 +19,7 @@
             // 复用组件时，想对路由参数的变化作出响应的话
             '$route'(to, from) {
                 // 对路由变化作出响应...
-                console.log(to);
+                window.console.log(to, from);
             }
         }
     }

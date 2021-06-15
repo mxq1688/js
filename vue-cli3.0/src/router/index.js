@@ -1,17 +1,21 @@
 import Vue from 'vue';
 import Router from 'vue-router'
-import HelloWorld from '../components/HelloWorld'
-import Hello1 from '../components/Hello1'
-import Hello2 from '../components/Hello2'
-import Hi from '@/components/Hi'
+import HelloWorld from '@/components/HelloWorld'
+import Hello1 from '@/components/Hello1'
+import Hello2 from '@/components/Hello2'
+// import Hi from '@/components/Hi'
 import Hi1 from '@/components/Hi1'
 import Hi2 from '@/components/Hi2'
-import Error from '@/components/Error'
+// import Error from '@/components/Error'
 import Count from '@/components/Count'
 
 import Compon from '@/components/Compon'
 import Slot from '@/components3/Slot'
 import Dynamicc from '@/components4/Dynamicc'
+import Fcom from '@/eventBus/Fcom'
+import customInstruction from '@/customInstruction/Index'
+import plugs from '@/plugs/Index'
+import render from '@/render/Index'
 
 
 Vue.use(Router);
@@ -24,6 +28,7 @@ const routers = {
         // } else {
         //     return { x: 0, y: 0 }
         // }
+        window.console.log(from, savedPosition)
         if (to.hash) {
             return {
                 selector: to.hash
@@ -102,6 +107,22 @@ const routers = {
             path: '/dynamicc',
             component: Dynamicc,
         },
+        {
+            path: '/eventbus',
+            component: Fcom,
+        },
+        {
+            path: '/customInstruction',
+            component: customInstruction
+        },
+        {
+            path: '/plugs',
+            component: plugs,
+        },
+        {
+            path: '/render',
+            component: render,
+        }
 
     ]
 };
@@ -110,6 +131,14 @@ const router  =new Router(routers);
 router.beforeEach((to, from, next) => {
     // console.log(to);
     next();
+
+    // next(): 进行管道中的下一个钩子
+    // next(false): 中断当前的导航
+    // next('/') 或者 next({ path: '/' }): 跳转到一个不同的地址
+    //next(vm => {
+        // 通过 `vm` 访问组件实例
+    //})
+
 })
 
 

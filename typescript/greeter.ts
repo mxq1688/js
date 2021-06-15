@@ -418,7 +418,7 @@ var list2: Array<any> = [2, 'faejfo', false];
     article.title = 'title';
     article.content = 'content';
     // articleModel.add(article)
-*/
+// */
 
 /*//命名空间
 namespace A{

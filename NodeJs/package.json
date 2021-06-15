@@ -9,8 +9,13 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "chalk": "^4.1.0",
     "ejs": "^3.0.1",
     "koa": "^2.11.0",
-    "moment": "^2.24.0"
+    "moment": "^2.24.0",
+    "progress": "^2.0.3"
+  },
+  "devDependencies": {
+    "single-line-log": "^1.1.2"
   }
 }

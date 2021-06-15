@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script type="text/javascript">
+		let bodyElement = document.body
+	    let urls = [
+	      'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=2580986389,1527418707&fm=27&gp=0.jpg',
+	      'https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=1995874357,4132437942&fm=27&gp=0.jpg',
+	      'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=2640393967,721831803&fm=27&gp=0.jpg',
+	      'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1548525155,1032715394&fm=27&gp=0.jpg',
+	      'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=2434600655,2612296260&fm=27&gp=0.jpg',
+	      'https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=2160840192,133594931&fm=27&gp=0.jpg'
+	    ]
+	    let max = 4
+	    let callback = () => {
+	      console.log('所有请求完成了')
+	    }
+ 
+	    class Concurrent {
+	    	constructor(urls, max, callback) {
+	    		this.urls = urls
+	    		this.max = max
+				this.callback = callback
+				this.groupUrlObj = {}
+				this.group()//分组
+	    	  	this.currentIndex = 0
+	    	}
+	    	group() {
+	    		this.urls.forEach((vo, index)=>{
+					const groupIndex = parseInt(index/this.max)
+					if(this.groupUrlObj[groupIndex]){
+						return this.groupUrlObj[groupIndex].push(vo)
+					}
+					this.groupUrlObj[groupIndex] = [vo]
+				})
+			}
+			request = (url)=>{
+				return new Promise((resolve, reject)=>{
+					setTimeout(()=>{
+						fetch(url)
+							.then(res=>res.blob())
+							.then(res=>{
+								let src = URL.createObjectURL(res)
+								// bodyElement.innerHTML += `<img src=${src} />`
+								resolve(src)
+							})
+					}, Math.random()* 3000)
+				})
+			}
+			// request = (url)=>{
+			// 	return fetch(url)
+			// 		.then(res=>res.blob())
+			// 		.then(res=>{
+			// 			let src = URL.createObjectURL(res)
+			// 			bodyElement.innerHTML += `<img src=${src} />`
+			// 		})
+			// }
+ 
+			getPromiseFetch = ()=>{
+				return this.groupUrlObj[this.currentIndex] && this.groupUrlObj[this.currentIndex].map(url=>this.request(url))
+			}
+			send = async ()=>{
+				const promiseArr = this.getPromiseFetch()
+				const imgUrlArr = await Promise.all(promiseArr)
+				console.log(imgUrlArr)
+				imgUrlArr && imgUrlArr.forEach(url=>{
+					bodyElement.innerHTML += `<img src=${url} />`
+				})
+				this.currentIndex++
+				if(this.groupUrlObj[this.currentIndex]){
+					this.send()
+				}
+			}
+	    }
+ 
+	    function sendRequest(urls, max, callback) {
+			let concurrent = new Concurrent(urls, max, callback)
+			concurrent.send()
+	    }
+ 
+		sendRequest(urls, max, callback)
+		
+		
+	</script>
+</body>
+</html>

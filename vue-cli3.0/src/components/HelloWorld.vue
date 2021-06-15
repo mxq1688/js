@@ -16,7 +16,7 @@ export default {
       // next({path: '/'});
       //路由钩子里不能使用this, 用下面方法
       next((vm)=>{
-          console.log(vm);
+          window.console.log(vm);
       });
 
   },

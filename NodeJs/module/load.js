@@ -1,6 +1,7 @@
 // 引入自定义模块
     var modul = require('./modul')
-    // console.log(modul);
+    var {str} = require('./modul')
+    console.log(modul, str);return;
 
 // 不加前缀默认去node_modules目录中查找
     var foo = require('foo');

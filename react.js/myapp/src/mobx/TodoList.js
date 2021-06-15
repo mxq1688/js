@@ -52,14 +52,41 @@ class Store{
         }).length;
     }
 }
-const store = new Store();
+
 reaction(()=> {
     return [
         this.list
     ]
 }, change=>{
-    console.log(change);
+    console.log('change', change);
 });
+
+
+
+class TodoItem extends Component{
+    static propTypes = {
+        item: PropTypes.shape({
+            id: PropTypes.number.isRequired,
+            title: PropTypes.string.isRequired,
+            finished: PropTypes.bool.isRequired,
+        })
+    };
+    handClick(){
+        this.props.item.toggle();
+    }
+    render(){
+        const item = this.props.item;
+        return (
+            <Fragment key={item.id}>
+                <div style={{marginLeft: '10px'}}>
+                    <input type="checkbox" onClick={this.handClick.bind(this)} checked={item.finished}/>
+                    <span style={{marginLeft: '10px'}}>{item.title}</span>
+                </div>
+            </Fragment>
+        )
+    }
+}
+
 
 @observer
 class TodoList2 extends Component{
@@ -98,7 +125,7 @@ class TodoList2 extends Component{
                             return(
                                 <Fragment>
                                     <TodoItem key={index} item={item}/>
-                                    <span>X</span>
+                                    {/* <span>X</span> */}
                                 </Fragment>
                             )
 
@@ -111,30 +138,8 @@ class TodoList2 extends Component{
     }
 }
 
-class TodoItem extends Component{
-    static propTypes = {
-        item: PropTypes.shape({
-            id: PropTypes.number.isRequired,
-            title: PropTypes.string.isRequired,
-            finished: PropTypes.bool.isRequired,
-        })
-    };
-    handClick(){
-        this.props.item.toggle();
-    }
-    render(){
-        const item = this.props.item;
-        return (
-            <Fragment key={item.id}>
-                <div style={{marginLeft: '10px'}}>
-                    <input type="checkbox" onClick={this.handClick.bind(this)} checked={item.finished}/>
-                    <span style={{marginLeft: '10px'}}>{item.title}</span>
-                </div>
-            </Fragment>
-        )
-    }
-}
 
+const store = new Store();
 
 class TodoList extends Component{
 

@@ -22,6 +22,10 @@
       <button><router-link to="/fawoej">404 </router-link></button>
 
       <button><router-link to="/count">count计数器 </router-link></button>
+      <button><router-link to="/eventbus">EventBus </router-link></button>
+      <button><router-link to="/customInstruction">自定义指令 </router-link></button>
+      <button><router-link to="/plugs">插件 </router-link></button>
+      <button><router-link to="/render">render&jsx </router-link></button>
     </div>
     <transition name="fade" mode="out-in">
       <router-view />

@@ -3,7 +3,7 @@ import App from './App.vue'
 import router from '@/router/index'
 Vue.config.productionTip = false;//设置为 false 以阻止 vue 在启动时生成生产提示。默认true
 
-// import store from '@/vuex/store'
+import store from '@/vuex/index'
 // Vue.prototype.store = store; //访问使用this.store
 // 方法一：
 // new Vue({
@@ -15,7 +15,7 @@ Vue.config.productionTip = false;//设置为 false 以阻止 vue 在启动时生
 // })
 new Vue({
     router,
-    // store,//全局引入
+    store,//全局引入
   render: h => h(App),//Vue 选项中的 render 函数若存在，则 Vue 构造函数不会从 template 选项或通过 el 选项指定的挂载元素中提取出的 HTML 模板编译渲染函数。
 }).$mount('#app')
 

@@ -2,7 +2,7 @@ var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
             ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
         return extendStatics(d, b);
     };
     return function (d, b) {
@@ -26,7 +26,7 @@ var Color;
 })(Color || (Color = {}));
 var co = Color.blue;
 var co2 = Color[0];
-// console.log(co, co2);
+console.log(co, co2);
 var an = 10;
 an = 'mm';
 an = [1, 2, 3];
@@ -381,4 +381,3 @@ mem.prop = {
     hash: 456
 };
 console.log(mem.getData({ name: 'afoew', age: 'fajeio' }));
-console.log(RouteComponentProps());
