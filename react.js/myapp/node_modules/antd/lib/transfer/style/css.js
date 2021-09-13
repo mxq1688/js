@@ -11,3 +11,9 @@ require("../../checkbox/style/css");
 require("../../button/style/css");
 
 require("../../input/style/css");
+
+require("../../menu/style/css");
+
+require("../../dropdown/style/css");
+
+require("../../pagination/style/css");
