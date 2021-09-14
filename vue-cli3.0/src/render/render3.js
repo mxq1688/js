@@ -28,3 +28,18 @@ export default {
         )
     },
 }
+/*
+    对于 .passive、.capture 和 .once 这些事件修饰符，Vue 提供了相应的前缀可以用于 on
+        修饰符	        前缀
+        .passive	    &
+        .capture	    !
+        .once	        ~
+        .capture.once 或
+        .once.capture	~!
+    eg:
+        on: {
+            '!click': this.doThisInCapturingMode,
+            '~keyup': this.doThisOnce,
+            '~!mouseover': this.doThisOnceInCapturingMode
+        }
+*/
