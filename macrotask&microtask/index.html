@@ -9,37 +9,40 @@
     
     <script>
 
-        //主线程直接执行
+        //主线程同步代码直接执行
         console.log('1');
         //丢到宏事件队列中
         setTimeout(function() {
-            console.log('3');
+            console.log('5');
             new Promise(function(resolve) {
-                console.log('4');
+                // 当前宏任务中的同步代码，直接执行
+                console.log('6');
                 resolve();
             }).then(function() {
-                console.log('5')
+                //微事件 丢到当前宏任务后面
+                console.log('7')
             })
         })
-        //主线程直接执行
+        //主线程同步代码直接执行
         new Promise(function(resolve) {
             console.log('2');
             resolve();
         }).then(function() {
-            //微事件2
+            //微事件 丢到script整体代码宏任务中
             console.log('4')
         })
         //丢到宏事件队列中
         setTimeout(function() {
-            console.log('6');
-          
+            console.log('8');
             new Promise(function(resolve) {
-                console.log('7');
+                console.log('9');
                 resolve();
             }).then(function() {
-                console.log('8')
+                console.log('10')
             })
         })
+        //主线程同步代码直接执行
+        console.log('3');
     </script>
 </body>
 </html>

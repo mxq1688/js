@@ -1,9 +1,19 @@
 import Vue from 'vue'
 import App from './App.vue'
 import router from '@/router/index'
+import {h} from 'snabbdom/'
 Vue.config.productionTip = false;//设置为 false 以阻止 vue 在启动时生成生产提示。默认true
 
 import store from '@/vuex/index'
+
+
+window.console.log(h('div', h('p', h('span', [
+  h('span', 111),
+  h('span', 222),
+  h('span', 333)
+]))), 111);
+
+
 // Vue.prototype.store = store; //访问使用this.store
 // 方法一：
 // new Vue({
