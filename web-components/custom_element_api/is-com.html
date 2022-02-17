@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>通过is挂载</title>
+  </head>
+  <body>
+
+    <!-- 通过is挂载 -->
+    <div is="test-is-com">
+      <div>AAA</div>
+    </div>
+
+    <script>
+      /* 通过is挂载组件 */
+      customElements.define(
+        "test-is-com",
+        class extends HTMLDivElement {
+          constructor() {
+            super();
+            console.log("挂载", this.innerHTML);
+            // 通过挂载，this，就是当前被挂载的元素实例，通过这种方式，可以实现一些操作
+          }
+        },
+        { extends: "div" }
+      );
+    </script>
+  </body>
+</html>

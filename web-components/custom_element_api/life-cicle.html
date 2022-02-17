@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>生命周期测试</title>
+  </head>
+  <body>
+    <!-- 生命周期测试 -->
+    <div id="moveDiv">
+      <button id="add">添加</button>
+      <button id="update">更新</button>
+      <button id="move">移动</button>
+      <button id="remove">删除</button>
+    </div>
+
+    <script>
+      /* 通过js创建web-组件，测试生命周期函数 */
+      class LifeCycle extends HTMLElement {
+        static get observedAttributes() {
+          //必须添加组件上的属性，才能触发attributeChangedCallback
+          return ["c", "l"];
+        }
+        constructor() {
+          super();
+          const shadowRoot = this.attachShadow({ mode: "open" });
+          const div = `<div>
+            <heaher>我的头</header>
+            <div>内容</div>
+            <footer>尾部</footer>
+          </div>`;
+          shadowRoot.innerHTML = div;
+        }
+
+        connectedCallback() {
+          //添加时，执行
+          console.log("添加");
+        }
+        disconnectedCallback() {
+          //删除时，执行
+          console.log("disconnectedCallback");
+        }
+        adoptedCallback() {
+          console.log("adoptedCallback");
+        }
+        attributeChangedCallback() {
+          //属性被改变时
+          console.log("attributeChangedCallback");
+        }
+      }
+
+      customElements.define("test-life-cycle", LifeCycle);
+
+      const add = document.querySelector("#add");
+      const update = document.querySelector("#update");
+      const move = document.querySelector("#move");
+      const remove = document.querySelector("#remove");
+      const moveDiv = document.querySelector("#moveDiv");
+      let testLifeDom = null;
+
+      function random(min, max) {
+        return Math.floor(Math.random() * (max - min + 1) + min);
+      }
+
+      add.addEventListener("click", () => {
+        testLifeDom = document.createElement("test-life-cycle"); //创建上面定义的自定义组件
+        // console.log('testLifeDom', testLifeDom)
+        document.body.appendChild(testLifeDom);
+        testLifeDom.setAttribute("l", "100");
+        testLifeDom.setAttribute("c", "red");
+        console.log("add", testLifeDom);
+      });
+
+      update.addEventListener("click", () => {
+        const div = "<div>更新后</div>";
+        // console.log('update', testLifeDom.shadowRoot.innerHTML)
+        testLifeDom.shadowRoot.innerHTML = div;
+        testLifeDom.setAttribute("l", random(50, 200));
+        testLifeDom.setAttribute(
+          "c",
+          `rgb(${random(0, 255)}, ${random(0, 255)}, ${random(0, 255)})`
+        );
+      });
+
+      move.addEventListener("click", () => {
+        console.log("moveDiv", moveDiv);
+        moveDiv.appendChild(testLifeDom);
+      });
+
+      remove.addEventListener("click", () => {
+        console.log("remove");
+        document.body.removeChild(testLifeDom);
+      });
+
+    </script>
+  </body>
+</html>
