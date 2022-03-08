@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<title>lit-html是 HTML 模板引擎。</title>
+<head>
+  <script type="module">
+    import { html, render } from 'https://unpkg.com/lit-html?module';
+
+    const Button = (text, props = {
+      type: 'default',
+      borderRadius: '2px'
+    }, onClick) => {
+      // 点击事件
+      const clickHandler = {
+        handleEvent(e) { 
+          alert('inner clicked!');
+          if (onClick) {
+            onClick();
+          }
+        },
+        capture: true,
+      };
+
+      return html`
+        <div class="btn btn-${props.type}" @click=${clickHandler}>
+          ${text}
+        </div>
+      `
+    };
+    render(Button('Defualt'), document.getElementById('button1'));
+    render(Button('Primary', { type: 'primary' }, () => alert('outer clicked!')), document.getElementById('button2'));
+    render(Button('Error', { type: 'error' }), document.getElementById('button3'));
+  </script>
+</head>
+<body>
+  <div id="button1"></div>
+  <div id="button2"></div>
+  <div id="button3"></div>
+</body>
+</html>

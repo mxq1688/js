@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+  <title> </title>
+  <head>
+    <script type="module">
+      /*
+            lit-html 提供核心 render 能力
+            @vue/reactiity 提供 Vue 响应式系统的能力
+
+            也就这几个流程：
+                创建 Web Components 的 Custom Elements
+                创建一个 Shadow DOM 的 ShadowRoot 节点
+                将传入的 factory 和内部创建的 ShadowRoot 节点交给 lit-html 的 render 渲染出来
+        */
+      import { render } from "https://unpkg.com/lit-html?module";
+      import {
+        shallowReactive,
+        effect,
+      } from "https://unpkg.com/@vue/reactivity/dist/reactivity.esm-browser.js";
+
+      export function defineComponent(name, propDefs, factory) {
+        // propDefs
+        // 如果是函数，则直接当作工厂函数
+        // 如果是数组，则监听他们，触发 attributeChangedCallback 回调函数
+        if (typeof propDefs === "function") {
+          factory = propDefs;
+          propDefs = [];
+        }
+        // 调用 Web Components 创建 Custom Elements 的函数
+        customElements.define(
+          name,
+          class extends HTMLElement {
+            // 监听 propDefs
+            static get observedAttributes() {
+              return propDefs;
+            }
+            constructor() {
+              super();
+              // 创建一个浅响应
+              const props = (this._props = shallowReactive({}));
+              currentInstance = this;
+              const template = factory.call(this, props);
+              currentInstance = null;
+              // beforeMount 生命周期
+              this._bm && this._bm.forEach((cb) => cb());
+              // 定义一个 Shadow root，并且内部实现无法被 JavaScript 访问及修改，类似 <video> 标签
+              const root = this.attachShadow({ mode: "closed" });
+              let isMounted = false;
+              // watcher
+              effect(() => {
+                if (!isMounted) {
+                  // beforeUpdate 生命周期
+                  this._bu && this._bu.forEach((cb) => cb());
+                }
+                // 调用 lit-html 的核心渲染能力，参考上文 lit-html 的 Demo
+                render(template(), root);
+                if (isMounted) {
+                  // update 生命周期
+                  this._u && this._u.forEach((cb) => cb());
+                } else {
+                  // 渲染完成，将 isMounted 置为 true
+                  isMounted = true;
+                }
+              });
+            }
+            connectedCallback() {
+              // mounted 生命周期
+              this._m && this._m.forEach((cb) => cb());
+            }
+            disconnectedCallback() {
+              // unMounted 生命周期
+              this._um && this._um.forEach((cb) => cb());
+            }
+            attributeChangedCallback(name, oldValue, newValue) {
+              // 每次修改 propDefs 里的参数都会触发
+              this._props[name] = newValue;
+            }
+          }
+        );
+      }
+
+      // 挂载生命周期
+      function createLifecycleMethod(name) {
+        return (cb) => {
+          if (currentInstance) {
+            (currentInstance[name] || (currentInstance[name] = [])).push(cb);
+          }
+        };
+      }
+
+      // 导出声明周期
+      export const onBeforeMount = createLifecycleMethod("_bm");
+      export const onMounted = createLifecycleMethod("_m");
+      export const onBeforeUpdate = createLifecycleMethod("_bu");
+      export const onUpdated = createLifecycleMethod("_u");
+      export const onUnmounted = createLifecycleMethod("_um");
+
+      // 导出 lit-hteml 和 @vue/reactivity 的所有 API
+      export * from "https://unpkg.com/lit-html?module";
+      export * from "https://unpkg.com/@vue/reactivity/dist/reactivity.esm-browser.js";
+    </script>
+  </head>
+  <body>
+    <my-component />
+  </body>
+</html>

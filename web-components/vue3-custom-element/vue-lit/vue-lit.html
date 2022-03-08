@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <script type="module">
+      /*
+        my-component 是传入的 name，第二个是一个函数，也就是传入的 factory，其实就是 lit-html 的第一个参数，
+        只不过引入了 @vue/reactivity 的 reactive 能力，把 state 变成了响应式。
+      */
+      import {
+        defineComponent,
+        reactive,
+        html,
+        onMounted
+      } from 'https://unpkg.com/@vue/lit@0.0.2';
+  
+      defineComponent('my-component', () => {
+        const state = reactive({
+          text: 'Hello World',
+        });
+        
+        function onClick() {
+          alert('cliked!');
+        }
+  
+        onMounted(() => {
+          console.log('mounted');
+        });
+  
+        return () => html`
+          <p>
+            <button @click=${onClick}>Click me</button>
+            ${state.text}
+          </p>
+        `;
+      })
+    </script>
+  </head>
+  <body>
+    <my-component />
+  </body>
+</html>
