@@ -26,7 +26,7 @@ module.exports = {
         exclude: /node_modules/
       },
       {
-        test: /\.(png|jpg|gif|svg)$/,
+        test: /\.(png|jpg|gif)$/,
         loader: 'file-loader',
         options: {
           name: '[name].[ext]?[hash]'
@@ -38,7 +38,13 @@ module.exports = {
           'vue-style-loader',
           'css-loader'
         ]
-      }
+      },
+      {
+        test: /\.svg$/,
+        use: [
+          'vue-svg-loader',
+        ],
+      },
     ]
   },
   resolve: {
@@ -77,7 +83,7 @@ if (process.env.NODE_ENV === 'production') {
         inject: {
           foo: 'bar'
         },
-        headless: true,
+        headless: false,
         renderAfterDocumentEvent: 'render-event'
       })
     })

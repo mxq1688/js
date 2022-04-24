@@ -6,13 +6,19 @@
       <router-link to="/about">About</router-link>
       <router-link to="/contact">Contact</router-link>
     </p>
+    <div>
+      <Add />
+    </div>
     <router-view></router-view>
   </div>
 </template>
 
 <script>
+import Add from './icons/test.svg'
+console.log(123, Add);
 export default {
   name: 'app',
+  components:{Add},
   data () {
     return {
       msg: 'Welcome to your prerender-spa-plugin Vuejs 2.0 demo app!'

@@ -12,9 +12,11 @@
     "snabbdom": "^3.1.0",
     "vue": "^2.6.12",
     "vue-router": "^3.4.9",
+    "vue-svg-loader": "^0.16.0",
     "vuex": "^3.6.0"
   },
   "devDependencies": {
+    "@svgr/webpack": "6.0.0",
     "@vue/cli-plugin-babel": "^4.5.9",
     "@vue/cli-plugin-eslint": "^4.5.9",
     "@vue/cli-service": "^4.5.9",
