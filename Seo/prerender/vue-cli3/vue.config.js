@@ -1,54 +1,22 @@
-/*
-  1、PrerenderSPAPlugin:postProcessHtml 优先级最高
-  2、vue-meta-info插件  
-  3、document.title = to.meta.title 优先级最低
-*/
 const path = require('path')
-function resolve(dir) {
-  return path.join(__dirname, dir)
-}
-const isProduction = process.env.NODE_ENV === 'production'
 
 //seo
 const PrerenderSPAPlugin = require('prerender-spa-plugin')
 // const JSDOMRenderer = PrerenderSPAPlugin.PuppeteerRenderer
-const JSDOMRenderer = require('@prerenderer/renderer-jsdom');
-// const JSDOMRenderer = require("@prerenderer/renderer-puppeteer")
-
-const routes = [ '/', '/dynamicc', '/compon', '/count']
-
-// const sitemap = require('sitemap');
-const siteMapUrls = [];
+// const JSDOMRenderer = require('@prerenderer/renderer-jsdom');
+const JSDOMRenderer = require("@prerenderer/renderer-puppeteer")
 
 const SitemapPlugin = require('sitemap-webpack-plugin').default;
+const sitemap = require('sitemap');
+const fs = require('fs');
+const routes = [ '/', '/login', '/help', '/member']
+const siteMapUrls = [];
 
+function resolve(dir) {
+  return path.join(__dirname, dir)
+}
+const isProduction = process.env.NODE_ENV === 'production'
 module.exports = {
-  
-  // chainWebpack(config) {
-  //   const svgRule = config.module.rule('svg')
-  //   // 清除已有的所有 loader。
-  //   // 如果你不这样做，接下来的 loader 会附加在该规则现有的 loader 之后。
-  //   svgRule.uses.clear()
-  //   // 添加要替换的 loader
-  //   svgRule
-  //     .use('vue-svg-loader')
-  //       .loader('vue-svg-loader')
-  // },
-
-  // chainWebpack(config) {
-  //   config.module
-  //     .rule('image')
-  //     .exclude.add(resolve('src/icons')) // 不包含 src/asset/icon 的采用默认的 image 规则 
-  //     .end()
-  //   config.module
-  //     .rule('svg')
-  //     .test(/\.svg$/)
-  //     .include.add(resolve('src/icons')) // 在 src/asset/icon 下的采用新建的规则
-  //     .end()
-  //     .use('@svgr/webpack')
-  //     .loader(resolve('@svgr/webpack'))
-  // },
-
   configureWebpack: (config) => {
     const plugins = [
     ]
@@ -62,12 +30,11 @@ module.exports = {
           // 对应自己的路由文件，比如a有参数，就需要写成 /a/param1。
           routes: routes,    
           // postProcessHtml: function (context) {
-          //   // 下面代码是修改spa页面title
           //   var titles = {
           //     '/': '元创岛3D虚拟直播助手',
-          //     '/dynamicc': '元创岛使用教程',
-          //     '/compon': '元创岛登录中心',
-          //     '/count': '元创岛会员权益',
+          //     '/help': '元创岛使用教程',
+          //     '/login': '元创岛登录中心',
+          //     '/member': '元创岛会员权益',
           //   }
           //   return context.html.replace(
           //     /<title>[^<]*<\/title>/i,
@@ -117,18 +84,16 @@ module.exports = {
             inject: {
               foo: 'bar'
             },
-            headless: true,
+            headless: false,
             // 在 main.js 中 document.dispatchEvent(new Event('render-event'))，两者的事件名称要对应上。
             renderAfterDocumentEvent: 'render-event',
+            renderAfterTime: 20,
             renderAfterTime: 10000, //超时时间
             timeout: 0,
             maxConcurrentRoutes: 20, //打包页面的最大数
             navigationParams: {
               timeout: 0
-            },
-            navigationOptions: {
-              timeout: 0,
-            },
+            }
           })
         }),
       )

@@ -87,6 +87,9 @@ const routers = {
         {
             path: '/count',
             component: Count,
+            meta:{
+                title: 'this is couunt no metaInfo'
+            }
         },
         {
             path: '*',
@@ -106,6 +109,9 @@ const routers = {
         {
             path: '/dynamicc',
             component: Dynamicc,
+            meta:{
+                title: 'this is dynamicc'
+            }
         },
         {
             path: '/eventbus',
@@ -129,6 +135,9 @@ const routers = {
 const router  =new Router(routers);
 // 全局前置守卫
 router.beforeEach((to, from, next) => {
+    if (to.meta.title) {
+        document.title = to.meta.title
+      }
     // console.log(to);
     next();
 
