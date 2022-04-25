@@ -1,7 +1,11 @@
-/*
+/* 设置spa title
   1、PrerenderSPAPlugin:postProcessHtml 优先级最高
   2、vue-meta-info插件  
   3、document.title = to.meta.title 优先级最低
+*/
+/* 生成sitemap
+  1、sitemap-webpack-plugin
+  2、1、PrerenderSPAPlugin:postProcess & sitemap
 */
 const path = require('path')
 function resolve(dir) {
