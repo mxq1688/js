@@ -1,7 +1,7 @@
 <template>
     <div>
         <div>{{msg}}</div>
-        <inherit placeholder="Enter your username"></inherit>
+        <inherit placeholder="Enter your username" type="1"></inherit>
 
         <prop :fun="macSelect" @parentMethod="macSelect($event)" ref="child" propA="123" propB="hello" propE="success"></prop>
 
@@ -11,11 +11,11 @@
         <!--
             在一个组件的根元素上直接监听一个原生事件
                 方法一： 使用 v-on 的 .native 修饰符，缺点：如果想要绑定的元素不是根元素不起作用
-                方法二：$listeners
+                方法二：$listeners 不用加.native
         -->
-        <!--<native v-on:click.native="onFocus"></native>-->
-        v-model: {{inv1}}
-        <native @click="mm" v-on:focus="onFocus" v-model="inv1"></native>
+        <!-- <native @click.native="mm" @focus.native="onFocus"></native> -->
+        <!-- 原生事件: {{inv1}} -->
+        <native @click="mm" @focus="onFocus" v-model="inv1"></native>
 
         <!--.sync 实现数据双向绑定-->
             <!--第一种用法-->
@@ -56,10 +56,10 @@
         },
         methods:{
             mm(){
-                alert(111);
+                window.console.log('click');
             },
             onFocus(){
-                // console.log(111);
+                window.console.log('focus');
             },
             clickParent(){
                 this.$refs.child.handleParentClick("ssss");

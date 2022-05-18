@@ -26,6 +26,7 @@
                 return this.inv1
             },
             inputListeners: function () {
+                window.console.log(this.$listeners, 'listeners')
                 var vm = this
                 // `Object.assign` 将所有的对象合并为一个新对象
                 return Object.assign({},
