@@ -9,6 +9,9 @@ import store from '@/vuex/index'
 import MetaInfo from 'vue-meta-info'
 Vue.use(MetaInfo)
 
+import Toast from '@/components/Toast/index.js'
+Vue.use(Toast)
+
 window.console.log(h('div', h('p', h('span', [
   h('span', 111),
   h('span', 222),

@@ -147,4 +147,9 @@ module.exports = {
     }
     return { plugins }
   },
+  devServer: {
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+    }
+  },
 }

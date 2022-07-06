@@ -1,0 +1,57 @@
+{
+  "name": "vue-cli3.0",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint",
+    "build:client": "vue-cli-service build",
+    "build:server": "cross-env WEBPACK_TARGET=node vue-cli-service build --mode server",
+    "service": "cd server && node index.js"
+  },
+  "dependencies": {
+    "@prerenderer/renderer-jsdom": "^0.2.0",
+    "core-js": "^3.8.1",
+    "cross-env": "^7.0.3",
+    "lodash.merge": "^4.6.2",
+    "prerender-spa-plugin": "^3.4.0",
+    "sitemap-webpack-plugin": "^1.1.1",
+    "snabbdom": "^3.1.0",
+    "vue": "^2.6.12",
+    "vue-meta-info": "^0.1.7",
+    "vue-router": "^3.4.9",
+    "vue-server-renderer": "^2.7.3",
+    "vue-svg-loader": "^0.16.0",
+    "vuex": "^3.6.0",
+    "webpack-node-externals": "^3.0.0"
+  },
+  "devDependencies": {
+    "@svgr/webpack": "6.0.0",
+    "@vue/cli-plugin-babel": "^4.5.9",
+    "@vue/cli-plugin-eslint": "^4.5.9",
+    "@vue/cli-service": "^4.5.9",
+    "babel-eslint": "^10.1.0",
+    "eslint": "^5.16.0",
+    "eslint-plugin-vue": "^5.0.0",
+    "vue-template-compiler": "^2.6.12"
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "plugin:vue/essential",
+      "eslint:recommended"
+    ],
+    "rules": {},
+    "parserOptions": {
+      "parser": "babel-eslint"
+    }
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions"
+  ]
+}

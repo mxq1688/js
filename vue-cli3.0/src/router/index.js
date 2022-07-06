@@ -130,7 +130,8 @@ const routers = {
             component: render,
         }
 
-    ]
+    ],
+    base: window.__MICRO_APP_BASE_ROUTE__ || '/',
 };
 const router  =new Router(routers);
 // 全局前置守卫
