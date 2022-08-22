@@ -7,8 +7,9 @@
      -->
     <div class='my-page'>
       <micro-app
+        @mounted="loadEnd"
         name="app1"
-        url="http://117.50.60.12/"
+        url="http://localhost:8080/"
         baseroute="/my-page"
       ></micro-app>
     </div>
@@ -29,19 +30,30 @@ import microApp from '@micro-zoe/micro-app'
       }
     }
   },
-  watch: {
-  },
   mounted(){
     this.sendData()
+    
+    // window.history.pushState = ()=>{
+    //   console.log('change');
+      
+    // }
+    window.addEventListener("pushState", function(e){
+      console.log("pushState触发", e);
+    });
   },
   methods: {
+    loadEnd(){
+      console.log('加载完成');
+      
+    },
     sendData(){
       // this.dataForChild.isOpenPerson = true
       // 发送数据给子应用 my-app，setData第二个参数只接受对象类型
       console.log({isOpenPerson: this.dataForChild.isOpenPerson, showUser: false})
       microApp.setData('app1', {
         isOpenPerson: this.dataForChild.isOpenPerson,
-        token: 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIiLCJwaG9uZSI6IjE4NyoqKio2MTY4IiwiaXNzIjoidXNlciIsImV4cCI6MTY2MDMxMjk4NiwidXNlcklkIjoiOWNiOWU5M2ZmMDk1NGEyYWI4NjUxMGJhNWY0OWIwNTMiLCJzb3VyY2VzTm8iOjEsImlhdCI6MTY1Nzc2NDE4NiwiY2hhbm5lbElkIjoiMTAwMSIsImp0aSI6IjE1NDc0MDEyNzA3NTM1MzM5NTMifQ.4BP9Nt-5lM5qi3bh7_86s_oVJgd-teiWKD7KanrMqvo'})
+        token: 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIiLCJwaG9uZSI6IjE4NyoqKio2MTY4IiwiaXNzIjoidXNlciIsImV4cCI6MTY2Mjc1MjM5MiwidXNlcklkIjoiOWNiOWU5M2ZmMDk1NGEyYWI4NjUxMGJhNWY0OWIwNTMiLCJzb3VyY2VzTm8iOjEsImlhdCI6MTY2MDIwMzU5MiwiY2hhbm5lbElkIjoiMTAwMSIsImp0aSI6IjE1NTc2MzI4NzgxMDIxODgwMzMifQ.XETrxhWf-MLYuTSqMGdGrZZ9HVfySETaQpy1bmGNlp8'})
+                
     }
   }
 })
@@ -57,6 +69,9 @@ export default class Help extends Vue {}
     }
     .el-overlay .el-dialog .el-dialog__header .el-dialog__title{
        color: red!important;
+    }
+    .el-loading-mask.is-fullscreen{
+      display: none;
     }
   }
 }
