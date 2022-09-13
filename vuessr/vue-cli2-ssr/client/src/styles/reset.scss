@@ -1,0 +1,90 @@
+/* Reset system css */
+
+blockquote,html,body,dd,dir,dl,fieldset,form,h1,h2,h3,h4,h5,h6,hr,input,menu,ol,p,pre,ul,xmp {margin:0;padding:0;}
+button,caption,dir,fieldset,input,legend,menu,ol,td,textarea,th,ul {padding:0}
+html{text-size-adjust:none}ul,li,ol,menu{list-style:none}img{border:none;}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}a{margin:0;padding:0;border:0;vertical-align:baseline;text-decoration:none;}ins{background-color:#ff9;color:#000;text-decoration:none}mark{background-color:#ff9;color:#000;font-style:italic;font-weight:700}del{text-decoration:line-through}sup,sub{line-height:0}abbr[title],dfn[title]{border-bottom:1px dotted #000;cursor:help}table{border-collapse:collapse;border-spacing:0}hr{display:block;height:1px;border:0;border-top:1px solid #ccc;margin:1em 0;padding:0}
+input,select,label,button{vertical-align:middle;border:none;background:none;font-family:'Microsoft Yahei';}
+address,caption,cite,code,dfn,em,i,th,var{font-style:normal; font-weight:normal;}
+
+button{-webkit-appearance: none; outline: none;}
+
+/* Reset end */
+
+/* All Css */
+html {color: #333; font-size: 14px;font-family:'PingFangSC-Regular','PingFang SC','Microsoft Yahei';background:#ffffff;width: 100%;}
+body {width: 100%;}
+/* Compatible to remove floating */
+.cl:after,.clearfix:after{content:".";display:block;height:0;clear:both;visibility:hidden}.cl,.clearfix{zoom:1}
+
+/*input默认边框*/
+// input:focus{outline:none}
+
+/*input number类型 去除加减按钮*/
+input::-webkit-outer-spin-button, input::-webkit-inner-spin-button{-webkit-appearance: none !important;margin: 0; }
+input[type='number']{-moz-appearance:textfield;}
+
+/*文本框去掉内阴影*/
+input,textarea{-webkit-appearance: none;border:0;}
+
+/* a标签 */
+a{ -webkit-tap-highlight-color:transparent;}
+a:hover{ text-decoration:none}
+a:active{ text-decoration:none; background-color: transparent;}
+
+/* 去高亮 */
+input,label,li,div,a{ -webkit-tap-highlight-color:transparent;}
+
+/*去掉苹果自带输入框圆角*/
+input {border-radius:0;}
+
+/*禁止保存或拷贝图像(只在ios上有效)*/
+img {-webkit-touch-callout: none;}
+
+/*移动端禁止选中内容*/
+.user-select-none {-webkit-user-select: none;-moz-user-select: none;-ms-user-select: none;}
+
+/*移除ios的样式*/
+input[type=input]{-webkit-appearance:none;}
+input[type=checkbox]{-webkit-appearance:checkbox;}
+
+/*解决placeholder不垂直居中对齐的问题*/
+::-webkit-input-placeholder {line-height:130% !important;}
+
+/*iframe*/
+iframe{border:0;}
+
+.fl {
+  float: left;
+}
+.fr {
+  float: right;
+}
+.clearfix:after {
+  content: " ";
+  display: table;
+  line-height: 0;
+  height: 0;
+  visibility: hidden;
+  clear: both;
+}
+.clearfix {
+  zoom: 1;
+}
+.dn{
+  display: none;
+}
+.db{
+  display: block;
+}
+.tc{
+  text-align: center;
+}
+.tl{
+  text-align: left;
+}
+.tr{
+  text-align: right;
+}
+.csp{
+  cursor: pointer;
+}

@@ -1,0 +1,6 @@
+// declare module '*.css'
+declare module '*.js'
+declare module '*.png'
+declare module 'animate.css'
+declare module 'wowjs'
+declare module 'js-md5'
