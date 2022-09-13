@@ -1,7 +1,6 @@
 <template>
   <div>
-    <foo></foo>
-    <div class="ww_button" @click="trigger">你好 点击一下，试一下</div>
+    <button class="ww_button" @click="trigger">你好 点击一下，试一下</button>
   </div>
 </template>
 <script>

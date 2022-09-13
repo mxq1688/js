@@ -17,17 +17,8 @@ import { Options, Vue } from 'vue-class-component'
     return {}
   },
   mounted() {
-    this.oncontextmenu()
   },
   methods: {
-    /**
-     * 取消默认的浏览器自带右键
-     */
-    oncontextmenu () {
-      window.oncontextmenu = (e) => {
-        e.preventDefault()
-      }
-    }
   }
 })
 export default class App extends Vue {}
