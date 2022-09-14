@@ -8,5 +8,10 @@ Server Bundle，供服务端SSR使用，一个json文件， 用于渲染首屏
 
 >vue-server-renderer 版本要与Vue版本一样
 
+#### vue中注意
+```
+ssr不支持keep-alive
+SSR 也不支持指令
+```
 #### 问题
 1、ssr中document使用问题
