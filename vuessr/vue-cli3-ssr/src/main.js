@@ -1,27 +1,29 @@
-import Vue from 'vue'
-import App from './App.vue'
-import router from '@/router/index'
-import {h} from 'snabbdom/'
-Vue.config.productionTip = false;//设置为 false 以阻止 vue 在启动时生成生产提示。默认true
+import Vue from "vue";
+import App from "./App.vue";
+import createRouter from "./router";
+import createStore from "./store";
 
-import store from '@/vuex/index'
+Vue.config.productionTip = false;
 
-import MetaInfo from 'vue-meta-info'
-Vue.use(MetaInfo)
+// new Vue({
+//   router,
+//   store,
+//   render: (h) => h(App),
+// }).$mount("#app");
 
-import Toast from '@/components/Toast/index.js'
-Vue.use(Toast)
-
-window.console.log(h('div', h('p', h('span', [
-  h('span', 111),
-  h('span', 222),
-  h('span', 333)
-]))), 111);
-
-// 导出Vue实例⼯⼚函数，为每次请求创建独⽴实例 
-// 上下⽂⽤于给vue实例传递参数
-export function createApp(context) {
+// 导出一个工厂函数，用于创建新的
+export default function createApp() {
+  // 创建 router 和 store 实例
   const router = createRouter();
-  const app = new Vue({ router,store, context, render: h => h(App) });
-  return { app, router };
+  const store = createStore(); // 同步路由状态(route state)到 store
+
+  // sync(store, router); // 创建应用程序实例，将 router 和 store 注入
+
+  const app = new Vue({
+    router,
+    store,
+    render: (h) => h(App),
+  }); // 暴露 app, router 和 store。
+
+  return { app, router, store };
 }
