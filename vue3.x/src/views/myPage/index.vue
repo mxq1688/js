@@ -15,7 +15,7 @@
       <micro-app
         @mounted="loadEnd"
         name="app1"
-        url="http://localhost:8080/"
+        url="http://117.50.60.12/"
         baseroute="/my-page"
         @datachange='handleDataChange'
       ></micro-app>
@@ -34,7 +34,6 @@ import { removeDomScope } from '@micro-zoe/micro-app'
     return {
       dataForChild:{
         token: '',
-        isOpenPerson: false,
       }
     }
   },
@@ -73,12 +72,9 @@ import { removeDomScope } from '@micro-zoe/micro-app'
       
     },
     sendData(){
-      // this.dataForChild.isOpenPerson = true
       // 发送数据给子应用 my-app，setData第二个参数只接受对象类型
-      console.log({isOpenPerson: this.dataForChild.isOpenPerson, showUser: false})
       microApp.setData('app1', {
-        isOpenPerson: this.dataForChild.isOpenPerson,
-        token: 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIiLCJwaG9uZSI6IjE4NyoqKio2MTY4IiwiaXNzIjoidXNlciIsImV4cCI6MTY2MzI2NzI3MSwidXNlcklkIjoiOWNiOWU5M2ZmMDk1NGEyYWI4NjUxMGJhNWY0OWIwNTMiLCJzb3VyY2VzTm8iOjEsImlhdCI6MTY2MDcxODQ3MSwiY2hhbm5lbElkIjoiMTAwMSIsImp0aSI6IjE1NTk3OTI0MzkzODY5NjgwNjUifQ.ohKUSz9I6WLyY-qvHFTFERHKL5JctSf65QoIbx-mmE4'
+        token: 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIiLCJpc3MiOiJ1c2VyIiwiZXhwIjoxNjY1Nzc1MDI4LCJ1c2VySWQiOiJmMmIyOWNhMzE4MjE0OTZkOTEwMTA2MWRiYzhlMDhlYyIsInNvdXJjZXNObyI6NCwiaWF0IjoxNjYzMjI2MjI4LCJjaGFubmVsSWQiOiIxMDA2IiwiZW1haWwiOiIyMDIyMDcyNTEwNDMwMDAwMzE4QDEzOS5jb20iLCJqdGkiOiIxNTcwMzEwNzMxODc2Nzk4NDY2In0.mM4k1USF_QLKEI6m1XDT7059l450LDi3hyZFMdOddrI'
       })
                 
     }
