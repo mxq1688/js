@@ -1,14 +1,4 @@
-(function webpackUniversalModuleDefinition(root, factory) {
-	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory();
-	else if(typeof define === 'function' && define.amd)
-		define([], factory);
-	else if(typeof exports === 'object')
-		exports["mtoast"] = factory();
-	else
-		root["mtoast"] = factory();
-})((typeof self !== 'undefined' ? self : this), function() {
-return /******/ (function() { // webpackBootstrap
+/******/ (function() { // webpackBootstrap
 /******/ 	"use strict";
 /******/ 	// The require scope
 /******/ 	var __webpack_require__ = {};
@@ -54,7 +44,9 @@ __webpack_require__.r(__webpack_exports__);
 
 // EXPORTS
 __webpack_require__.d(__webpack_exports__, {
-  "default": function() { return /* binding */ entry_lib; }
+  "ComColorButton": function() { return /* reexport */ comColorButton; },
+  "default": function() { return /* binding */ entry_lib; },
+  "install": function() { return /* reexport */ install; }
 });
 
 ;// CONCATENATED MODULE: ./node_modules/@vue/cli-service/lib/commands/build/setPublicPath.js
@@ -74,55 +66,39 @@ if (typeof window !== 'undefined') {
 // Indicate to webpack that this file can be concatenated
 /* harmony default export */ var setPublicPath = (null);
 
-;// CONCATENATED MODULE: ./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib/index.js??clonedRuleSet-82.use[1]!./node_modules/@vue/vue-loader-v15/lib/loaders/templateLoader.js??ruleSet[1].rules[3]!./node_modules/@vue/vue-loader-v15/lib/index.js??vue-loader-options!./src/lib/toast.vue?vue&type=template&id=4c50d3aa&
-var render = function render() {
-  var _vm = this,
-      _c = _vm._self._c;
+;// CONCATENATED MODULE: ./node_modules/@vue/vue-loader-v15/lib/loaders/templateLoader.js??ruleSet[1].rules[3]!./node_modules/@vue/vue-loader-v15/lib/index.js??vue-loader-options!./packages/comColorButton/src/color-button.vue?vue&type=template&id=4a5844fa&
+var render = function render(){var _vm=this,_c=_vm._self._c;return _c('span',{staticClass:"color-button"},[_c('button',{class:[_vm.type, _vm.disabled?'disabled':''],attrs:{"disabled":_vm.disabled}},[_vm._t("default")],2)])
+}
+var staticRenderFns = []
 
-  return _c('div', [_c('transition', {
-    attrs: {
-      "name": "fade"
-    }
-  }, [_c('div', {
-    directives: [{
-      name: "show",
-      rawName: "v-show",
-      value: _vm.show,
-      expression: "show"
-    }],
-    staticClass: "toast"
-  }, [_vm._v(_vm._s(_vm.message))])])], 1);
-};
 
-var staticRenderFns = [];
+;// CONCATENATED MODULE: ./node_modules/@vue/vue-loader-v15/lib/index.js??vue-loader-options!./packages/comColorButton/src/color-button.vue?vue&type=script&lang=js&
 
-;// CONCATENATED MODULE: ./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib/index.js??clonedRuleSet-82.use[1]!./node_modules/@vue/vue-loader-v15/lib/index.js??vue-loader-options!./src/lib/toast.vue?vue&type=script&lang=js&
-/* harmony default export */ var toastvue_type_script_lang_js_ = ({
-  name: "leilei-toast",
-  components: {},
-
-  data() {
+/* harmony default export */ var color_buttonvue_type_script_lang_js_ = ({
+  name:'ComColorButton',
+  props:{
+      type:{
+      type:String,
+      default:'primary'
+    },
+      disabled:{
+      type:Boolean,
+      default:false
+    },
+  }, 
+  data () {
     return {
-      message: "hello world",
-      show: false
-    };
-  },
 
-  computed: {},
-  watch: {},
-  methods: {},
-
-  created() {},
-
-  mounted() {}
-
+    }
+  }
 });
-;// CONCATENATED MODULE: ./src/lib/toast.vue?vue&type=script&lang=js&
- /* harmony default export */ var lib_toastvue_type_script_lang_js_ = (toastvue_type_script_lang_js_); 
-;// CONCATENATED MODULE: ./node_modules/mini-css-extract-plugin/dist/loader.js??clonedRuleSet-64.use[0]!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-64.use[1]!./node_modules/@vue/vue-loader-v15/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-64.use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-64.use[3]!./node_modules/@vue/vue-loader-v15/lib/index.js??vue-loader-options!./src/lib/toast.vue?vue&type=style&index=0&id=4c50d3aa&prod&lang=scss&
+
+;// CONCATENATED MODULE: ./packages/comColorButton/src/color-button.vue?vue&type=script&lang=js&
+ /* harmony default export */ var src_color_buttonvue_type_script_lang_js_ = (color_buttonvue_type_script_lang_js_); 
+;// CONCATENATED MODULE: ./node_modules/mini-css-extract-plugin/dist/loader.js??clonedRuleSet-22.use[0]!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-22.use[1]!./node_modules/@vue/vue-loader-v15/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-22.use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-22.use[3]!./node_modules/@vue/vue-loader-v15/lib/index.js??vue-loader-options!./packages/comColorButton/src/color-button.vue?vue&type=style&index=0&id=4a5844fa&prod&lang=scss&
 // extracted by mini-css-extract-plugin
 
-;// CONCATENATED MODULE: ./src/lib/toast.vue?vue&type=style&index=0&id=4c50d3aa&prod&lang=scss&
+;// CONCATENATED MODULE: ./packages/comColorButton/src/color-button.vue?vue&type=style&index=0&id=4a5844fa&prod&lang=scss&
 
 ;// CONCATENATED MODULE: ./node_modules/@vue/vue-loader-v15/lib/runtime/componentNormalizer.js
 /* globals __VUE_SSR_CONTEXT__ */
@@ -222,7 +198,7 @@ function normalizeComponent(
   }
 }
 
-;// CONCATENATED MODULE: ./src/lib/toast.vue
+;// CONCATENATED MODULE: ./packages/comColorButton/src/color-button.vue
 
 
 
@@ -232,7 +208,7 @@ function normalizeComponent(
 /* normalize component */
 
 var component = normalizeComponent(
-  lib_toastvue_type_script_lang_js_,
+  src_color_buttonvue_type_script_lang_js_,
   render,
   staticRenderFns,
   false,
@@ -242,37 +218,54 @@ var component = normalizeComponent(
   
 )
 
-/* harmony default export */ var toast = (component.exports);
-;// CONCATENATED MODULE: ./src/lib/index.js
-//index.js
+/* harmony default export */ var color_button = (component.exports);
+;// CONCATENATED MODULE: ./packages/comColorButton/index.js
+// 导入组件，组件必须声明 name
 
-var ToastPlugin = {};
 
-ToastPlugin.install = function (Vue, options) {
-  var ToastConstructor = Vue.extend(toast);
-  var ToastInstance = new ToastConstructor();
-  var div = document.createElement('div');
-  ToastInstance.$mount(div);
-  document.body.appendChild(ToastInstance.$el);
+// 为组件提供 install 安装方法，供按需引入
+// 在组件上添加install方法，方便直接使用单个组件
+color_button.install = function (Vue) {
+  Vue.component(color_button.name, color_button)
+}
 
-  Vue.prototype.$toast = function (msg, duration = 2000) {
-    ToastInstance.message = msg;
-    ToastInstance.show = true;
-    setTimeout(() => {
-      ToastInstance.show = false;
-    }, duration);
-  };
-};
+// 默认导出组件
+/* harmony default export */ var comColorButton = (color_button);
+;// CONCATENATED MODULE: ./packages/index.js
 
-/* harmony default export */ var lib = (ToastPlugin);
+// 存储组件列表
+const components = [
+  comColorButton
+] 
+/* 
+  定义install 方法，接收Vue作为参数，如果使用use注册插件，则所有的组件都将被注册
+*/
+const install = function (Vue) {
+  // 判断是否安装
+  if(install.installed){return}
+
+   // 动态注册store
+//    opts.store.registerModule("metaman2dStore", metaman2dStore);
+
+
+  // 遍历所有组件
+  components.map(item => {
+    Vue.component(item.name,item)
+  })
+}
+// 判断是否引入文件
+if(typeof window !== 'undefined' && window.Vue){
+  install(window.Vue)
+}
+
+/* harmony default export */ var packages_0 = ({ install });
 ;// CONCATENATED MODULE: ./node_modules/@vue/cli-service/lib/commands/build/entry-lib.js
 
 
-/* harmony default export */ var entry_lib = (lib);
+/* harmony default export */ var entry_lib = (packages_0);
 
 
-/******/ 	return __webpack_exports__;
+module.exports = __webpack_exports__;
 /******/ })()
 ;
-});
-//# sourceMappingURL=mtoast.umd.js.map
+//# sourceMappingURL=vcolorpicker.common.js.map
