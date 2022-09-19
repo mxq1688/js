@@ -257,7 +257,6 @@ const install = function (Vue) {
    // 动态注册store
 //    opts.store.registerModule("metaman2dStore", metaman2dStore);
 
-
   // 遍历所有组件
   components.map(item => {
     Vue.component(item.name,item)
