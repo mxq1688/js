@@ -74,7 +74,7 @@ import { removeDomScope } from '@micro-zoe/micro-app'
     sendData(){
       // 发送数据给子应用 my-app，setData第二个参数只接受对象类型
       microApp.setData('app1', {
-        token: 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIiLCJpc3MiOiJ1c2VyIiwiZXhwIjoxNjY1Nzc1MDI4LCJ1c2VySWQiOiJmMmIyOWNhMzE4MjE0OTZkOTEwMTA2MWRiYzhlMDhlYyIsInNvdXJjZXNObyI6NCwiaWF0IjoxNjYzMjI2MjI4LCJjaGFubmVsSWQiOiIxMDA2IiwiZW1haWwiOiIyMDIyMDcyNTEwNDMwMDAwMzE4QDEzOS5jb20iLCJqdGkiOiIxNTcwMzEwNzMxODc2Nzk4NDY2In0.mM4k1USF_QLKEI6m1XDT7059l450LDi3hyZFMdOddrI'
+        token: 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIiLCJpc3MiOiJ1c2VyIiwiZXhwIjoxNjY1Nzc2MzI3LCJ1c2VySWQiOiIxYzVmMmNiYzk5N2Q0MzJiOWRlOTkzNGRjMTk0NzBhMSIsInNvdXJjZXNObyI6NCwiaWF0IjoxNjYzMjI3NTI3LCJjaGFubmVsSWQiOiIxMDA2IiwiZW1haWwiOiIyMDIyMDcxMjEwMTY0MzAwMjk5QDEzOS5jb20iLCJqdGkiOiIxNTcwMzE2MTc5ODc1MDQxMjgxIn0.5Iyh2PcCJXcR8c6qrMQ1_OGXTpSwwsI0ENW6jJTaaXY'
       })
                 
     }
