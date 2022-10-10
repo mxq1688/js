@@ -67,34 +67,69 @@ module.exports = {
       {
         test: /\.(sa|sc|c)ss$/,
         exclude: /\.module\.(sa|sc|c)ss$/,
-        use: [
-          'vue-style-loader',
+        oneOf: [
           {
-            loader: 'css-loader',
-            options: {
-              sourceMap: false,
-              modules: true
-            },
-          },
-          {
-            loader: 'postcss-loader',
-            options: {
-              postcssOptions: {
-                // postcss-preset-env 内部集成了 autoprefixer 添加css第三方前缀 处理各个浏览器css兼容
-                plugins: ['postcss-preset-env'],
+            resourceQuery: /module/,
+            use: [
+              'vue-style-loader',
+              {
+                loader: 'css-loader',
+                options: {
+                  sourceMap: false,
+                  modules: true
+                },
               },
-            },
+              {
+                loader: 'postcss-loader',
+                options: {
+                  postcssOptions: {
+                    // postcss-preset-env 内部集成了 autoprefixer 添加css第三方前缀 处理各个浏览器css兼容
+                    plugins: ['postcss-preset-env'],
+                  },
+                },
+              },
+              {
+                loader: 'sass-loader',
+                options: {
+                  // additionalData: `	
+                  //   @use "@/styles/variables.scss" as *;  // 全局导入sass变量
+                  //   @use "@/styles/mixin.scss" as *; // 全局导入sass混入
+                  // `,
+                },
+              },
+            ],
           },
           {
-            loader: 'sass-loader',
-            options: {
-              // additionalData: `	
-              //   @use "@/styles/variables.scss" as *;  // 全局导入sass变量
-              //   @use "@/styles/mixin.scss" as *; // 全局导入sass混入
-              // `,
-            },
+            use: [
+              'vue-style-loader',
+              {
+                loader: 'css-loader',
+                options: {
+                  sourceMap: false,
+                },
+              },
+              {
+                loader: 'postcss-loader',
+                options: {
+                  postcssOptions: {
+                    // postcss-preset-env 内部集成了 autoprefixer 添加css第三方前缀 处理各个浏览器css兼容
+                    plugins: ['postcss-preset-env'],
+                  },
+                },
+              },
+              {
+                loader: 'sass-loader',
+                options: {
+                  // additionalData: `	
+                  //   @use "@/styles/variables.scss" as *;  // 全局导入sass变量
+                  //   @use "@/styles/mixin.scss" as *; // 全局导入sass混入
+                  // `,
+                },
+              },
+            ],
           },
-        ],
+        ]
+
       },
       {
         test: /\.module\.(sa|sc|c)ss$/,
