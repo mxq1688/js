@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>webcomponent使用shadowDom</title>
+  </head>
+  <body>
+    <ui-input prefix prefix-label="https://"></ui-input>
+    <script>
+      const componentName = "ui-input";
+      const style = `
+            .ui_input_box {
+                display: flex;
+                align-items: center;
+                flex-direction: row;
+                position: relative;
+            }
+
+            .ui_input {
+                padding-right:7px;
+                border-radius: 7px;
+                border: 1px solid #ccc;
+                outline: none;
+            }
+
+            .ui_input:focus {
+                border: 1px dashed #a372e3;
+            }
+
+            .ui_input_prefix {
+                position: absolute;
+                width: 49px;
+                left: 2px;
+                top: 0;
+                background: #EEE;
+                border-top-left-radius: 7px;
+                border-bottom-left-radius: 7px;
+                display: flex;
+                align-items: center;
+                padding: 0 7px;
+                color: #666;
+                font-size: 14px;
+            }
+        `;
+      class UiInput extends HTMLElement {
+        constructor() {
+          super();
+          this.props = {
+            width: "160px",
+            height: "32px",
+            prefix: true,
+            "prefix-label": "https://",
+          };
+          this.getProps();
+          console.log(this.props, ">>>传入参数");
+          let outerLayer = document.createElement("div");
+          outerLayer.shadowRoot;
+          outerLayer.style.width = this.props.width;
+          outerLayer.style.height = this.props.height;
+          outerLayer.className = "ui_input_box";
+          let input = document.createElement("input");
+          input.className = "ui_input";
+          input.style.height = this.props.height;
+          input.style.width = this.props.width;
+
+          if (this.props.prefix !== "false") {
+            input.style.paddingLeft = "72px";
+            let ui_input_prefix = document.createElement("div");
+            ui_input_prefix.className = "ui_input_prefix";
+            ui_input_prefix.innerText = this.props["prefix-label"];
+            ui_input_prefix.style.height = this.props.height;
+            outerLayer.appendChild(ui_input_prefix);
+          } else {
+            input.style.paddingLeft = "7px";
+          }
+
+          outerLayer.appendChild(input);
+
+          // 使用shadow隔离
+          const shadow = this.attachShadow({ mode: 'open' });
+          shadow.appendChild(this.appendStyle());
+          shadow.append(outerLayer)
+
+          // 不使用shadow隔离
+          // this.appendDomStyle();
+          // this.append(outerLayer);
+        }
+
+        // 当自定义元素第一次被连接到文档DOM时被调用。
+        connectedCallback() {}
+
+        // 获取传入参数
+        getProps() {
+          for (let i = 0; i < this.attributes.length; i++) {
+            this.props[this.attributes[i].name] = this.attributes[i].value;
+          }
+        }
+
+        appendStyle() {
+          var styleElement = document.createElement("style");
+          styleElement.id = "componentName";
+          styleElement.innerHTML = style;
+          return styleElement;
+        }
+
+        appendDomStyle() {
+          var styleElement = document.getElementById(componentName);
+          if (!styleElement) {
+            styleElement = document.createElement("style");
+            styleElement.type = "text/css";
+            styleElement.id = "componentName";
+            styleElement.innerHTML = style;
+            document.getElementsByTagName("head")[0].appendChild(styleElement);
+          }
+        }
+      }
+
+      // 注册组件
+      customElements.define(componentName, UiInput);
+    </script>
+  </body>
+</html>

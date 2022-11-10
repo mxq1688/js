@@ -17,17 +17,17 @@
     </style>
     <div class="main">
       我是template片段
-      <!-- 使用插槽 -->
+      <!-- 定义插槽 -->
       <slot name="header"></slot>
     </div>
   </template>
   <test-template-ele>
-    <!-- 定义插槽 -->
     <style>
       .slot{
         color: rgb(87, 28, 223);
       }
     </style>
+    <!-- 使用插槽 -->
     <div class="slot" slot="header">我是slot</div>
   </test-template-ele>
 

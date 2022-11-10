@@ -5,7 +5,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted, computed } from "vue";
+import { defineComponent, ref, onMounted, computed, h } from "vue";
 
 export default defineComponent({
   name: "study",
@@ -31,11 +31,13 @@ export default defineComponent({
   methods:{
 
   },
-  setup() {
+  setup(props, context) {
     onMounted(()=>{
       console.log(222,this);
     })
     
+    return ()=>(h('div', 123))
   }
+
 })
 </script>

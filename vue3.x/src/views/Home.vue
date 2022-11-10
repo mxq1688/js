@@ -8,16 +8,40 @@
       <router-link to="/my-page/">进入子应用</router-link>
       <router-link to="/my-page/myPerson">进入子应用 myPerson</router-link>
       <router-link to="/my-page/myPlan">进入子应用 myPlan</router-link>
+
+      <button @click="jump('/myPerson')">myPerson</button>
+      <button @click="jump('/plan')">plan</button>
+    </div>
+    <div class="child">
+      <router-view/>
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
-
+import microApp from '@micro-zoe/micro-app'
 @Options({
   components: {
   },
+  methods:{
+    jump(path:any){
+      // microApp.setData('app1', {
+      //   type: 'push',
+      //   path: path
+      // })
+
+      window.history.pushState(history.state, '', '/my-page'+path)
+      window.dispatchEvent(new PopStateEvent('popstate', { state: history.state }))
+    }
+  }
 })
 export default class Home extends Vue {}
 </script>
+<style lang="scss" scoped>
+.child{
+  height: calc( 100vh - 100px );
+  border: 1px solid red;
+  overflow: auto;
+}
+</style>

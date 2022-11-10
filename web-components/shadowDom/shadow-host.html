@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>shadow-dom</title>
+    <style>
+        h1, p {
+            color: #db73ff !important;
+        }
+        #host {
+            background-color: yellow;
+        }
+        span {
+            text-decoration: underline;;
+        }
+    </style>
+</head>
+<body>
+<h1>I am first title</h1>
+<div id="host">
+    <!-- 使用插槽 -->
+    <h1 slot="title" class="title">I am second title</h1>
+    <p slot="subtitle" class="subtitle">I am subtitle</p>
+</div>
+<template id="temp">
+    <style>
+        span {
+            color: red;
+        }
+        p, h1 {
+            background-color: #60d9ff;
+        }
+        :host {
+            border: 2px solid #14ff1a;
+        }
+        ::slotted(.title) {
+            background-color: #60d900;
+        }
+    </style>
+    <p onclick="alert('hello~');" pseudo="test">template - 点我吧~~</p>
+    <span pseudo="shadow-root-span" class="shadow-root-span">I'm the span tag of template</span>
+    <!-- 绑定#host所有内容 -->
+    <!-- <slot></slot> -->
+
+    <!-- 绑定#host p的内容 -->
+    <slot name="subtitle"></slot>
+    <!-- 绑定#host h1的内容 -->
+    <slot name="title"></slot>
+</template>
+<script>
+    var host = document.querySelector('#host');
+    var root = host.attachShadow({mode:'open'});
+    var temp = document.querySelector('#temp');
+    var clone = document.importNode(temp.content, true);
+
+    root.appendChild(clone);
+    document.addEventListener('click', function(e) {
+        console.log(e.target.innerHTML); //获取到的是id="host"的内容
+        console.log(e);
+    });
+</script>

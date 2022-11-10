@@ -14,6 +14,7 @@
     "core-js": "^3.6.5",
     "element-plus": "^1.2.0-beta.3",
     "iview-plus": "^0.0.1",
+    "qiankun": "^2.8.4",
     "vue": "^3.0.0",
     "vue-class-component": "^8.0.0-0",
     "vue-router": "^4.0.0-0",

@@ -5,6 +5,10 @@ import store from './store'
 
 // import EelmentPlus from 'element-plus'
 
+// microApp.preFetch([
+//     { name: 'app1', url: 'http://localhost:8080/' }
+//   ])  
+
 import microApp from '@micro-zoe/micro-app'
 microApp.start()
 

@@ -39,6 +39,9 @@
 
 export default {
   name: 'app',
+  render(h){
+    return h('div', 123)
+  },
     methods: {
       mem(){
           //字符串
