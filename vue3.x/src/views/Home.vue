@@ -9,8 +9,9 @@
       <router-link to="/my-page/myPerson">进入子应用 myPerson</router-link>
       <router-link to="/my-page/myPlan">进入子应用 myPlan</router-link>
 
-      <button @click="jump('/myPerson')">myPerson</button>
-      <button @click="jump('/plan')">plan</button>
+      <!-- 未加载子应用时控制跳转到对应页面 -->
+      <a @click="jump('/myPerson')" data-v-fae5bece="">myPerson</a>
+      <a @click="jump('/plan')" data-v-fae5bece="">myPlan</a>
     </div>
     <div class="child">
       <router-view/>
@@ -26,11 +27,6 @@ import microApp from '@micro-zoe/micro-app'
   },
   methods:{
     jump(path:any){
-      // microApp.setData('app1', {
-      //   type: 'push',
-      //   path: path
-      // })
-
       window.history.pushState(history.state, '', '/my-page'+path)
       window.dispatchEvent(new PopStateEvent('popstate', { state: history.state }))
     }
