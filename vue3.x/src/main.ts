@@ -12,23 +12,18 @@ import store from './store'
 import microApp from '@micro-zoe/micro-app'
 microApp.start()
 
-// import { registerMicroApps, start } from 'qiankun';
-// registerMicroApps([
-//   {
-//     name: 'yuan365', // app name registered
-//     entry: '//localhost:8080/',
-//     container: '#yourContainer',
-//     activeRule: '/yourActiveRule',
-//   },
-//   {
-//     name: 'vue app',
-//     entry: { scripts: ['//localhost:7100/main.js'] },
-//     container: '#yourContainer2',
-//     activeRule: '/yourActiveRule2',
-//   },
-// ]);
-// start();
+import { registerMicroApps, start } from 'qiankun';
 
-import "./qiankun/index.js"
+registerMicroApps([
+    {
+      name: 'yuan365', // app name registered
+      entry: '//localhost:8080/',
+      container: '#yuan365',
+      activeRule: '/qiankun/yuan365',
+    },
+  ]);
+  
+start();
 
-createApp(App).use(store).use(router).mount('#app')
+const app = createApp(App)
+app.use(store).use(router).mount('#app')

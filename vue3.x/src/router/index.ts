@@ -25,6 +25,11 @@ const routes: Array<RouteRecordRaw> = [
     name: 'loadMicroApp',
     component: () => import(/* webpackChunkName: "about" */ '../views/qiankun/loadMicroApp.vue')
   },
+  {
+    path: '/qiankun/yuan365/:page*',
+    name: 'qiankun',
+    component: () => import(/* webpackChunkName: "about" */ '../views/qiankun/index.vue')
+  },
 
 
 ]

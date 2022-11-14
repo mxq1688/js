@@ -9,6 +9,9 @@ module.exports = {
     https: false,
     hotOnly: false,
     disableHostCheck: true,
+    headers: {			// 重点1: 允许跨域访问子应用页面
+      'Access-Control-Allow-Origin': '*',
+    },
     proxy: {
       // '/admin-api': {
       //   // target: ' http://avatar-gateway/', //预生产环境

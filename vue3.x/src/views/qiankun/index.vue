@@ -1,9 +1,18 @@
 <template>
-    <qiankun-app appName="DupdubEditorApp" />
+    <div>
+        加载子应用
+        <div id="yuan365"></div>
+    </div>
 </template>
 <script>
+import { start } from 'qiankun'
 export default {
-    name: 'DupdubEditorApp',
-    mounted() { }
+    name: 'qiankun',
+    mounted() {
+        if (!window.qiankunStarted) {
+            window.qiankunStarted = true;
+            start();
+        }
+    }
 }
 </script>
