@@ -1,0 +1,4 @@
+import * as Vue from "vue";
+import { useModule } from "vue-module-loader";
+import localModule from "./module";
+useModule(localModule, { Vue }); //加载本地模块

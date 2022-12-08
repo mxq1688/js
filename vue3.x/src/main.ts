@@ -14,12 +14,13 @@ microApp.start()
 
 import { registerMicroApps, start } from 'qiankun';
 
+(window as any).__QIANKUN_APP_BASE_ROUTE__ = '#/mxq/qiankun/yuan365'
 registerMicroApps([
     {
       name: 'yuan365', // app name registered
       entry: '//localhost:8080/',
       container: '#yuan365',
-      activeRule: '/qiankun/yuan365',
+      activeRule: '#/mxq/qiankun/yuan365',
     },
   ]);
   

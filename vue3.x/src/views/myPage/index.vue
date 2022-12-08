@@ -11,9 +11,9 @@
       </div>
       <micro-app
         @mounted="loadEnd"
-        name="app1"
-        url="http://localhost:8080/"
-        baseroute="/my-page"
+        name="diyFace"
+        url="http://117.50.60.12/"
+        baseroute="#/my-page"
         @datachange='handleDataChange'
         :shadowDOM='false'
       ></micro-app>
@@ -79,7 +79,7 @@ const w:any = window
     sendData(){
       // 发送数据给子应用 my-app，setData第二个参数只接受对象类型
       microApp.setData('app1', {
-        token: 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIiLCJwaG9uZSI6IjE4NyoqKio2MTY4IiwiaXNzIjoidXNlciIsImV4cCI6MTY2OTIxNTc1OCwidXNlcklkIjoiOWNiOWU5M2ZmMDk1NGEyYWI4NjUxMGJhNWY0OWIwNTMiLCJzb3VyY2VzTm8iOjEsImlhdCI6MTY2NjY2Njk1OCwiY2hhbm5lbElkIjoiMTAwMSIsImp0aSI6IjE1ODQ3NDIyMDE3NjA0MTk4NDIifQ.zhl3Dd2OwlnjFkdJl9R_L08kVapQQXVGO5PecFRswyk'
+        token: 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIiLCJwaG9uZSI6IjE4NyoqKio2MTY4IiwiaXNzIjoidXNlciIsImV4cCI6MTY3MTExNzE2MCwidXNlcklkIjoiOWNiOWU5M2ZmMDk1NGEyYWI4NjUxMGJhNWY0OWIwNTMiLCJzb3VyY2VzTm8iOjEsImlhdCI6MTY2ODU2ODM2MCwiY2hhbm5lbElkIjoiMTAwMSIsImp0aSI6IjE1OTI3MTcyNTc5NDE3MTY5OTMifQ.eg4Oj3YX8F7aOq9qstq8ETCinZLVc9yxkH1Xh8ITkbM'
       })
                 
     }
@@ -90,7 +90,7 @@ export default class Help extends Vue {}
 
 <style lang="scss" scoped>
 .my-page{
-  position: relative;
+  // position: relative;
   :deep(micro-app[name=app1]){
     .download_container .download_box .content .right h3{
       font-size: 12px!important;

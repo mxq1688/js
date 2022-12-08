@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
+import { createRouter, createWebHistory, createWebHashHistory, RouteRecordRaw } from 'vue-router'
 import Home from '../views/Home.vue'
 
 const routes: Array<RouteRecordRaw> = [
@@ -13,6 +13,12 @@ const routes: Array<RouteRecordRaw> = [
         name: 'my-page',
         component: () => import('@/views/myPage/index.vue')
       },
+      {
+        path: '/mxq/qiankun/:page*',
+        name: 'qiankun',
+        component: () => import(/* webpackChunkName: "about" */ '../views/qiankun/index.vue')
+      },
+    
     ]
   },
   {
@@ -25,17 +31,12 @@ const routes: Array<RouteRecordRaw> = [
     name: 'loadMicroApp',
     component: () => import(/* webpackChunkName: "about" */ '../views/qiankun/loadMicroApp.vue')
   },
-  {
-    path: '/qiankun/yuan365/:page*',
-    name: 'qiankun',
-    component: () => import(/* webpackChunkName: "about" */ '../views/qiankun/index.vue')
-  },
 
 
 ]
 
 const router = createRouter({
-  history: createWebHistory(process.env.BASE_URL),
+  history: createWebHashHistory(process.env.BASE_URL),
   routes
 })
 

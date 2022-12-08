@@ -8,10 +8,12 @@
       <router-link to="/my-page/">进入子应用</router-link>
       <router-link to="/my-page/myPerson">进入子应用 myPerson</router-link>
       <router-link to="/my-page/myPlan">进入子应用 myPlan</router-link>
-
       <!-- 未加载子应用时控制跳转到对应页面 -->
       <a @click="jump('/myPerson')" data-v-fae5bece="">myPerson</a>
-      <a @click="jump('/plan')" data-v-fae5bece="">myPlan</a>
+      <a @click="jump('/myPlan')" data-v-fae5bece="">myPlan</a>
+
+      <router-link to="/mxq/qiankun/yuan365/myPlan">qiankun myPlan</router-link>
+
     </div>
     <div class="child">
       <router-view/>
