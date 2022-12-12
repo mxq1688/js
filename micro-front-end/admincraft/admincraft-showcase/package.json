@@ -1,0 +1,42 @@
+{
+  "name": "admincraft-showcase",
+  "version": "0.1.12",
+  "private": false,
+  "author": "mqhe2007 <122274389@qq.com>",
+  "homepage": "https://mengqinghe.com",
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build --target lib src/module-init.js",
+    "build:test": "vue-cli-service build --mode test --target lib src/module-init.js"
+  },
+  "main": "dist/admincraft-showcase.umd.js",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mqhe2007/admincraft-showcase"
+  },
+  "dependencies": {
+    "prismjs": "^1.16.0"
+  },
+  "files": [
+    "dist",
+    "src",
+    "public"
+  ],
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "^3.4.0",
+    "@vue/cli-plugin-eslint": "^3.4.0",
+    "@vue/cli-service": "^3.4.0",
+    "admincraft": "^0.10.6",
+    "admincraft-ui": "^0.2.0-alpha",
+    "babel-eslint": "^10.0.1",
+    "copy-webpack-plugin": "^5.0.0",
+    "eslint": "^5.8.0",
+    "eslint-plugin-vue": "^5.0.0",
+    "html-webpack-include-assets-plugin": "^1.0.7",
+    "stylus": "^0.54.5",
+    "stylus-loader": "^3.0.2",
+    "vue": "^2.6.14",
+    "vue-template-compiler": "^2.6.14"
+  }
+}
