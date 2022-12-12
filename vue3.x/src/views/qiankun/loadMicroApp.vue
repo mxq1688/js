@@ -1,7 +1,10 @@
 <template>
     <div>
-        <div>
+        <div style="display:flex;flex-flow:column nowrap">
             memememememm
+            <router-link to="/loadMicroApp/myPerson">qiankun myPerson</router-link>
+            <router-link to="/loadMicroApp/myPlan">qiankun myPlan</router-link>
+
         </div>
         <div ref="containerRef" />
     </div>
@@ -14,9 +17,8 @@ export default {
     mounted() {
         this.microApp = loadMicroApp({
             name: 'yuan365',
-            entry: 'http://localhost:8080/',
+            entry: 'http://localhost:8080',
             container: this.$refs.containerRef,
-            activeRule: '/help',
             props: {
                 baseApp: 'wetaman365'
             }

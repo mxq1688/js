@@ -1,6 +1,6 @@
 <template>
     <div>
-        加载子应用
+        子应用
         <div id="yuan365"></div>
     </div>
 </template>
@@ -9,10 +9,10 @@ import { start } from 'qiankun'
 export default {
     name: 'qiankun',
     mounted() {
-        if (!window.qiankunStarted) {
-            window.qiankunStarted = true;
-            start();
-        }
+        // if (!window.qiankunStarted) {
+        //     window.qiankunStarted = true;
+        //     start();
+        // }
     }
 }
 </script>

@@ -14,7 +14,7 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import('@/views/myPage/index.vue')
       },
       {
-        path: '/mxq/qiankun/:page*',
+        path: '/qiankun/:page*',
         name: 'qiankun',
         component: () => import(/* webpackChunkName: "about" */ '../views/qiankun/index.vue')
       },
@@ -27,7 +27,7 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import(/* webpackChunkName: "about" */ '../views/Study.vue')
   },
   {
-    path: '/loadMicroApp',
+    path: '/loadMicroApp/:page*',
     name: 'loadMicroApp',
     component: () => import(/* webpackChunkName: "about" */ '../views/qiankun/loadMicroApp.vue')
   },
