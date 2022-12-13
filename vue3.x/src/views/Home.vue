@@ -14,6 +14,8 @@
 
       <router-link to="/qiankun/yuan365/myPerson">qiankun myPerson</router-link>
       <router-link to="/qiankun/yuan365/myPlan">qiankun myPlan</router-link>
+      <a @click="jump2('/qiankun/yuan365/myPerson')" data-v-fae5bece="">myPerson</a>
+      <a @click="jump2('/qiankun/yuan365/myPlan')" data-v-fae5bece="">myPlan</a>
 
       <router-link to="/loadMicroApp/myPlan">qiankun loadMicroApp myPlan</router-link>
 
@@ -33,6 +35,10 @@ import microApp from '@micro-zoe/micro-app'
   methods:{
     jump(path:any){
       window.history.pushState(history.state, '', '#/my-page'+path)
+      window.dispatchEvent(new PopStateEvent('popstate', { state: history.state }))
+    },
+    jump2(path:any){
+      window.history.pushState(history.state, '', '#'+path)
       window.dispatchEvent(new PopStateEvent('popstate', { state: history.state }))
     }
   }

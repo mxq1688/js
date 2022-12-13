@@ -14,7 +14,7 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import('@/views/myPage/index.vue')
       },
       {
-        path: '/qiankun/:page*',
+        path: '/qiankun/yuan365/:page*',
         name: 'qiankun',
         component: () => import(/* webpackChunkName: "about" */ '../views/qiankun/index.vue')
       },

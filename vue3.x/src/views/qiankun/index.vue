@@ -9,10 +9,11 @@ import { start } from 'qiankun'
 export default {
     name: 'qiankun',
     mounted() {
-        // if (!window.qiankunStarted) {
-        //     window.qiankunStarted = true;
-        //     start();
-        // }
+        console.log('window.qiankunStarted',window.qiankunStarted);
+        if (!window.qiankunStarted) {
+            window.qiankunStarted = true;
+            start();
+        }
     }
 }
 </script>

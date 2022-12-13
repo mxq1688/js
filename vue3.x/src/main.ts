@@ -27,7 +27,10 @@ registerMicroApps([
     },
   ]);
   
-start();
+start({
+  prefetch: 'all',
+  singular: false
+});
 
 const app = createApp(App)
 app.use(store).use(router).mount('#app')

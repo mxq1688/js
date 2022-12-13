@@ -1,7 +1,7 @@
 <template>
     <div>
         <div style="display:flex;flex-flow:column nowrap">
-            memememememm
+            loadMicroApp方式加载
             <router-link to="/loadMicroApp/myPerson">qiankun myPerson</router-link>
             <router-link to="/loadMicroApp/myPlan">qiankun myPlan</router-link>
 
