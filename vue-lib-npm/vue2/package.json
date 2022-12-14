@@ -1,8 +1,8 @@
 {
-  "name": "mem-toast",
-  "version": "0.1.0",
+  "name": "vcolorpicker",
+  "version": "0.0.3",
   "private": false,
-  "main": "lib/mtoast.umd.js",
+  "main": "lib/vcolorpicker.umd.js",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
