@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .btn ul {
+        list-style: none;
+      }
+      .btn ul li {
+        float: left;
+        margin-left: 20px;
+      }
+    </style>
+  </head>
+  <body style="background: url(https://mobvoi-digitalhuman-public.cn-bj.ufileos.com/FOLDER/image/generation/2023-01-03/1610159702345338881.png) no-repeat;background-size: 600px 300px;">
+    <div>
+      <canvas
+        class="board"
+        width="600px"
+        height="300px"
+        style="border: 1px solid grey"
+      ></canvas>
+      <div class="btn">
+        <ul>
+          <li>
+            <button class="pen">画笔</button>
+          </li>
+          <li>
+            <button class="earse">橡皮擦</button>
+          </li>
+          <li>
+            <button class="pre">上一步</button>
+          </li>
+          <li>
+            <button class="next">下一步</button>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+
+    <script>
+      var width = $('.board').width() //获取画布的宽
+      var height = $('.board').height() //获取画布的高
+      var left = $('.board').offset().left //获取画布的左偏移
+      var top = $('.board').offset().top //获取画布的上偏移
+      var imgList = [] //用于存储历史记录的数组
+      var step = -1 //记录的步数
+      var $board = $('.board')[0]
+      var ctx = $board.getContext('2d')
+      var earseFalse = false
+      var flag = false //标记当前这一步是否结束
+      // ctx.strokeStyle = 'red'  //设置画笔的颜色
+      ctx.lineWidth = '5' //设置画笔的粗细
+      window.onload = function () {
+        // 当点击笔时，将画笔颜色置为红色，开始作画
+        $('.pen').click(function () {
+          ctx.globalCompositeOperation = 'source-over' //globalCompositeOperation的默认。在目标图像上显示源图像。
+          ctx.lineWidth = '5'
+
+          // ctx.globalCompositeOperation="none";
+          ctx.strokeStyle = 'black'
+        })
+        // 当点击橡皮擦时，将画笔颜色置为白色，开始擦除
+        $('.earse').click(function () {
+          ctx.globalCompositeOperation = 'destination-out' //在源图像外显示目标图像。只有源图像外的目标图像部分会被显示，源图像是透明的。
+
+          ctx.strokeStyle = 'white'
+          // earseFalse = true
+          ctx.lineWidth = '20'
+        })
+        // 作画时鼠标按下，记录起始坐标
+        $('.board').mousedown(function (e) {
+          // if(earseFalse){
+          // clearCanvas() //清空画布
+          // var img = new Image()
+          // img.src = imgList[step]
+          // img.οnlοad= function(){ctx.drawImage(img,0,0)}
+          // }
+          // console.log(e)
+          flag = true
+          ctx.beginPath()
+          ctx.moveTo(e.clientX - left, e.clientY.top)
+        })
+        // 鼠标移动过程中，使用stroke连点成线
+        $('.board').mousemove(function (e) {
+          if (flag) {
+            ctx.lineTo(e.clientX - 1, e.clientY - 1)
+            ctx.stroke()
+          }
+        })
+        // 鼠标释放，关闭绘画路径
+        $('.board').mouseup(function (e) {
+          ctx.closePath()
+          history() //当绘画结束时，调用history，保存这一步的历史记录
+          flag = false
+        })
+        // 返回上一操作
+        $('.pre').click(function () {
+          if (step >= 0) {
+            step--
+            clearCanvas() //清空画布
+            var img = new Image()
+            img.src = imgList[step]
+            img.onload = function () {
+              ctx.drawImage(img, 0, 0)
+            } //从数组中调取历史记录，进行重绘
+          } else {
+            alert('没有上一步了')
+          }
+        })
+        // 下一步
+        $('.next').click(function () {
+          if (step < imgList.length - 1) {
+            step++
+            clearCanvas() //清空画布
+            var img = new Image()
+            img.src = imgList[step]
+            img.onload = function () {
+              ctx.drawImage(img, 0, 0)
+            } //重绘
+          } else {
+            alert('没有下一步了')
+          }
+        })
+        // 清空画板
+        function clearCanvas() {
+          $('.board').attr('height', height) //重新设置高度，来清空画板
+        }
+        // 保存历史记录
+        function history() {
+          step++
+          if (step < imgList.length) {
+            imgList.length = step
+          }
+          imgList.push($('.board').get(0).toDataURL())
+        }
+      }
+    </script>
+  </body>
+</html>

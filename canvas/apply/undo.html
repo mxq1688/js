@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      body {
+        background: #434343;
+        display: flex;
+        flex-direction: row;
+      }
+      #can {
+        background: #fff;
+      }
+      .btns {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      #rangeValue {
+        width: 60px;
+      }
+      .btn {
+        width: 60px;
+        height: 30px;
+        background: #ccc;
+        border-radius: 4px;
+        text-align: center;
+        line-height: 30px;
+        margin: 20px;
+      }
+      .btn:hover,
+      .color-box:hover,
+      .color-ipt:hover {
+        cursor: pointer;
+      }
+      #saveImg {
+        width: 200px;
+        height: 200px;
+      }
+      .img-bg {
+        margin: 50px;
+      }
+      .color-box {
+        display: flex;
+        flex-direction: row;
+        margin: 20px;
+      }
+      .color-div {
+        width: 20px;
+        height: 20px;
+        margin-right: 10px;
+        border: 1px solid #fff;
+      }
+    </style>
+  </head>
+  <body>
+    <!--左侧按钮-->
+    <div class="btns">
+      <p style="color: #fff; font-size: 14px">画笔/橡皮擦粗细:</p>
+      <input
+        type="range"
+        max="20"
+        min="1"
+        onchange="changeWidth()"
+        value="1"
+        id="rangeIpt"
+      />
+      <input type="text" id="rangeValue" value="1" />
+      <p style="color: #fff; font-size: 14px">画笔颜色:</p>
+      <div class="color-box">
+        <div
+          class="color-div"
+          style="background: rgb(255, 165, 0)"
+          onclick="draw('rgb(255,165,0)')"
+        ></div>
+        <div
+          class="color-div"
+          style="background: #000"
+          onclick="draw('#000')"
+        ></div>
+        <div
+          class="color-div"
+          style="background: rgb(255, 0, 0)"
+          onclick="draw('rgb(255,0,0)')"
+        ></div>
+        <div
+          class="color-div"
+          style="background: rgb(0, 128, 0)"
+          onclick="draw('rgb(0,128,0)')"
+        ></div>
+      </div>
+      <div class="btn" onclick="clearAll()">清空</div>
+      <div class="btn" onclick="clearSome()">橡皮</div>
+      <div class="btn" onclick="back()" id="back">撤销</div>
+      <div class="btn" onclick="save()">保存</div>
+    </div>
+    <!--画布-->
+    <canvas width="500px" height="500px" id="can"></canvas>
+    <!-- 生成的图片-->
+    <div class="img-bg">
+      <img src="" alt="" id="saveImg" />
+    </div>
+
+    <script>
+      let canvas = document.getElementById('can')
+      let ctx = canvas.getContext('2d')
+
+      // 先画一个和画布同样大小的矩形，在保存时可有背景颜色
+      ctx.fillStyle = '#fff'
+      ctx.fillRect(0, 0, canvas.width, canvas.height)
+      let textColor = '#000' // 画笔初始颜色为黑色
+      let imgs = []
+
+      // 撤销按钮的样式状态
+      let backFlag = false
+      document.getElementById('back').style.background = '#999'
+
+      let points = []
+      let beginPoint = null
+
+      // 画笔动作
+      function pen(color) {
+        canvas.onmousedown = function (e) {
+          let x = e.pageX - canvas.offsetLeft
+          let y = e.pageY - canvas.offsetTop
+          points.push({ x, y })
+          beginPoint = { x, y }
+          backFlag = true
+          document.getElementById('back').style.background = '#ccc'
+
+          document.onmousemove = function (e) {
+            let x = e.pageX - canvas.offsetLeft
+            let y = e.pageY - canvas.offsetTop
+            ctx.strokeStyle = color
+
+            // 使用贝塞尔曲线画出圆滑的曲线
+            points.push({ x, y })
+            if (points.length > 3) {
+              const lastTwoPoints = points.slice(-2)
+              const controlPoint = lastTwoPoints[0]
+              const endPoint = {
+                x: (lastTwoPoints[0].x + lastTwoPoints[1].x) / 2,
+                y: (lastTwoPoints[0].y + lastTwoPoints[1].y) / 2
+              }
+              drawLine(beginPoint, controlPoint, endPoint)
+              beginPoint = endPoint
+            }
+          }
+
+          // 将每一个画笔动作存入imgs，用于撤销
+          let obj = ctx.getImageData(0, 0, canvas.width, canvas.height)
+          imgs.push(obj)
+        }
+        document.onmouseup = function () {
+          ctx.closePath()
+          document.onmousemove = null
+        }
+      }
+      function drawLine(beginPoint, controlPoint, endPoint) {
+        ctx.beginPath()
+        ctx.moveTo(beginPoint.x, beginPoint.y)
+        ctx.quadraticCurveTo(
+          controlPoint.x,
+          controlPoint.y,
+          endPoint.x,
+          endPoint.y
+        )
+        ctx.stroke()
+      }
+      pen(textColor)
+      // 改变画笔/橡皮擦粗细
+      function changeWidth() {
+        let w = (document.getElementById('rangeValue').value =
+          document.getElementById('rangeIpt').value)
+        ctx.lineWidth = w
+      }
+      // 清空画布
+      function clearAll() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height)
+        // 清空画布后重新画一个和画布同样大小的矩形，在保存时可有背景颜色
+        ctx.fillStyle = '#fff'
+        ctx.fillRect(0, 0, canvas.width, canvas.height)
+        document.getElementById('back').style.background = '#999'
+        backFlag = false
+      }
+      // 橡皮擦，将画笔变成白色（背景颜色）
+      function clearSome() {
+        pen('#fff')
+      }
+      // 画笔颜色
+      function draw(data) {
+        pen(data)
+      }
+      // 撤销按钮，将存入的画笔动作数组删除最后一个，再重新绘制到画布上
+      function back() {
+        if (backFlag) {
+          let img = imgs.pop()
+          ctx.putImageData(img, 0, 0)
+          // 撤销按钮的样式
+          if (imgs.length > 0) {
+            document.getElementById('back').style.background = '#ccc'
+            backFlag = true
+          } else {
+            document.getElementById('back').style.background = '#999'
+            backFlag = false
+          }
+        }
+      }
+      // 将画布存储为图片显示在页面
+      function save() {
+        document.getElementById('saveImg').src = canvas.toDataURL()
+      }
+    </script>
+  </body>
+</html>

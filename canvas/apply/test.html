@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+
+  <body>
+    <canvas
+      id="myCanvas"
+      width="800"
+      height="500"
+      style="border: 1px solid #c3c3c3"
+    >
+      Your browser does not support the canvas element.
+    </canvas>
+    <div class="tool-bar">
+      <button onclick="clearDrawer()">重画</button>
+      <button onclick="handleSaveDataUrl()">保存为DataUrl</button>
+      <button onclick="handleSaveBlob()">保存为Blob</button>
+      <button onclick="handleDownload()">保存到本地</button>
+      <button onclick="insert()">插入图片</button>
+      <button onclick="insertPath()">插入路径</button>
+      <button onclick="insertPath2()">插入路径2</button>
+    </div>
+    <!-- <img src="https://mobvoi-digitalhuman-public.cn-bj.ufileos.com/FOLDER/image/generation/2023-01-03/1610159702345338881.png" alt=""> -->
+  </body>
+  <script type="text/javascript">
+    var x = 0
+    var y = 0
+
+    var c = document.getElementById('myCanvas')
+    var ctx = c.getContext('2d')
+
+    setTimeout(() => {
+      console.log(c.style.cursor, 111)
+      const img = new Image()
+      img.setAttribute('crossOrigin', 'anonymous');
+      img.src = 'https://mobvoi-digitalhuman-public.cn-bj.ufileos.com/FOLDER/image/generation/2023-01-03/1610159702345338881.png'
+      // var img = document.getElementById('tulip')
+      // img.setAttribute("crossOrigin",'Anonymous')
+      img.onload = function(){//图片加载完，再draw 和 toDataURL
+        ctx.drawImage(img, 0, 0, 800, 500)
+      }
+    }, 100)
+
+    c.onmousedown = function (e) {
+      x = (e.clientX - 8)
+      y = e.clientY - 8
+      console.log(x, y);
+      c.onmousemove = function (e) {
+        var newX = e.clientX - 8
+        var newY = e.clientY - 8
+        ctx.beginPath();
+        ctx.strokeStyle="black";
+        ctx.lineWidth = 28
+        ctx.moveTo(x, y)
+        ctx.lineTo(newX, newY)
+        console.log(x, y, newX, newY);
+        ctx.closePath();
+        ctx.stroke()
+
+
+        x = newX
+        y = newY
+      }
+    }
+
+    c.onmouseout = function (e) {
+      // 鼠标移出绘图区域停止绘图
+      c.onmousemove = null
+    }
+
+    c.onmouseup = function (e) {
+      // 鼠标按键松开停止绘图
+      c.onmousemove = null
+    }
+
+    function clearDrawer() {
+      // 当 canvas 的高度或宽度被重设时，画布内容就会被清空
+      c.height = c.height
+    }
+
+    // 鉴于 imageData 的内存开销比较大，撤销功能先不做了
+    // function savaPath() {
+    //     imageData = ctx.getImageData(0,0,c.width,c.height);
+    // }
+
+    // function goBack() {
+    //     if (!imageData) return
+    //     ctx.putImageData(imageData,0,0);
+    // }
+
+    function handleSaveDataUrl() {
+      console.log(c.toDataURL())
+      // 调用接口将Base64字符串传给后台
+    }
+
+    function handleSaveBlob() {
+      c.toBlob((blob) => {
+        console.log(blob)
+        // 调用接口将二进制文件流传给后台
+        // 注意请求头的Content-type: application/octet-stream
+      })
+    }
+
+    function handleDownload() {
+      let time = new Date().getTime()
+      c.toBlob((blob) => {
+        let objectUrl = URL.createObjectURL(blob)
+        let a = document.createElement('a')
+        a.href = objectUrl
+        a.download = `测试下载-${time}.png`
+        document.body.appendChild(a)
+        a.click()
+        // URL.revokeObjectURL(objectUrl);
+        a.remove()
+      })
+    }
+
+    function insert() {
+      ctx.fillStyle = getOpacityColor('blue' ,1)
+      ctx.fillRect(0, 0, c.width, c.height)
+    }
+    function insertPath(){
+      
+      ctx.beginPath();
+      ctx.lineWidth="5";
+      ctx.strokeStyle="red"; // 红色路径
+      ctx.moveTo(0,75);
+      ctx.lineTo(250,75);
+      ctx.stroke(); // 进行绘制
+
+      ctx.beginPath();
+      ctx.strokeStyle="blue"; // 蓝色路径
+      ctx.moveTo(50,0);
+      ctx.lineTo(150,130);
+      ctx.stroke(); // 进行绘制
+    }
+    function insertPath2(){
+      ctx.beginPath();
+      ctx.moveTo(160, 250);
+      ctx.lineTo(160, 70);
+      ctx.lineTo(260, 250);
+      ctx.closePath();
+      ctx.stroke();
+    }
+    function getOpacityColor(thisColor, thisOpacity) {
+      if (!thisColor) {
+        return 'transparent'
+      }
+      var theColor = thisColor.toLowerCase()
+      //十六进制颜色值的正则表达式
+      var r = /^#([0-9a-fA-f]{3}|[0-9a-fA-f]{6})$/
+      // 如果是16进制颜色
+      if (theColor && r.test(theColor)) {
+        if (theColor.length === 4) {
+          var sColorNew = '#'
+          for (var i = 1; i < 4; i += 1) {
+            sColorNew += theColor
+              .slice(i, i + 1)
+              .concat(theColor.slice(i, i + 1))
+          }
+          theColor = sColorNew
+        }
+        //处理六位的颜色值
+        var sColorChange = []
+        for (var j = 1; j < 7; j += 2) {
+          sColorChange.push(parseInt('0x' + theColor.slice(j, j + 2)))
+        }
+        return 'rgba(' + sColorChange.join(',') + ',' + thisOpacity + ')'
+      }
+      // 如果是rgba或者rgb
+      if (theColor.startsWith('rgb')) {
+        let numbers = theColor.match(/(\d(\.\d+)?)+/g)
+        numbers = numbers.slice(0, 3).concat(thisOpacity)
+        return 'rgba(' + numbers.join(',') + ')'
+      }
+
+      return theColor
+    }
+  
+  </script>
+</html>
