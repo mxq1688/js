@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>橡皮擦功能</title>
+    <style>
+      body {
+        background: #eeeeee;
+      }
+      #controls {
+        position: absolute;
+        left: 25px;
+        top: 25px;
+      }
+      #canvas {
+        background: #ffffff;
+        cursor: pointer;
+        margin-left: 10px;
+        margin-top: 10px;
+        -webkit-box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.5);
+        -moz-box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.5);
+        box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.5);
+      }
+    </style>
+  </head>
+  <body>
+    <div id="controls">
+      描边颜色:
+      <select id="strokeStyleSelect">
+        <option value="red">red</option>
+        <option value="green">green</option>
+        <option value="blue">blue</option>
+        <option value="orange">orange</option>
+        <option value="cornflowerblue">cornflowerblue</option>
+        <option value="goldenrod">goldenrod</option>
+        <option value="navy" selected>navy</option>
+        <option value="purple">purple</option>
+        <option value="purple">purple</option>
+      </select>
+      填充颜色:
+      <select id="fillStyleSelect">
+        <option value="rgba(255,0,0,0.5)">semi-transparent red</option>
+        <option value="green">green</option>
+        <option value="rgba(0,0,255,0.5)">semi-transparent blue</option>
+        <option value="orange">orange</option>
+        <option value="rgba(100,140,230,0.5)">
+          semi-transparent cornflowerblue
+        </option>
+        <option value="goldenrod" selected>goldenrod</option>
+        <option value="navy">navy</option>
+        <option value="purple">purple</option>
+      </select>
+      画图
+      <input id="drawRadio" name="drawEraserRadios" type="radio" checked />
+      橡皮擦
+      <input id="eraserRadio" name="drawEraserRadios" type="radio" />
+      橡皮擦形状:
+      <select id="eraserShapeSelect">
+        <option value="circle">circle</option>
+        <option value="square">square</option>
+      </select>
+      橡皮擦大小
+      <select id="eraserWidthSelect">
+        <option value="25">25</option>
+        <option value="50">50</option>
+        <option value="75">75</option>
+        <option value="100">100</option>
+        <option value="125">125</option>
+        <option value="150">150</option>
+        <option value="175">175</option>
+        <option value="200">200</option>
+      </select>
+    </div>
+    <canvas id="canvas" width="950" height="500"></canvas>
+    <script>
+      var canvas = document.getElementById('canvas'),
+        context = canvas.getContext('2d'),
+        //绘图描边颜色
+        strokeStyleSelect = document.getElementById('strokeStyleSelect'),
+        //绘图填充颜色
+        fillStyleSelect = document.getElementById('fillStyleSelect'),
+        //绘图按钮
+        drawRadio = document.getElementById('drawRadio'),
+        //橡皮擦按钮
+        eraserRadio = document.getElementById('eraserRadio'),
+        //橡皮擦形状
+        eraserShapeSelect = document.getElementById('eraserShapeSelect'),
+        //橡皮擦大小
+        eraserWidthSelect = document.getElementById('eraserWidthSelect'),
+        ERASER_LINE_WIDTH = 1,
+        ERASER_SHADOW_COLOR = 'rgb(0,0,0)',
+        ERASER_SHADOW_STYLE = 'blue',
+        ERASER_STROKE_STYLE = 'rgb(0,0,255)',
+        ERASER_SHADOW_OFFSET = -5,
+        EARSER_SHADOW_BLUR = 20,
+        GRID_HORIZONTAL_SPACING = 10,
+        GRID_VERTICAL_SPACING = 10,
+        GRID_LINE_COLOR = 'lightblue',
+        drawingSurfaceImageData,
+        lastX,
+        lastY,
+        mousedown = {},
+        rubberbandRect = {},
+        dragging = false,
+        guidewires = true
+
+      //填充橡皮擦
+      function drawGrid(color, stepx, stepy) {
+        context.save()
+
+        context.strokeStyle = color
+        context.fillStyle = '#ffffff'
+        context.lineWidth = 0.5
+        context.fillRect(0, 0, context.canvas.width, context.canvas.height)
+
+        for (var i = stepx + 0.5; i < context.canvas.width; i += stepx) {
+          context.beginPath()
+          context.moveTo(i, 0)
+          context.lineTo(i, context.canvas.height)
+          context.stroke()
+        }
+
+        for (var i = stepy + 0.5; i < context.canvas.height; i += stepy) {
+          context.beginPath()
+          context.moveTo(0, i)
+          context.lineTo(context.canvas.width, i)
+          context.stroke()
+        }
+
+        context.restore()
+      }
+      //捕捉鼠标点在canvas上的坐标
+      function windowToCanvas(x, y) {
+        var bbox = canvas.getBoundingClientRect()
+        console.log(canvas.width,bbox.width, 111);
+        return {
+          x: x - bbox.left * (canvas.width / bbox.width),
+          y: y - bbox.top * (canvas.height / bbox.height)
+        }
+      }
+      //初始化读取画布信息并储存
+      function saveDrawingSurface() {
+        drawingSurfaceImageData = context.getImageData(
+          0,
+          0,
+          canvas.width,
+          canvas.height
+        )
+      }
+      //读取画布信息
+      function restoreDrawingSurface() {
+        context.putImageData(drawingSurfaceImageData, 0, 0)
+      }
+      function updateRubberbandRectangle(loc) {
+        rubberbandRect.width = Math.abs(loc.x - mousedown.x)
+        rubberbandRect.height = Math.abs(loc.y - mousedown.y)
+
+        if (loc.x > mousedown.x) rubberbandRect.left = mousedown.x
+        else rubberbandRect.left = loc.x
+
+        if (loc.y > mousedown.y) rubberbandRect.top = mousedown.y
+        else rubberbandRect.top = loc.y
+      }
+
+      function drawRubberbandShape(loc) {
+        var angle = Math.atan(rubberbandRect.height / rubberbandRect.width),
+          radius = rubberbandRect.height / Math.sin(angle)
+
+        if (mousedown.y === loc.y) {
+          radius = Math.abs(loc.x - mousedown.x)
+        }
+
+        context.beginPath()
+        context.arc(mousedown.x, mousedown.y, radius, 0, Math.PI * 2, false)
+        context.stroke()
+        context.fill()
+      }
+      function updateRubberband(loc) {
+        updateRubberbandRectangle(loc)
+        drawRubberbandShape(loc)
+      }
+      // Guidewires....................................................
+
+      function drawHorizontalLine(y) {
+        context.beginPath()
+        context.moveTo(0, y + 0.5)
+        context.lineTo(context.canvas.width, y + 0.5)
+        context.stroke()
+      }
+
+      function drawVerticalLine(x) {
+        context.beginPath()
+        context.moveTo(x + 0.5, 0)
+        context.lineTo(x + 0.5, context.canvas.height)
+        context.stroke()
+      }
+
+      function drawGuidewires(x, y) {
+        context.save()
+        context.strokeStyle = 'rgba(0,0,230,0.4)'
+        context.lineWidth = 0.5
+        drawVerticalLine(x)
+        drawHorizontalLine(y)
+        context.restore()
+      }
+      //橡皮擦。矩形擦和圆形擦
+      function setDrawPathForEraser(loc) {
+        var eraserWidth = parseFloat(eraserWidthSelect.value)
+        context.beginPath()
+
+        if (eraserShapeSelect.value === 'circle') {
+          context.arc(loc.x, loc.y, eraserWidth / 2, 0, Math.PI * 2, false)
+        } else {
+          context.rect(
+            loc.x - eraserWidth / 2,
+            loc.y - eraserWidth / 2,
+            eraserWidth,
+            eraserWidth
+          )
+        }
+        context.clip()
+      }
+      function setErasePathForEraser() {
+        var eraserWidth = parseFloat(eraserWidthSelect.value)
+
+        context.beginPath()
+
+        if (eraserShapeSelect.value === 'circle') {
+          context.arc(
+            lastX,
+            lastY,
+            eraserWidth / 2 + ERASER_LINE_WIDTH,
+            0,
+            Math.PI * 2,
+            false
+          )
+        } else {
+          context.rect(
+            lastX - eraserWidth / 2 - ERASER_LINE_WIDTH,
+            lastY - eraserWidth / 2 - ERASER_LINE_WIDTH,
+            eraserWidth + ERASER_LINE_WIDTH * 2,
+            eraserWidth + ERASER_LINE_WIDTH * 2
+          )
+        }
+        context.clip()
+      }
+      function setEraseAttributes() {
+        context.lineWidth = ERASER_LINE_WIDTH
+        context.shadowColor = ERASER_SHADOW_STYLE
+        context.shadowOffsetX = ERASER_SHADOW_OFFSET
+        context.shadowOffsetY = ERASER_SHADOW_OFFSET
+        context.shadowBlur = EARSER_SHADOW_BLUR
+        context.strokeStyle = ERASER_STROKE_STYLE
+      }
+      function eraseLast() {
+        context.save()
+
+        setErasePathForEraser()
+        drawGrid(
+          GRID_LINE_COLOR,
+          GRID_HORIZONTAL_SPACING,
+          GRID_VERTICAL_SPACING
+        )
+        context.restore()
+      }
+      function drawEraser(loc) {
+        context.save()
+
+        setEraseAttributes()
+        setDrawPathForEraser(loc)
+        context.stroke()
+        context.restore()
+      }
+
+      //Canvas event handlers..................................
+
+      canvas.onmousedown = function (e) {
+        var loc = windowToCanvas(e.clientX, e.clientY)
+
+        e.preventDefault()
+        if (drawRadio.checked) {
+          saveDrawingSurface()
+        }
+        mousedown.x = loc.x
+        mousedown.y = loc.y
+        lastX = loc.x
+        lastY = loc.y
+        dragging = true
+      }
+      //画图状态和橡皮状态切换
+      canvas.onmousemove = function (e) {
+        var loc
+        if (dragging) {
+          e.preventDefault()
+
+          loc = windowToCanvas(e.clientX, e.clientY)
+
+          if (drawRadio.checked) {
+            restoreDrawingSurface()
+            updateRubberband(loc)
+            if (guidewires) {
+              drawGuidewires(loc.x, loc.y)
+            }
+          } else {
+            eraseLast()
+            drawEraser(loc)
+          }
+          lastX = loc.x
+          lastY = loc.y
+        }
+      }
+      canvas.onmouseup = function (e) {
+        loc = windowToCanvas(e.clientX, e.clientY)
+
+        if (drawRadio.checked) {
+          restoreDrawingSurface()
+          updateRubberband(loc)
+        }
+        if (eraserRadio.checked) {
+          eraseLast()
+        }
+        dragging = false
+      }
+      strokeStyleSelect.onchange = function (e) {
+        context.strokeStyle = strokeStyleSelect.value
+      }
+      fillStyleSelect.onchange = function (e) {
+        context.fillStyle = fillStyleSelect.value
+      }
+
+      //Initialization.....................................
+      context.strokeStyle = strokeStyleSelect.value
+      context.fillStyle = fillStyleSelect.value
+      drawGrid(GRID_LINE_COLOR, GRID_HORIZONTAL_SPACING, GRID_VERTICAL_SPACING)
+    </script>
+  </body>
+</html>
