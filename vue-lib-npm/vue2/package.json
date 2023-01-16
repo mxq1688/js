@@ -1,6 +1,6 @@
 {
   "name": "vcolorpicker",
-  "version": "0.0.4",
+  "version": "0.0.1",
   "private": false,
   "main": "lib/vcolorpicker.umd.js",
   "scripts": {

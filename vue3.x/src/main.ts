@@ -17,6 +17,7 @@ import { registerMicroApps, start } from 'qiankun';
 registerMicroApps([
     {
       name: 'yuan365', // app name registered
+      // entry: '//localhost:8080/',
       entry: '//localhost:8080/',
       container: '#yuan365',
       activeRule: '#/qiankun/yuan365',
