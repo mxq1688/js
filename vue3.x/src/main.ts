@@ -4,14 +4,17 @@ import router from './router'
 import store from './store'
 
 // import EelmentPlus from 'element-plus'
+const app = createApp(App)
 
+/* microApp start*/
+import microApp from '@micro-zoe/micro-app'
+microApp.start()
 // microApp.preFetch([
 //     { name: 'app1', url: 'http://localhost:8080/' }
 //   ])  
+/* microApp end*/
 
-import microApp from '@micro-zoe/micro-app'
-microApp.start()
-
+/* 乾坤 start */
 import { registerMicroApps, start } from 'qiankun';
 
 registerMicroApps([
@@ -33,5 +36,29 @@ start({
   singular: false
 });
 
-const app = createApp(App)
+/* 乾坤 end */
+
+/* wujie start*/
+// import { bus, setupApp, preloadApp, startApp, destroyApp } from "wujie";
+// // setupApp({ name: "yuan365", url: "http://localhost:8080", exec: true, el: "#app", sync: true })
+
+// // preloadApp({ name: "唯一id"});
+// startApp({ name: "yuan365", url: "http://localhost:8080", el: "#app", sync: true  })
+
+import WujieVue from "wujie-vue3";
+
+const { setupApp, preloadApp, bus } = WujieVue;
+app.use(WujieVue)
+
+// setupApp({
+//   name: "yuan365",
+//   url: "http://localhost:8080/",
+//   exec: true,
+// });
+/* wujie end*/
+
+
+
+
+
 app.use(store).use(router).mount('#app')

@@ -5,6 +5,8 @@
     </div>
     <div style="display:flex;flex-flow:column nowrap">
       <router-link to="/study">vue3 study</router-link>
+
+      <!-- micro-app -->
       <router-link to="/my-page/">进入子应用</router-link>
       <router-link to="/my-page/myPerson">进入子应用 myPerson</router-link>
       <router-link to="/my-page/myPlan">进入子应用 myPlan</router-link>
@@ -12,12 +14,21 @@
       <a @click="jump('/myPerson')" data-v-fae5bece="">myPerson</a>
       <a @click="jump('/myPlan')" data-v-fae5bece="">myPlan</a>
 
+      <!-- 乾坤 -->
+      <router-link to="/qiankun/yuan365/">qiankun 进入子应用</router-link>
       <router-link to="/qiankun/yuan365/myPerson">qiankun myPerson</router-link>
       <router-link to="/qiankun/yuan365/myPlan">qiankun myPlan</router-link>
       <a @click="jump2('/qiankun/yuan365/myPerson')" data-v-fae5bece="">myPerson</a>
       <a @click="jump2('/qiankun/yuan365/myPlan')" data-v-fae5bece="">myPlan</a>
 
       <router-link to="/loadMicroApp/myPlan">qiankun loadMicroApp myPlan</router-link>
+
+      <!-- wujie -->
+      <router-link to="/wujie/">wujie 进入子应用</router-link>
+      <router-link to="/wujie/myPerson">wujie myPerson</router-link>
+      <router-link to="/wujie/myPlan">wujie myPlan</router-link>
+      <a @click="jump3('/wujie/myPerson')" data-v-fae5bece="">myPerson</a>
+      <a @click="jump3('/wujie/myPlan')" data-v-fae5bece="">myPlan</a>
 
     </div>
     <div class="child">
@@ -38,6 +49,10 @@ import microApp from '@micro-zoe/micro-app'
       window.dispatchEvent(new PopStateEvent('popstate', { state: history.state }))
     },
     jump2(path:any){
+      window.history.pushState(history.state, '', '#'+path)
+      window.dispatchEvent(new PopStateEvent('popstate', { state: history.state }))
+    },
+    jump3(path:any){
       window.history.pushState(history.state, '', '#'+path)
       window.dispatchEvent(new PopStateEvent('popstate', { state: history.state }))
     }

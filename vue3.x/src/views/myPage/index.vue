@@ -9,13 +9,14 @@
       <div @click="jump">
         跳转测试
       </div>
+      <!-- shadowDOM默认false -->
       <micro-app
         @mounted="loadEnd"
         name="diyFace"
-        url="http://117.50.60.12/"
+        url="http://localhost:8080/"
         baseroute="#/my-page"
         @datachange='handleDataChange'
-        :shadowDOM='false'
+        :shadowDOM='false' 
       ></micro-app>
     </div>
 </template>

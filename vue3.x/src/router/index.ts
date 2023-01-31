@@ -32,6 +32,13 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import(/* webpackChunkName: "about" */ '../views/qiankun/loadMicroApp.vue')
   },
 
+  {
+    path: '/wujie/:page*',
+    name: 'wujie',
+    component: () => import(/* webpackChunkName: "about" */ '../views/wujie/index.vue')
+  },
+
+
 
 ]
 
