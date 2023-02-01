@@ -5,9 +5,10 @@
         width="100%"
         height="768px"
         name="yuan365"
-        url="http://localhost:8080/"
+        url="http://localhost:8080/download"
+        :sync="true"
         :props="{
-          bangToken: bangToken,
+
         }"
       ></WujieVue>
     </div>
@@ -28,7 +29,9 @@ const w:any = window
     }
   },
   mounted(){
- 
+    w.mem = '主'
+    console.log('主', window);
+    
   },
   methods: {
     jump(){
