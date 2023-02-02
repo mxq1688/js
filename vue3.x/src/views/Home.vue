@@ -25,10 +25,11 @@
 
       <!-- wujie -->
       <router-link to="/wujie/">wujie 进入子应用</router-link>
-      <router-link to="/wujie/myPerson">wujie myPerson</router-link>
-      <router-link to="/wujie/myPlan">wujie myPlan</router-link>
-      <a @click="jump3('/wujie/myPerson')" data-v-fae5bece="">myPerson</a>
-      <a @click="jump3('/wujie/myPlan')" data-v-fae5bece="">myPlan</a>
+      <router-link to="/wujie?yuan365-A=/myPerson">wujie myPerson</router-link>
+      <a @click="jump3('/wujie/')" data-v-fae5bece="">wujie 进入子应用</a>
+
+      <router-link to="/wujie2/">wujie2 进入子应用</router-link>
+      <a @click="jump3('/wujie2/')" data-v-fae5bece="">wujie2 进入子应用</a>
 
     </div>
     <div class="child">
@@ -53,7 +54,7 @@ import microApp from '@micro-zoe/micro-app'
       window.dispatchEvent(new PopStateEvent('popstate', { state: history.state }))
     },
     jump3(path:any){
-      window.history.pushState(history.state, '', '#'+path)
+      window.history.pushState(history.state, '', path)
       window.dispatchEvent(new PopStateEvent('popstate', { state: history.state }))
     }
   }

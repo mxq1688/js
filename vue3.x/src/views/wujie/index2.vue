@@ -1,12 +1,12 @@
 <template>
     <div class="wujie">
-      wujie
+      wujie2
       <WujieVue
         width="100%"
         height="768px"
-        name="yuan365-A"
-        url="http://localhost:8080"
-        :sync="true"
+        name="yuan365-B"
+        url="http://localhost:8080/help"
+        :sync="false"
         :props="{
 
         }"
@@ -18,7 +18,7 @@
 import { Options, Vue } from 'vue-class-component'
 const w:any = window
 @Options({
-  name: 'wujie',
+  name: 'wujie2',
   components: {},
   props: {},
   data() {
