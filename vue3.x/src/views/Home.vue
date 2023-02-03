@@ -25,7 +25,7 @@
 
       <!-- wujie -->
       <router-link to="/wujie/">wujie 进入子应用</router-link>
-      <router-link to="/wujie?yuan365-A=/myPerson">wujie myPerson</router-link>
+      <div @click="pushmyPerson">wujie myPerson</div>
       <a @click="jump3('/wujie/')" data-v-fae5bece="">wujie 进入子应用</a>
 
       <router-link to="/wujie2/">wujie2 进入子应用</router-link>
@@ -44,6 +44,10 @@ import microApp from '@micro-zoe/micro-app'
 @Options({
   components: {
   },
+  computed:{
+  },
+  mounted(){
+  },
   methods:{
     jump(path:any){
       window.history.pushState(history.state, '', '#/my-page'+path)
@@ -56,6 +60,29 @@ import microApp from '@micro-zoe/micro-app'
     jump3(path:any){
       window.history.pushState(history.state, '', path)
       window.dispatchEvent(new PopStateEvent('popstate', { state: history.state }))
+    },
+    pushmyPerson(){
+      let path = ''
+      /*主history 子history*/
+      // path = `/wujie?yuan365-A=/myPerson`
+      // this.$router.push(path)
+
+      /*主history 子hash*/
+      // path = `/wujie?yuan365-A=${window.encodeURIComponent('/#/myPerson')}`
+      // this.$router.push(path)
+
+      /*主hash 子hash*/
+      // const url = new URL(window.location.href);
+      // url.search = `?yuan365-A=${window.encodeURIComponent("/#/myPerson")}`
+      // // 手动的挂载url查询参数
+      // window.history.replaceState(null, "", url.href +'wujie');
+         
+      /*主hash 子history*/
+      const url = new URL(window.location.href);
+      url.search = `?yuan365-A=/myPerson`
+      // 手动的挂载url查询参数
+      window.history.replaceState(null, "", url.href +'wujie');
+         
     }
   }
 })
