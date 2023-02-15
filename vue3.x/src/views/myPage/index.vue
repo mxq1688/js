@@ -6,6 +6,8 @@
       baseroute(可选)：基座应用分配给子应用的基础路由，就是上面的 `/my-page`
      -->
     <div class='my-page'>
+      <router-link to="/my-page/myPerson">进入子应用 myPerson</router-link>
+      <router-link to="/my-page/myPlan">进入子应用 myPlan</router-link>
       <div @click="jump">
         跳转测试
       </div>

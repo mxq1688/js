@@ -4,6 +4,19 @@ function resolve(dir) {
 }
 module.exports = {
   // productionSourceMap: false,
+  // micro-app setup语法下micro-app无法使用解决
+  chainWebpack: config => {
+    config.module
+    .rule('vue')
+    .use('vue-loader')
+    .tap(options => {
+      options.compilerOptions = {
+        ...(options.compilerOptions || {}),
+        isCustomElement: (tag) => /^micro-app/.test(tag),
+      };
+      return options
+    })
+  },
   devServer: {
     open: true,
     https: false,
