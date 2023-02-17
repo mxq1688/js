@@ -14,6 +14,12 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import('@/views/myPage/index.vue')
       },
       {
+        // 👇 非严格匹配，/my-page/* 都指向 MyPage 页面
+        path: '/microApp/:page*', // vue-router@4.x path的写法为：'/my-page/:page*'
+        name: 'microApp',
+        component: () => import('@/views/myPage/index2.vue')
+      },
+      {
         path: '/qiankun/yuan365/:page*',
         name: 'qiankun',
         component: () => import(/* webpackChunkName: "about" */ '../views/qiankun/index.vue')

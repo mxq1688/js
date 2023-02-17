@@ -14,6 +14,10 @@
       <a @click="jump('/myPerson')" data-v-fae5bece="">myPerson</a>
       <a @click="jump('/myPlan')" data-v-fae5bece="">myPlan</a>
 
+      <!-- 对micro-app封装用法 -->
+      <router-link to="/microApp/myPerson">进入子应用 myPerson</router-link>
+      <router-link to="/microApp/myPlan">进入子应用 myPlan</router-link>
+
       <!-- 乾坤 -->
       <router-link to="/qiankun/yuan365/">qiankun 进入子应用</router-link>
       <router-link to="/qiankun/yuan365/myPerson">qiankun myPerson</router-link>

@@ -81,8 +81,8 @@ const w:any = window
     },
     sendData(){
       // 发送数据给子应用 my-app，setData第二个参数只接受对象类型
-      microApp.setData('app1', {
-        token: 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIiLCJwaG9uZSI6IjE4NyoqKio2MTY4IiwiaXNzIjoidXNlciIsImV4cCI6MTY3MTExNzE2MCwidXNlcklkIjoiOWNiOWU5M2ZmMDk1NGEyYWI4NjUxMGJhNWY0OWIwNTMiLCJzb3VyY2VzTm8iOjEsImlhdCI6MTY2ODU2ODM2MCwiY2hhbm5lbElkIjoiMTAwMSIsImp0aSI6IjE1OTI3MTcyNTc5NDE3MTY5OTMifQ.eg4Oj3YX8F7aOq9qstq8ETCinZLVc9yxkH1Xh8ITkbM'
+      microApp.setData('diyFace', {
+        token: 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIiLCJwaG9uZSI6IjE4NyoqKio2MTY4IiwiaXNzIjoidXNlciIsImV4cCI6MTY3OTA3Njk2MCwidXNlcklkIjoiOWNiOWU5M2ZmMDk1NGEyYWI4NjUxMGJhNWY0OWIwNTMiLCJzb3VyY2VzTm8iOjEsImlhdCI6MTY3NjUyODE2MCwiY2hhbm5lbElkIjoiMTAwMSIsImp0aSI6IjE2MjYxMDMwNzk5MzE3NDQyNTcifQ.nrPnvWCZxNYwSLSYN4At42L8VFWbFL5JNdkpUf-puI0'
       })
                 
     }
