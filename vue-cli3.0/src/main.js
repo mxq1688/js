@@ -7,6 +7,9 @@ Vue.config.productionTip = false;//设置为 false 以阻止 vue 在启动时生
 import store from '@/vuex/index'
 
 import MetaInfo from 'vue-meta-info'
+
+
+import 'element-ui/lib/theme-chalk/index.css';
 Vue.use(MetaInfo)
 
 import Toast from '@/components/Toast/index.js'

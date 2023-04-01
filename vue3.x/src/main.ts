@@ -4,6 +4,8 @@ import router from './router'
 import store from './store'
 
 // import EelmentPlus from 'element-plus'
+
+
 const app = createApp(App)
 
 /* microApp start*/
@@ -56,9 +58,6 @@ app.use(WujieVue)
 //   exec: true,
 // });
 /* wujie end*/
-
-
-
 
 
 app.use(store).use(router).mount('#app')

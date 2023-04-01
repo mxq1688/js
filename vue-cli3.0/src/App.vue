@@ -1,6 +1,7 @@
 <template>
   <div id="app">
     <div>
+      <el-button>默认按钮</el-button>
       <!--<router-link :to="..." replace>-->
       <button><router-link to="/compon">组件学习 </router-link></button>
       <button><router-link to="/dynamicc">动态组件 </router-link></button>
@@ -36,9 +37,10 @@
 </template>
 
 <script>
-
+import {Button} from 'element-ui'
 export default {
   name: 'app',
+  components: {ElButton: Button},
   render(h){
     return h('div', 123)
   },
