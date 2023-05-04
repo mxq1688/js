@@ -6,8 +6,10 @@ import axios, {
   AxiosRequestConfig
 } from 'axios'
 import useStore from '@/store/index'
+console.log('useStore111', useStore)
 import md5 from 'js-md5'
 let Store: any = useStore
+console.log('http.ts:useStore', Store)
 
 const isPrd = process.env.NODE_ENV === 'prd'
 const baseURL = '/'
@@ -56,8 +58,9 @@ export class Http {
   interceptors(): void {
     this.$axiosInstances.interceptors.request.use(
       (config: any) => {
-        // config.headers.Authorization = '0d8700856aedff483586ad81577bd418'
-        config.headers.Authorization = Store.state.userInfo.token
+        config.headers.Authorization =
+          (Store.state.userInfo.token ? 'Bearer ' : '') +
+          Store.state.userInfo.token
         // config.headers['Tico-Language'] = Store.state.language
         // config.headers['Tico-Sources-No'] = Store.state.epType.id
         // this.removePending(config)
@@ -88,7 +91,6 @@ export class Http {
         if (code === 401) {
           //登录失效 跳转登录页面
           Store.dispatch('userInfo/Logout')
-          Store.commit('userInfo/setOpenLoginPanel', true)
           window.location.reload()
         }
         // console.log('response', response, response.data)
@@ -257,7 +259,7 @@ export class Http {
           start = new Date()
           progressCallback({
             speed: parseFloat(speed), //速度 Mb/S
-            progress: progressEvent.progress, //上传进度 0-1
+            progress: progressEvent.progress * 100, //上传进度 0-1
             timeRemaining:
               speed &&
               parseFloat(((total - loaded) / 1024 / 1024 / speed).toFixed(2)) //剩余时间 S
