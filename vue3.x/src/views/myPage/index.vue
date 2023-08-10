@@ -15,7 +15,7 @@
       <micro-app
         @mounted="loadEnd"
         name="diyFace"
-        url="http://localhost:8080/"
+        url="https://yuan365.com/"
         baseroute="#/my-page"
         @datachange='handleDataChange'
         :shadowDOM='false' 
