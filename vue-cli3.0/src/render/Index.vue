@@ -19,7 +19,7 @@
 
         <renderJsx >jsx-插槽</renderJsx>
         <renderJsx v-slot="slotProps">jsx-插槽作用域 {{slotProps.text}}</renderJsx>
-     
+        <renderJsx2 />
 
     </div>
 </template>
@@ -33,11 +33,12 @@ import render5 from './render5'
 import render51 from './render5-1'
 import render6 from './render6'
 import renderJsx from './renderJsx'
+import renderJsx2 from './renderJsx.jsx'
 
 export default {
     components: {
       render1,render2,render3,render4,render5,render51,render6,
-      renderJsx
+      renderJsx,renderJsx2
     },
     name: 'render',
     data(){
