@@ -1,0 +1,46 @@
+{
+  "name": "vue3-ui",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/lib/index.js",
+  "module": "dist/es/index.mjs",
+  "files": [
+    "dist"
+  ],
+  "typings": "dist/lib/index.d.ts",
+  "scripts": {
+    "dev:play": "pnpm run --filter play dev",
+    "build": "pnpm run --filter @vue3-ui/components build",
+    "build:gulp": "gulp -f packages/components/script/build/index.ts",
+    "publish": "gulp -f packages/components/script/publish/index.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "vue3-ui",
+    "vue3组件库"
+  ],
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "author": "mxq",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/gulp": "^4.0.17",
+    "@types/gulp-autoprefixer": "^0.0.37",
+    "@types/gulp-less": "^0.0.36",
+    "@types/node": "^20.10.6",
+    "@vitejs/plugin-vue": "^5.0.2",
+    "@vue/runtime-core": "^3.4.4",
+    "gulp": "^4.0.2",
+    "gulp-autoprefixer": "^9.0.0",
+    "gulp-less": "^5.0.0",
+    "less": "^4.2.0",
+    "release-it": "^17.0.1",
+    "sucrase": "^3.35.0",
+    "typescript": "^5.3.3",
+    "unplugin-vue-define-options": "^1.4.1",
+    "vite": "^5.0.10",
+    "vite-plugin-dts": "1.4.1",
+    "vue": "^3.2.36"
+  }
+}
