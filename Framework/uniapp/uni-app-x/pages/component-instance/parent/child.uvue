@@ -1,0 +1,34 @@
+<template>
+  <view class="child">
+    <view class="parent-text">{{value}}</view>
+    <view class="parent-func-text">{{callbackValue}}</view>
+    <button @click="testFunction" class="call-parent-func">调用父组件方法</button>
+  </view>
+</template>
+
+<script>
+export default {
+  data () {
+    return {
+      value: "child",
+      callbackValue: ""
+    }
+  },
+  mounted () {
+    this.value = this.$parent!.$data['value'] as string
+  },
+  methods: {
+    testFunction () {
+			// #ifdef UNI-APP-X && APP-ANDROID
+      this.callbackValue = this.$parent!.$callMethod('testFunction') as string
+			// #endif
+			// TODO: 非 app-android 简单绕过, web 无法通过 this.$parent.functionName 调用父组件 methods 中的方法
+			this.callbackValue = 'parentFunctionResult'
+    }
+  }
+}
+</script>
+
+<style scoped>
+
+</style>
