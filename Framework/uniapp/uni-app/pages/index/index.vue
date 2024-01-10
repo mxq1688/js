@@ -11,7 +11,7 @@
 	export default {
 		data() {
 			return {
-				title: 'Hello 123'
+				title: 'Hello 这个有热更新'
 			}
 		},
 		onLoad() {

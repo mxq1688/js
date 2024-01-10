@@ -41,7 +41,7 @@ if (uni.restoreGlobal) {
   const _sfc_main$1 = {
     data() {
       return {
-        title: "Hello 123"
+        title: "Hello 这个有热更新"
       };
     },
     onLoad() {

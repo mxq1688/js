@@ -9,7 +9,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-const title = ref('终于搞懂了')
+const title = ref('这个有热更新吗？？')
 </script>
 
 <style>
