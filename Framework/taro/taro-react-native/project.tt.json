@@ -1,9 +1,0 @@
-{
-  "miniprogramRoot": "./",
-  "projectname": "taro-react-native",
-  "appid": "touristappid",
-  "setting": {
-    "es6": false,
-    "minified": false
-  }
-}
