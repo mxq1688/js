@@ -13,3 +13,6 @@ prerender:
 spider:
     node起个服务利用puppter去访问内部的项目端口
     nginx把爬虫代理到node服务
+
+#### vue对应的nuxtjs
+#### react对应的nextjs
