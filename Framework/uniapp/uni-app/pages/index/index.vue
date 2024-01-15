@@ -11,7 +11,7 @@
 	export default {
 		data() {
 			return {
-				title: 'Hello 这个有热更新'
+				title: '这个是HBuilderX创建的项目'
 			}
 		},
 		onLoad() {
