@@ -1,0 +1,10 @@
+{
+    "name": "components",
+    "version": "1.0.0",
+    "license": "ISC",
+    "type": "module",
+    "main": "index.js",
+    "dependencies": {
+        "dayjs": "^1.11.10"
+    }
+}
