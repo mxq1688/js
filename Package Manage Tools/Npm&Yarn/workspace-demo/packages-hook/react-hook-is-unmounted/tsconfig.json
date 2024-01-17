@@ -1,0 +1,7 @@
+{
+    "extends": "@workspace-demo/ts-config/index.json",
+    "include": [
+      "src"
+    ]
+  }
+  

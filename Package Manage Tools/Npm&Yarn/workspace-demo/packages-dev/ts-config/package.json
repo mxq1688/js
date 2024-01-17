@@ -1,0 +1,11 @@
+{
+    "name": "@workspace-demo/ts-config",
+    "version": "1.0.0",
+    "description": "A sharable tsconfig, extend it and put an `include` in your own tsconfig.json",
+    "license": "MIT",
+    "main": "index.json",
+    "scripts": {
+        "prepublishOnly": "echo '`yarn workspaces run` has no --if-present arg'"
+      }
+}
+  

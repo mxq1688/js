@@ -1,0 +1,28 @@
+{
+    "name": "@workspace-demo/react-hook-is-unmounted",
+    "version": "1.0.0",
+    "description": "useIsUnmounted",
+    "license": "MIT",
+    "sideEffects": false,
+    "main": "build/cjs/index.js",
+    "module": "build/esm/index.js",
+    "types": "build/types/index.d.ts",
+    "devDependencies": {
+      "@workspace-demo/ts-config": "^1.0.0",
+      "@types/react": "^18.2.21",
+      "react": "^18.2.0",
+      "typescript": "^5.2.2"
+    },
+    "peerDependencies": {
+      "react": ">=16.8"
+    },
+    "scripts": {
+      "clean": "rm -rf build",
+      "build:esm": "tsc --module es6 --declaration false --rootDir src --outDir build/esm",
+      "build:cjs": "tsc --module commonjs --declaration false --rootDir src --outDir build/cjs",
+      "build:types": "tsc --rootDir src --outDir build/types --declaration --emitDeclarationOnly",
+      "build": "npm run build:esm && npm run build:cjs && npm run build:types",
+      "prepublishOnly": "npm run clean && npm run build"
+    }
+  }
+  
