@@ -20,7 +20,7 @@
       "clean": "rm -rf build",
       "build:esm": "tsc --module es6 --declaration false --rootDir src --outDir build/esm",
       "build:cjs": "tsc --module commonjs --declaration false --rootDir src --outDir build/cjs",
-      "build:types": "tsc --rootDir src --outDir build/types --declaration --emitDeclarationOnly",
+      "build:types": "tsc --rootDir src --declarationDir build/types --declaration --emitDeclarationOnly",
       "build": "npm run build:esm && npm run build:cjs && npm run build:types",
       "prepublishOnly": "npm run clean && npm run build"
     }
