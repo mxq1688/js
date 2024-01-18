@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@vitejs/plugin-vue": "^5.0.2",
     "@vue3-ui/components": "workspace:^"
   }
 }

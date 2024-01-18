@@ -1,10 +1,7 @@
-// export * from "./src/index";
-
 import * as components from "./src/index";
+import type { App, Plugin } from "vue";
 
 export * from "./src/index";
-
-import { App } from "vue";
 
 export default {
   install: (app: App) => {

@@ -1,6 +1,5 @@
 <template>
   <div>
-    启动测试
     <ea-button type="primary">按钮1</ea-button>
 
     <EaButton type="primary">按钮2</EaButton>
