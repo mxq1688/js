@@ -11,7 +11,7 @@
   "scripts": {
     "dev:play": "pnpm run --filter play dev",
     "build": "pnpm run --filter @vue3-ui/components build",
-    "build:gulp": "gulp -f packages/components/script/build/index.ts",
+    "build:all": "gulp -f script/build/index.ts",
     "publish": "gulp -f packages/components/script/publish/index.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -31,7 +31,7 @@
     "@types/node": "^20.10.6",
     "@vue/runtime-core": "^3.4.4",
     "gulp": "^4.0.2",
-    "gulp-autoprefixer": "^9.0.0",
+    "gulp-autoprefixer": "^8.0.0",
     "gulp-less": "^5.0.0",
     "less": "^4.2.0",
     "release-it": "^17.0.1",
