@@ -19,6 +19,6 @@ class MyClass extends Component {
   }
 }
 
-export {MyClass};
+export {MyComponent, MyClass};
 
 export default MyComponent;
