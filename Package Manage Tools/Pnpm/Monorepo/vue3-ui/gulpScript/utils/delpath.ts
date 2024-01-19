@@ -6,10 +6,8 @@ const stayFile = ["package.json", "README.md"];
 
 const delPath = async (path: string) => {
   let files: string[] = [];
-
   if (fs.existsSync(path)) {
     files = fs.readdirSync(path);
-
     files.forEach(async (file) => {
       let curPath = resolve(path, file);
 

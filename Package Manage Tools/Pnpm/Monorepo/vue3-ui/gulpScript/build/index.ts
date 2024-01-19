@@ -27,7 +27,8 @@ export const buildStyle = () => {
 
 //打包组件
 export const buildComponent = async () => {
-    run("pnpm run build", componentPath);
+    // run("pnpm run build", componentPath);
+    run("pnpm run build", vue3UiPath);
 };
 export default series(
     async () => removeDist(),
