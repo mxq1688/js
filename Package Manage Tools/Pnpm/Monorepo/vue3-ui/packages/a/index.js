@@ -1,3 +1,3 @@
 export default () => {
-    console.log("我是@vue3-ui/a包");
+  console.log('我是@vue3-ui/a包');
 };

@@ -1,6 +1,5 @@
-
-import _Icon from "./icon.vue";
-import type { App, Plugin } from "vue";
+import _Icon from './icon.vue';
+import type { App, Plugin } from 'vue';
 type SFCWithInstall<T> = T & Plugin;
 const withInstall = <T>(comp: T) => {
   (comp as SFCWithInstall<T>).install = (app: App) => {
@@ -12,4 +11,3 @@ const withInstall = <T>(comp: T) => {
 };
 export const Icon = withInstall(_Icon);
 export default Icon;
-

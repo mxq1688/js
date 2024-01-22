@@ -1,5 +1,5 @@
-import _Button from "./button.vue";
-import type { App, Plugin } from "vue";
+import _Button from './button.vue';
+import type { App, Plugin } from 'vue';
 
 type SFCWithInstall<T> = T & Plugin;
 
@@ -15,4 +15,3 @@ const withInstall = <T>(comp: T) => {
 export const Button = withInstall(_Button);
 
 export default Button;
-
