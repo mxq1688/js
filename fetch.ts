@@ -185,7 +185,7 @@ export class Fetch {
   }
 }
 
-export default new Http(defaultConfig)
+export default new Fetch(defaultConfig)
 
 
 // 示例
