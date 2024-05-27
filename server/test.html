@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>播放麦克风音频</title>
+</head>
+<body>
+<button id="start">开始播放麦克风声音</button>
+
+<script>
+  async function startCaptureAndPlay() {
+    const button = document.getElementById('start');
+    button.disabled = true; // 禁用按钮避免重复点击
+
+    // 初始化AudioContext
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    const audioCtx = new AudioContext();
+
+    // 请求麦克风权限
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      console.log('麦克风权限已获取');
+
+      // 创建与MediaStream关联的Source Node
+      const sourceNode = audioCtx.createMediaStreamSource(stream);
+
+      // 连接到AudioContext的destination进行播放
+      sourceNode.connect(audioCtx.destination);
+
+      console.log('正在播放麦克风声音');
+    } catch (err) {
+      console.error('无法获取麦克风权限:', err);
+    } finally {
+      button.disabled = false; // 重新启用按钮
+    }
+  }
+
+  document.getElementById('start').addEventListener('click', startCaptureAndPlay);
+</script>
+</body>
+</html>

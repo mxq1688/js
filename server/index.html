@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div onclick="fetchAudio()">fetchAudio</div>
+    <div onclick="mediaAudio()">mediaAudio</div>
+    <audio id="audio" autoplay controls src="http://localhost:3000/1.mp4"></audio>
+    <!-- <video id="video" autoplay controls src="http://localhost:3000/1.mp4"></video> -->
+
+    <script>
+        let mediaStream
+        navigator.mediaDevices.getUserMedia({ audio: true })
+            .then(function (stream) {
+                /* 使用这个 stream */
+                mediaStream = stream
+            })
+            .catch(function (err) {
+                /* 处理 error */
+                switch (error.message || error.name) {
+                    case 'PERMISSION_DENIED':
+                    case 'PermissionDeniedError':
+                        console.info('用户拒绝提供信息。')
+                        break
+                    case 'NOT_SUPPORTED_ERROR':
+                    case 'NotSupportedError':
+                        console.info('浏览器不支持硬件设备。')
+                        break
+                    case 'MANDATORY_UNSATISFIED_ERROR':
+                    case 'MandatoryUnsatisfiedError':
+                        console.info('无法发现指定的硬件设备。')
+                        break
+                    default:
+                        console.info('无法打开麦克风。异常信息:' + (error.code || error.name))
+                        break
+                }
+            });
+
+        var audioCtx = new (window.AudioContext || window.webkitAudioContext())();
+
+        async function fetchAudio() {
+            let source = audioCtx.createBufferSource(); // 创建音频源头节点
+            const res = await fetch('http://localhost:3000/1.mp4');
+            const arrayBuffer = await res.arrayBuffer(); // byte array字节数组
+            // const audioBuffer = await audioCtx.decodeAudioData(arrayBuffer, function (decodeData) {
+            //     return decodeData;
+            // });
+            const audioBuffer = await audioCtx.decodeAudioData(arrayBuffer).then((decodeData) => {
+                return decodeData;
+            })
+            source.buffer = audioBuffer; // 设置数据
+            source.loop = true; //设置，循环播放
+            source.connect(audioCtx.destination); // 头尾相连
+            // 可以对音频做任何控制
+            source.start(0); //立即播放
+        }
+        // fetchAudio()
+
+
+        async function mediaAudio() {
+            console.log(mediaStream, 'mediaStream');
+            // 创建一个与MediaStream关联的Source Node
+            const sourceNode = audioCtx.createMediaStreamSource(audio.captureStream());
+
+            // 这里可以添加更多音频处理节点，比如增益控制、分析等
+            // 示例：添加一个增益节点调节音量
+            // const gainNode = audioCtx.createGain();
+            // sourceNode.connect(gainNode);
+            sourceNode.connect(audioCtx.destination);
+            // 开始音频处理流程
+            // 注意：如果是处理实时流，不需要手动开始，连接后自动播放
+        }
+
+
+    </script>
+</body>
+
+</html>
