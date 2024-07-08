@@ -10,15 +10,21 @@
 <body>
     <div onclick="fetchAudio()">fetchAudio</div>
     <div onclick="mediaAudio()">mediaAudio</div>
-    <audio id="audio" autoplay controls src="http://localhost:3000/1.mp4"></audio>
+    <div onclick="audioLabel()">audioLabel</div>
+    <audio id="audio2" muted autoplay controls></audio>
+    <canvas id="canvas"></canvas>
+    <audio id="audio" autoplay controls src="http://localhost:3000/1.mp3"></audio>
     <!-- <video id="video" autoplay controls src="http://localhost:3000/1.mp4"></video> -->
 
     <script>
         let mediaStream
+        var audioContext
         navigator.mediaDevices.getUserMedia({ audio: true })
             .then(function (stream) {
+                audioContext = new (window.AudioContext || window.webkitAudioContext())();
                 /* 使用这个 stream */
                 mediaStream = stream
+                audio2.srcObject = stream
             })
             .catch(function (err) {
                 /* 处理 error */
@@ -41,39 +47,89 @@
                 }
             });
 
-        var audioCtx = new (window.AudioContext || window.webkitAudioContext())();
-
+        // 失真
+        function makeDistortionCurve(amount) {
+            var k = typeof amount === "number" ? amount : 50,
+            n_samples = 44100,
+            curve = new Float32Array(n_samples),
+            deg = Math.PI / 180,
+            i = 0,
+            x;
+            for (; i < n_samples; ++i) {
+            x = (i * 2) / n_samples - 1;
+            curve[i] = ((3 + k) * x * 20 * deg) / (Math.PI + k * Math.abs(x));
+            }
+            return curve;
+        }    
         async function fetchAudio() {
-            let source = audioCtx.createBufferSource(); // 创建音频源头节点
+            let source = audioContext.createBufferSource(); // 创建音频源头节点
             const res = await fetch('http://localhost:3000/1.mp4');
             const arrayBuffer = await res.arrayBuffer(); // byte array字节数组
-            // const audioBuffer = await audioCtx.decodeAudioData(arrayBuffer, function (decodeData) {
+            // const audioBuffer = await audioContext.decodeAudioData(arrayBuffer, function (decodeData) {
             //     return decodeData;
             // });
-            const audioBuffer = await audioCtx.decodeAudioData(arrayBuffer).then((decodeData) => {
+            const audioBuffer = await audioContext.decodeAudioData(arrayBuffer).then((decodeData) => {
                 return decodeData;
             })
             source.buffer = audioBuffer; // 设置数据
             source.loop = true; //设置，循环播放
-            source.connect(audioCtx.destination); // 头尾相连
+
+            const gainNode = audioContext.createGain();
+            gainNode.gain.value = 1
+            source.connect(gainNode);
+            const biquadFilter = audioContext.createBiquadFilter(); //滤波节点，过滤指定频段波形
+            gainNode.connect(biquadFilter)
+
+            const waveShaper = audioContext.createWaveShaper();
+            // 设置波形整形曲线
+            // const curve = new Float32Array(256);
+            // for (let i = 0; i < 256; ++i) {
+            //     curve[i] = Math.tanh((i / 128) - 1);
+            // }
+            // waveShaper.curve = curve;
+            // waveShaper.curve = makeDistortionCurve(40000);
+
+            biquadFilter.connect(waveShaper);
+
+            const convolver = audioContext.createConvolver(); //混音节点
+            convolver.buffer = audioBuffer
+
+            waveShaper.connect(convolver)
+
+            convolver.connect(audioContext.destination);
             // 可以对音频做任何控制
             source.start(0); //立即播放
         }
         // fetchAudio()
 
 
-        async function mediaAudio() {
-            console.log(mediaStream, 'mediaStream');
-            // 创建一个与MediaStream关联的Source Node
-            const sourceNode = audioCtx.createMediaStreamSource(audio.captureStream());
 
+        function mediaAudio() {
+
+            // 创建一个与MediaStream关联的Source Node
+            // const sourceNode = audioContext.createMediaStreamSource(mediaStream);
+            const sourceNode = audioContext.createMediaStreamSource(audio2.captureStream());
             // 这里可以添加更多音频处理节点，比如增益控制、分析等
             // 示例：添加一个增益节点调节音量
-            // const gainNode = audioCtx.createGain();
-            // sourceNode.connect(gainNode);
-            sourceNode.connect(audioCtx.destination);
+            const gainNode = audioContext.createGain();
+            gainNode.gain.value = 0.1
+            sourceNode.connect(gainNode);
+            gainNode.connect(audioContext.destination);
             // 开始音频处理流程
             // 注意：如果是处理实时流，不需要手动开始，连接后自动播放
+        }
+
+        function audioLabel(){
+            const sourceNode = audioContext.createMediaElementSource(audio);
+            // 将媒体元素源节点连接到输出目的地，通常是扬声器或耳机
+            // sourceNode.connect(audioContext.destination);
+
+            const gainNode = audioContext.createGain();
+            gainNode.gain.value = 0.1
+            sourceNode.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            audio.volume = 0.5
+            audio.play()
         }
 
 
