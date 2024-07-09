@@ -60,7 +60,7 @@
             curve[i] = ((3 + k) * x * 20 * deg) / (Math.PI + k * Math.abs(x));
             }
             return curve;
-        }    
+        }
         async function fetchAudio() {
             let source = audioContext.createBufferSource(); // 创建音频源头节点
             const res = await fetch('http://localhost:3000/1.mp4');
@@ -81,13 +81,6 @@
             gainNode.connect(biquadFilter)
 
             const waveShaper = audioContext.createWaveShaper();
-            // 设置波形整形曲线
-            // const curve = new Float32Array(256);
-            // for (let i = 0; i < 256; ++i) {
-            //     curve[i] = Math.tanh((i / 128) - 1);
-            // }
-            // waveShaper.curve = curve;
-            // waveShaper.curve = makeDistortionCurve(40000);
 
             biquadFilter.connect(waveShaper);
 
@@ -96,13 +89,34 @@
 
             waveShaper.connect(convolver)
 
-            convolver.connect(audioContext.destination);
+            let analyser = audioContext.createAnalyser(); // 创建AnalyserNode节点
+            analyser.fftSize = 256;
+
+            convolver.connect(analyser);
+            analyser.connect(audioContext.destination);
+
             // 可以对音频做任何控制
             source.start(0); //立即播放
+
+            var globalID;
+            function render() {
+                let dataArray = new Uint8Array(analyser.frequencyBinCount); //analyser.frequencyBinCount为analyser.fftSize设置的一半
+                // 获取时域数据（对于波形显示，通常使用getByteTimeDomainData）
+                // analyser.getByteTimeDomainData(dataArray);
+                // console.log("Time domain data:", dataArrayTime);
+
+                // 获取频域数据
+                analyser.getByteFrequencyData(dataArray);
+                console.log("Frequency domain data:", dataArray);
+                //Todo 通过dataArray数据实现可视化效果
+                // 可控制canvas css
+
+                globalID = requestAnimationFrame(render);
+            };
+            globalID = requestAnimationFrame(render);
         }
-        // fetchAudio()
 
-
+        
 
         function mediaAudio() {
 
@@ -114,7 +128,11 @@
             const gainNode = audioContext.createGain();
             gainNode.gain.value = 0.1
             sourceNode.connect(gainNode);
-            gainNode.connect(audioContext.destination);
+            let analyser = audioContext.createAnalyser(); // 创建AnalyserNode节点
+            analyser.fftSize = 256;
+            gainNode.connect(analyser);
+            analyser.connect(audioContext.destination);
+
             // 开始音频处理流程
             // 注意：如果是处理实时流，不需要手动开始，连接后自动播放
         }
