@@ -97,7 +97,10 @@
 
             // 可以对音频做任何控制
             source.start(0); //立即播放
-
+            flushData(analyser)
+            
+        }
+        function flushData(analyser) {
             var globalID;
             function render() {
                 let dataArray = new Uint8Array(analyser.frequencyBinCount); //analyser.frequencyBinCount为analyser.fftSize设置的一半
@@ -116,7 +119,6 @@
             globalID = requestAnimationFrame(render);
         }
 
-        
 
         function mediaAudio() {
 
@@ -132,7 +134,7 @@
             analyser.fftSize = 256;
             gainNode.connect(analyser);
             analyser.connect(audioContext.destination);
-
+            flushData(analyser)
             // 开始音频处理流程
             // 注意：如果是处理实时流，不需要手动开始，连接后自动播放
         }
@@ -145,8 +147,13 @@
             const gainNode = audioContext.createGain();
             gainNode.gain.value = 0.1
             sourceNode.connect(gainNode);
-            gainNode.connect(audioContext.destination);
             audio.volume = 0.5
+
+            let analyser = audioContext.createAnalyser(); // 创建AnalyserNode节点
+            analyser.fftSize = 256;
+            gainNode.connect(analyser);
+            analyser.connect(audioContext.destination);
+            flushData(analyser)
             audio.play()
         }
 
