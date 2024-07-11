@@ -133,7 +133,9 @@
             let analyser = audioContext.createAnalyser(); // 创建AnalyserNode节点
             analyser.fftSize = 256;
             gainNode.connect(analyser);
-            analyser.connect(audioContext.destination);
+            // 可选：如果你想让音频通过扬声器播放，还需要将AnalyserNode连接到destination
+            // analyser.connect(audioContext.destination);
+            
             flushData(analyser)
             // 开始音频处理流程
             // 注意：如果是处理实时流，不需要手动开始，连接后自动播放
