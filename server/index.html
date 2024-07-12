@@ -12,19 +12,30 @@
     <div onclick="mediaAudio()">mediaAudio</div>
     <div onclick="audioLabel()">audioLabel</div>
     <audio id="audio2" muted autoplay controls></audio>
-    <canvas id="canvas"></canvas>
+    <!-- <canvas id="canvas"></canvas> -->
     <audio id="audio" autoplay controls src="http://localhost:3000/1.mp3"></audio>
     <!-- <video id="video" autoplay controls src="http://localhost:3000/1.mp4"></video> -->
 
+    <div>
+        <div>MediaRecorder</div>
+        <button onclick="mStart()">录制开始</button>
+        <button onclick="mPause()">暂停</button>
+        <button onclick="mResume()">继续</button>
+        <button onclick="mStop()">录制结束</button>
+        <button onclick="mRequest()">请求录制数据</button>
+    </div>
     <script>
         let mediaStream
         var audioContext
+        let mediaRecorder
         navigator.mediaDevices.getUserMedia({ audio: true })
             .then(function (stream) {
                 audioContext = new (window.AudioContext || window.webkitAudioContext())();
                 /* 使用这个 stream */
                 mediaStream = stream
                 audio2.srcObject = stream
+                mediaRecorder = new MediaRecorder(mediaStream);
+                getData()
             })
             .catch(function (err) {
                 /* 处理 error */
@@ -47,17 +58,41 @@
                 }
             });
 
+        function getData() {
+            const chunks = []
+            mediaRecorder.ondataavailable = function (event) {
+                if (event.data && event.data.size > 0) {
+                    console.log(event.data, 'data');
+                    chunks.push(event.data); // 将数据块添加到数组中
+                }
+            };
+        }
+        function mStart() {
+            mediaRecorder.start(3000);
+        }
+        function mPause() {
+            mediaRecorder.pause();
+        }
+        function mResume() {
+            mediaRecorder.resume();
+        }
+        function mStop() {
+            mediaRecorder.stop();
+        }
+        function mRequest() {
+            mediaRecorder.requestData();
+        }
         // 失真
         function makeDistortionCurve(amount) {
             var k = typeof amount === "number" ? amount : 50,
-            n_samples = 44100,
-            curve = new Float32Array(n_samples),
-            deg = Math.PI / 180,
-            i = 0,
-            x;
+                n_samples = 44100,
+                curve = new Float32Array(n_samples),
+                deg = Math.PI / 180,
+                i = 0,
+                x;
             for (; i < n_samples; ++i) {
-            x = (i * 2) / n_samples - 1;
-            curve[i] = ((3 + k) * x * 20 * deg) / (Math.PI + k * Math.abs(x));
+                x = (i * 2) / n_samples - 1;
+                curve[i] = ((3 + k) * x * 20 * deg) / (Math.PI + k * Math.abs(x));
             }
             return curve;
         }
@@ -98,7 +133,7 @@
             // 可以对音频做任何控制
             source.start(0); //立即播放
             flushData(analyser)
-            
+
         }
         function flushData(analyser) {
             var globalID;
@@ -119,7 +154,7 @@
             globalID = requestAnimationFrame(render);
         }
 
-
+        // mediaStream
         function mediaAudio() {
 
             // 创建一个与MediaStream关联的Source Node
@@ -135,13 +170,13 @@
             gainNode.connect(analyser);
             // 可选：如果你想让音频通过扬声器播放，还需要将AnalyserNode连接到destination
             // analyser.connect(audioContext.destination);
-            
-            flushData(analyser)
+
+            // flushData(analyser)
             // 开始音频处理流程
             // 注意：如果是处理实时流，不需要手动开始，连接后自动播放
         }
 
-        function audioLabel(){
+        function audioLabel() {
             const sourceNode = audioContext.createMediaElementSource(audio);
             // 将媒体元素源节点连接到输出目的地，通常是扬声器或耳机
             // sourceNode.connect(audioContext.destination);
