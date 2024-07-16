@@ -32,6 +32,11 @@
         <button onclick="aResume()">继续</button>
         <button onclick="aStop()">录制结束</button>
     </div>
+    <script type="module">
+        import Resampler from './resampler.js'
+        window.Resampler = Resampler
+    </script>
+
     <script>
         let mediaStream
         var audioContext
@@ -84,13 +89,18 @@
                 // event.inputBuffer 是一个 AudioBuffer 对象，包含 PCM 数据
                 const buffer = event.inputBuffer.getChannelData(0);
 
-                console.log(buffer);
+                // console.log(buffer);
                 // 将 buffer 中的 PCM 数据复制到一个新的 Float32Array 中
                 const array = new Float32Array(buffer.length);
                 array.set(buffer);
-
-                // 将音频数据添加到录制的 chunks 数组中
                 recordedChunks.push(array);
+
+                console.log(buffer, array, buffer == array);
+
+                // audioData.input(wavData);
+                const resampledWavData = audioData.resample(buffer);
+                const resampled16BitsWavData = audioData.quantize(resampledWavData, 16);
+                console.log(resampled16BitsWavData.buffer);
             };
 
         }
@@ -117,14 +127,13 @@
         const audioData = {
             size: 0, // 录音文件长度
             buffer: [], // 录音缓存, Array of Float32Array
-            sampleRate: context.sampleRate, // 输入采样率
             input: function (data) {
                 this.buffer.push(new Float32Array(data)); //?
                 this.size += data.length;
             },
             resample: function (buffer, newSampleRate = 48000) {
                 const resampler = new Resampler(
-                    this.sampleRate,
+                    audioContext.sampleRate,
                     newSampleRate,
                     1,
                     buffer.length
@@ -140,8 +149,8 @@
             ) {
                 // Resample
                 let bytes = this.buffer
-                    .map((buf: any) => this.resample(buf, sampleRate))
-                    .reduce((pre: any, aft: any) => {
+                    .map((buf) => this.resample(buf, sampleRate))
+                    .reduce((pre, aft) => {
                         return [...pre, ...aft];
                     }, []);
 
@@ -161,7 +170,7 @@
                 const channelCount = 1; // 单声道
                 let offset = 0;
 
-                const writeString = function (str: any) {
+                const writeString = function (str) {
                     for (let i = 0; i < str.length; i++) {
                         data.setUint8(offset + i, str.charCodeAt(i));
                     }
@@ -248,24 +257,16 @@
         };
         function dellAudioData() {
             // 创建一个完整的 AudioBuffer，用于保存录制的音频
-            const recordingLength = recordedChunks.reduce((acc, chunk) => acc + chunk.length, 0);
-            console.log(recordingLength, recordedChunks.length, audioContext.sampleRate);
-            const finalBuffer = audioContext.createBuffer(1, recordingLength, audioContext.sampleRate);
+            // const recordingLength = recordedChunks.reduce((acc, chunk) => acc + chunk.length, 0);
+            // console.log(recordedChunks, recordingLength, recordedChunks.length, audioContext.sampleRate);
+            // const audioBuffer = audioContext.createBuffer(1, recordingLength, audioContext.sampleRate);
 
-            let currentLength = 0;
-            for (const chunk of recordedChunks) {
-                finalBuffer.copyToChannel(chunk, 0, currentLength);
-                currentLength += chunk.length;
-            }
-            console.log(finalBuffer, 123);
-            // 将 AudioBuffer 转换为 ArrayBuffer，以便保存为文件
-            const blob = new Blob([audioBufferToWav(finalBuffer)], { type: 'audio/wav' });
+            // let srcStart = 0;
+            // for (const chunk of recordedChunks) {
+            //     audioBuffer.copyToChannel(chunk, 0, srcStart);
+            //     srcStart += chunk.length;
+            // }
 
-            const url = URL.createObjectURL(blob); // 创建 Blob 的 URL
-            const a = document.createElement('a'); // 创建一个 <a> 元素用于下载
-            a.href = url;
-            a.download = 'recording.wav';
-            a.click(); // 触发下载
         }
 
         function mediaRecorderInit() {
