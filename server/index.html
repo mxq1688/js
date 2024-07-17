@@ -95,10 +95,9 @@
                 array.set(buffer);
                 recordedChunks.push(array);
 
-                console.log(buffer, array, buffer == array);
-
-                // audioData.input(wavData);
+                audioData.input(buffer);
                 const resampledWavData = audioData.resample(buffer);
+                // console.log(buffer, resampledWavData, audioContext.sampleRate);
                 const resampled16BitsWavData = audioData.quantize(resampledWavData, 16);
                 console.log(resampled16BitsWavData.buffer);
             };

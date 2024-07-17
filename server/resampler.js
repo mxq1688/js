@@ -36,12 +36,14 @@ export default class Resampler {
       this.ratioWeight = 1;
     } else {
       if (this.fromSampleRate < this.toSampleRate) {
-        // Use generic linear interpolation if upsampling,
-        // as linear interpolation produces a gradient that we want
-        // and works fine with two input sample points per output in this case.
+        // 上采样
+        // 如果上采样，则使用通用线性插值，
+        //因为线性插值会产生我们想要的梯度
+        //在这种情况下，每个输出有两个输入采样点，工作正常
         this.linearInterpolation();
         this.lastWeight = 1;
       } else {
+        // 下采样
         // Custom resampler I wrote that doesn't skip samples
         // like standard linear interpolation in high downsampling.
         // This is more accurate than linear interpolation on downsampling.
@@ -78,7 +80,7 @@ export default class Resampler {
         ((this.inputBufferSize * this.toSampleRate) /
           this.fromSampleRate /
           this.channels) *
-          1.000000476837158203125
+        1.000000476837158203125
       ) +
       this.channels +
       this.channels;
@@ -157,16 +159,12 @@ export default class Resampler {
   multiTap() {
     this.resampler = (buffer) => {
       const bufferLength = buffer.length;
-      // let outLength;
-      // let output_variable_list;
       const channels = this.channels;
-      // let ratioWeight;
       let weight;
       let channel;
       let actualPosition;
       let amountToNext;
       let alreadyProcessedTail;
-      // let outputBuffer;
       let outputOffset;
       let currentPosition;
 
