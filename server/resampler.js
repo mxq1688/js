@@ -160,10 +160,10 @@ export default class Resampler {
     this.resampler = (buffer) => {
       const bufferLength = buffer.length;
       const channels = this.channels;
-      let weight;
+      let weigh = 0;
       let channel;
-      let actualPosition;
-      let amountToNext;
+      let actualPosition = 0;
+      let amountToNext = 0;
       let alreadyProcessedTail;
       let outputOffset;
       let currentPosition;
@@ -178,15 +178,11 @@ export default class Resampler {
       const outLength = this.outputBufferSize;
       const output_variable_list = [];
       const ratioWeight = this.ratioWeight;
-      weight = 0;
-      actualPosition = 0;
-      amountToNext = 0;
       alreadyProcessedTail = !this.tailExists;
       this.tailExists = false;
       const outputBuffer = this.outputBuffer;
       outputOffset = 0;
       currentPosition = 0;
-
       for (channel = 0; channel < channels; ++channel) {
         output_variable_list[channel] = 0;
       }
@@ -210,7 +206,7 @@ export default class Resampler {
             for (channel = 0; channel < channels; ++channel) {
               output_variable_list[channel] +=
                 buffer[actualPosition++] * amountToNext;
-            }
+            
             currentPosition = actualPosition;
             weight -= amountToNext;
           } else {

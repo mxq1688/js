@@ -98,8 +98,8 @@
                 audioData.input(buffer);
                 const resampledWavData = audioData.resample(buffer);
                 // console.log(buffer, resampledWavData, audioContext.sampleRate);
-                const resampled16BitsWavData = audioData.quantize(resampledWavData, 16);
-                console.log(resampled16BitsWavData.buffer);
+                // const resampled16BitsWavData = audioData.quantize(resampledWavData, 16);
+                // console.log(resampled16BitsWavData.buffer);
             };
 
         }
@@ -130,7 +130,7 @@
                 this.buffer.push(new Float32Array(data)); //?
                 this.size += data.length;
             },
-            resample: function (buffer, newSampleRate = 48000) {
+            resample: function (buffer, newSampleRate = 24000) {
                 const resampler = new Resampler(
                     audioContext.sampleRate,
                     newSampleRate,
