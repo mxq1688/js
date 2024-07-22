@@ -160,13 +160,13 @@ export default class Resampler {
     this.resampler = (buffer) => {
       const bufferLength = buffer.length;
       const channels = this.channels;
-      let weigh = 0;
+      let weight = 0;
       let channel;
       let actualPosition = 0;
       let amountToNext = 0;
-      let alreadyProcessedTail;
-      let outputOffset;
-      let currentPosition;
+      let alreadyProcessedTail = !this.tailExists;
+      let outputOffset = 0;
+      let currentPosition = 0;
 
       if (bufferLength % channels !== 0) {
         throw new Error("Buffer was of incorrect sample length.");
@@ -174,19 +174,15 @@ export default class Resampler {
       if (bufferLength <= 0) {
         return [];
       }
-
       const outLength = this.outputBufferSize;
       const output_variable_list = [];
       const ratioWeight = this.ratioWeight;
-      alreadyProcessedTail = !this.tailExists;
       this.tailExists = false;
       const outputBuffer = this.outputBuffer;
-      outputOffset = 0;
-      currentPosition = 0;
       for (channel = 0; channel < channels; ++channel) {
         output_variable_list[channel] = 0;
       }
-
+      console.log(buffer, channels, outLength, alreadyProcessedTail, 111);
       do {
         if (alreadyProcessedTail) {
           weight = ratioWeight;
@@ -202,13 +198,15 @@ export default class Resampler {
         }
         while (weight > 0 && actualPosition < bufferLength) {
           amountToNext = 1 + actualPosition - currentPosition;
+          console.log(weight, amountToNext, currentPosition, 222);
           if (weight >= amountToNext) {
             for (channel = 0; channel < channels; ++channel) {
               output_variable_list[channel] +=
                 buffer[actualPosition++] * amountToNext;
-            
+            }
             currentPosition = actualPosition;
             weight -= amountToNext;
+            
           } else {
             for (channel = 0; channel < channels; ++channel) {
               output_variable_list[channel] +=
@@ -219,7 +217,7 @@ export default class Resampler {
             break;
           }
         }
-
+        console.log(weight, amountToNext, currentPosition, 333);
         if (weight === 0) {
           for (channel = 0; channel < channels; ++channel) {
             outputBuffer[outputOffset++] =

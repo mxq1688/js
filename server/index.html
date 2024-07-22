@@ -78,25 +78,31 @@
 
         let recordedChunks = [];
         function audioRecorderInit() {
-            audioSource = audioContext.createMediaStreamSource(mediaStream)
+            audioSource = audioContext.createMediaStreamSource(mediaStream) //也可以是其他形式
 
             const createScript =
                 audioContext.createScriptProcessor || audioContext.createJavaScriptNode;
-            audioRecorder = createScript.apply(audioContext, [4096, 1, 1]);
+            audioRecorder = createScript.apply(audioContext, [4096, 2, 2]);
 
             // 当有音频数据时，调用此函数
             audioRecorder.onaudioprocess = function (event) {
                 // event.inputBuffer 是一个 AudioBuffer 对象，包含 PCM 数据
-                const buffer = event.inputBuffer.getChannelData(0);
-
-                // console.log(buffer);
-                // 将 buffer 中的 PCM 数据复制到一个新的 Float32Array 中
-                const array = new Float32Array(buffer.length);
-                array.set(buffer);
+                const leftChannelData = event.inputBuffer.getChannelData(0);
+                const rightChannelData = event.inputBuffer.getChannelData(1);
+                const inputBuffer = []
+                // 将左右声道数据合并到inputBuffer中
+                for (let i = 0; i < leftChannelData.length; i++) {
+                    inputBuffer.push(leftChannelData[i]);
+                    inputBuffer.push(rightChannelData[i]);
+                }
+                const sAudioData = new Float32Array(inputBuffer)
+                console.log(sAudioData, 111);
+                const array = new Float32Array(leftChannelData.length);
+                array.set(leftChannelData);
                 recordedChunks.push(array);
 
-                audioData.input(buffer);
-                const resampledWavData = audioData.resample(buffer);
+                // audioData.input(leftChannelData);
+                // const resampledWavData = audioData.resample(leftChannelData);
                 // console.log(buffer, resampledWavData, audioContext.sampleRate);
                 // const resampled16BitsWavData = audioData.quantize(resampledWavData, 16);
                 // console.log(resampled16BitsWavData.buffer);
@@ -123,148 +129,18 @@
             mediaStream?.getTracks().forEach((t) => t.stop());
             dellAudioData()
         }
-        const audioData = {
-            size: 0, // 录音文件长度
-            buffer: [], // 录音缓存, Array of Float32Array
-            input: function (data) {
-                this.buffer.push(new Float32Array(data)); //?
-                this.size += data.length;
-            },
-            resample: function (buffer, newSampleRate = 24000) {
-                const resampler = new Resampler(
-                    audioContext.sampleRate,
-                    newSampleRate,
-                    1,
-                    buffer.length
-                );
-                return resampler.resample(buffer);
-            },
-
-            resampleAndEncodeWAV: function (
-                sampleRate = 48000,
-                bits = 16,
-                start = 0.0,
-                end = -1
-            ) {
-                // Resample
-                let bytes = this.buffer
-                    .map((buf) => this.resample(buf, sampleRate))
-                    .reduce((pre, aft) => {
-                        return [...pre, ...aft];
-                    }, []);
-
-                // Trim the wav
-                const startIdx = sampleRate * start;
-                let endIdx = bytes.length;
-                if (end >= 0) {
-                    endIdx = sampleRate * end;
-                }
-                bytes = bytes.slice(startIdx, endIdx);
-
-                // Write wav file
-                const dataLength = bytes.length * (bits / 8);
-                const buffer = new ArrayBuffer(44 + dataLength);
-                const data = new DataView(buffer);
-
-                const channelCount = 1; // 单声道
-                let offset = 0;
-
-                const writeString = function (str) {
-                    for (let i = 0; i < str.length; i++) {
-                        data.setUint8(offset + i, str.charCodeAt(i));
-                    }
-                };
-
-                // 资源交换文件标识符
-                writeString("RIFF");
-                offset += 4;
-                // 下个地址开始到文件尾总字节数,即文件大小-8
-                data.setUint32(offset, 36 + dataLength, true);
-                offset += 4;
-                // WAV文件标志
-                writeString("WAVE");
-                offset += 4;
-                // 波形格式标志
-                writeString("fmt ");
-                offset += 4;
-                // 过滤字节,一般为 0x10 = 16
-                data.setUint32(offset, 16, true);
-                offset += 4;
-                // 格式类别 (PCM形式采样数据)
-                data.setUint16(offset, 1, true);
-                offset += 2;
-                // 通道数
-                data.setUint16(offset, channelCount, true);
-                offset += 2;
-                // 采样率,每秒样本数,表示每个通道的播放速度
-                data.setUint32(offset, sampleRate, true);
-                offset += 4;
-                // 波形数据传输率 (每秒平均字节数) 单声道×每秒数据位数×每样本数据位/8
-                data.setUint32(offset, channelCount * sampleRate * (bits / 8), true);
-                offset += 4;
-                // 快数据调整数 采样一次占用字节数 单声道×每样本的数据位数/8
-                data.setUint16(offset, channelCount * (bits / 8), true);
-                offset += 2;
-                // 每样本数据位数
-                data.setUint16(offset, bits, true);
-                offset += 2;
-                // 数据标识符
-                writeString("data");
-                offset += 4;
-                // 采样数据总数,即数据总大小-44
-                data.setUint32(offset, dataLength, true);
-                offset += 4;
-                // 写入采样数据
-                if (bits === 8) {
-                    for (let i = 0; i < bytes.length; i++, offset++) {
-                        const s = Math.max(-1, Math.min(1, bytes[i]));
-                        let val = s < 0 ? s * 0x8000 : s * 0x7fff;
-                        val = 255 / (65535 / (val + 32768));
-                        data.setInt8(offset, val);
-                    }
-                } else {
-                    for (let i = 0; i < bytes.length; i++, offset += 2) {
-                        const s = Math.max(-1, Math.min(1, bytes[i]));
-                        data.setInt16(offset, s < 0 ? s * 0x8000 : s * 0x7fff, true);
-                    }
-                }
-
-                return new Blob([data], { type: "audio/wav" });
-            },
-
-            quantize: function (buffer, bits = 16) {
-                const dataLength = buffer.length * (bits / 8);
-                const data = new DataView(new ArrayBuffer(dataLength));
-
-                // this.outputBuffer = new int16Array(this.buffer.length)
-                let offset = 0;
-                if (bits === 8) {
-                    for (let i = 0; i < buffer.length; i++, offset++) {
-                        const s = Math.max(-1, Math.min(1, buffer[i]));
-                        let val = s < 0 ? s * 0x8000 : s * 0x7fff;
-                        val = 255 / (65535 / (val + 32768));
-                        data.setInt8(offset, val);
-                    }
-                } else {
-                    for (let i = 0; i < buffer.length; i++, offset += 2) {
-                        const s = Math.max(-1, Math.min(1, buffer[i]));
-                        data.setInt16(offset, s < 0 ? s * 0x8000 : s * 0x7fff, true);
-                    }
-                }
-                return data;
-            },
-        };
         function dellAudioData() {
             // 创建一个完整的 AudioBuffer，用于保存录制的音频
-            // const recordingLength = recordedChunks.reduce((acc, chunk) => acc + chunk.length, 0);
-            // console.log(recordedChunks, recordingLength, recordedChunks.length, audioContext.sampleRate);
-            // const audioBuffer = audioContext.createBuffer(1, recordingLength, audioContext.sampleRate);
+            const recordingLength = recordedChunks.reduce((acc, chunk) => acc + chunk.length, 0);
+            console.log('dellAudioData', recordedChunks, recordingLength, audioContext.sampleRate);
+            const audioBuffer = audioContext.createBuffer(2, recordingLength, audioContext.sampleRate);
 
-            // let srcStart = 0;
-            // for (const chunk of recordedChunks) {
-            //     audioBuffer.copyToChannel(chunk, 0, srcStart);
-            //     srcStart += chunk.length;
-            // }
+            let srcStart = 0;
+            for (const chunk of recordedChunks) {
+                audioBuffer.copyToChannel(chunk, 0, srcStart);
+                srcStart += chunk.length;
+            }
+            console.log('audioBuffer', audioBuffer, audioBuffer.getChannelData(0), audioBuffer.getChannelData(1));
 
         }
 
