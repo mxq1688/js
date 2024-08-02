@@ -1,3 +1,12 @@
+#### vue-server-renderer插件
+>服务端渲染解析虚拟 DOM成html之后，页面的事件都没法触发，需要客户端再渲染一次（同构）
+```
+
+renderAfterDocumentEvent 
+    配主要用于控制何时开始预渲染过程。在预渲染单页应用（SPA）时，有时需要等待某些事件发生之后再开始渲染静态 HTML 文件，以确保预渲染的内容是最新的或是包含了某些动态生成的数据。
+    vue3需要 document.dispatchEvent(new Event('custom-render-trigger'))
+
+```
 #### 预渲染配置
 > vite
 ```
